@@ -3,12 +3,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+
     <groupId>com.fulihui.redisdubbo.demo</groupId>
     <artifactId>demo-redis-parent-dubbo-springboot</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <name>demo-redis-dubbo-springboot</name>
+    <version>1.0.0</version>
+
+    <name>demo-redis-parent-dubbo-springboot</name>
     <packaging>pom</packaging>
-    <description>Demo project for Spring Boot</description>
 
 
     <modules>

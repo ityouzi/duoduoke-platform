@@ -14,6 +14,8 @@ dubbo:
     port: -1
   registry:
     address: redis://127.0.0.1:${embedded.redis.port}
+    password: fulihui.com
+    username: fulihui.com
   scan:
     base-packages: com.fulihui.redisdubbo.demo.producer.service
 
