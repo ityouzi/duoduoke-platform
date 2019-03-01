@@ -19,6 +19,8 @@ embedded:
 dubbo:
   registry:
     address: redis://127.0.0.1:${embedded.redis.port}
+    username: fulihui.com
+    password: fulihui.com
 
 
 server:
