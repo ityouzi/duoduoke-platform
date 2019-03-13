@@ -1,8 +1,8 @@
 package org.near.toolkit.sensitive;
 
+import org.apache.commons.lang3.StringUtils;
 import org.near.toolkit.common.StringUtil;
 import org.near.toolkit.validate.ValidateUtil;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -1,11 +1,10 @@
 package org.near.webmvcsupport.security.filter;
 
-import java.io.IOException;
+import org.near.webmvcsupport.security.http.XssHttpServletRequestWrapper;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
-
-import org.near.webmvcsupport.security.http.XssHttpServletRequestWrapper;
+import java.io.IOException;
 
 /**
  * Xss处理拦截器

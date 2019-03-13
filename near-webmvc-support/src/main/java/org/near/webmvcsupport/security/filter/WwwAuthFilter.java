@@ -17,15 +17,7 @@
 
 package org.near.webmvcsupport.security.filter;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.codec.binary.Base64;
 import org.near.toolkit.common.StringUtil;
 import org.near.webmvcsupport.security.model.BasicAuthConfig;
@@ -33,7 +25,13 @@ import org.near.webmvcsupport.security.model.BasicAuthStaff;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.alibaba.fastjson.JSONObject;
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 浏览器自带Basic Auth权限处理过滤

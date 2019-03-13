@@ -1,7 +1,21 @@
 spring:
   application:
     name: dubbo-registry-redis-consumer
-
+  redis:
+    database: 0
+    host: 192.168.1.81
+    password: fulihui.com
+    port: 6379
+    timeout: 10000
+    pool:
+      # 连接池中的最大空闲连接
+      max-idle: 8
+      # 连接池中的最小空闲连接
+      min-idle: 10
+      # 连接池最大连接数（使用负值表示没有限制）
+      max-active: 100
+      # 连接池最大阻塞等待时间（使用负值表示没有限制）
+      max-wait: -1
 demo:
   service:
     version: 1.0.0
@@ -15,6 +29,56 @@ embedded:
 
 
 
+duoduoke:
+  clientId: 04077b8a720947c9a33c68bbb06bae8e
+  clientSecret: dc5f0dcfec0127530ee24a07c25ef8ceb129a9c1
+  miniAppid: wxf7d16733ba8b3d65
+  miniAppSecret: 2f61d1c90eebaeb8d88684a163cf0023
+  mchid: 1358533402
+  certFile: /home/admin/cert/apiclient_cert.p12
+  authUrl: https://api.weixin.qq.com/sns/jscode2session
+  templateUrl: https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send
+  tokenUrl: https://api.weixin.qq.com/cgi-bin/token
+  zkAddress: 127.0.0.1:2181
+  minipage: pages/home/home
+  miniProductPage: pages/product/product
+  duoAuthCallBackUrl: http://duoduokedev.flh58.com/duoduoke/duoAuth/callback
+  duoTokenUrl: http://open-api.pinduoduo.com/oauth/token
+
+
+
+
+
+
+
+###################  web配置  ###################
+web:
+  swagger-open: true #是否开启swagger (true/false)
+  mock:
+    transfers: true #是否 mock 微信企业付款 (true/false)
+    status: false #是否mock 微信支付成功或者失败  (true 为成功/false 失败)
+aes:
+  aesKey: oLhMH2xotVCzK7d8urGzeA==
+
+
+
+
+
+
+external:
+  externalGoodsUrl: http://www.tejiake.com/api/auth/change_link
+  externalApi: http://www.tejiake.com/api/auth/unify_api
+  externalToken: 5506946714eb48db92d2d4225ef30f15d52cf43b
+  refreshToken: 7cd2feeff7674717849b7a19f550ef7c545fbf6a
+  externalRefreshApi: http://www.tejiake.com/api/auth/refresh_token
+
+oss:
+  accessKeyId: LTAIfKdC0KkJP9y3
+  accessKeySecret: lOXNNqdTRrP6pOUteRDvjzdGtV4z6Q
+  endpoint: http://oss-cn-hangzhou.aliyuncs.com
+  bucketName: duoduoke
+  floder: duoduoke/
+  key: https://duoduoke.oss-cn-hangzhou.aliyuncs.com/
 
 dubbo:
   registry:
@@ -22,6 +86,13 @@ dubbo:
     username: fulihui.com
     password: fulihui.com
 
+  consumer:
+    version: 1.0.0
+    check: false
+    timeout: 10000
+    validation: true
 
 server:
-  port: 8080
+  servlet:
+    context-path: /duoduoke
+  port: 8888

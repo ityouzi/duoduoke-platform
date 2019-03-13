@@ -1,9 +1,9 @@
 package org.near.webmvcsupport.security.http;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
-
-import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
  * xss http 请求封装

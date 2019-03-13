@@ -1,8 +1,8 @@
 package org.near.toolkit.security.codec;
 
-import java.security.MessageDigest;
-
 import org.apache.commons.codec.binary.Hex;
+
+import java.security.MessageDigest;
 
 /**
  * SHA摘要加密算法

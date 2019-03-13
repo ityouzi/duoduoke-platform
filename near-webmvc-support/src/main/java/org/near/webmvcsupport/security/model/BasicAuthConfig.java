@@ -1,8 +1,8 @@
 package org.near.webmvcsupport.security.model;
 
-import java.util.List;
-
 import org.near.toolkit.model.ToString;
+
+import java.util.List;
 
 /**
  * Basic auth 权限配置
