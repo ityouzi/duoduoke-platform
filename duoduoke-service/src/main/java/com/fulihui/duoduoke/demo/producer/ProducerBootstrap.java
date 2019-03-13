@@ -1,4 +1,4 @@
-package com.fulihui.duoduoke.demo.producer.bootstrap;
+package com.fulihui.duoduoke.demo.producer;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
