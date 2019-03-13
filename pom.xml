@@ -16,6 +16,9 @@
         <module>api</module>
         <module>producer</module>
         <module>consumer</module>
+        <module>near-service-support</module>
+        <module>near-toolkit</module>
+        <module>near-webmvc-support</module>
     </modules>
 
 
