@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fulihui.redisdubbo.demo.producer.dal.dao.TemplateSendTaskMapper">
+  <resultMap id="BaseResultMap" type="com.fulihui.redisdubbo.demo.producer.dal.dataobj.TemplateSendTask">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="user_behaviors" jdbcType="VARCHAR" property="userBehaviors" />
+    <result column="user_sex" jdbcType="VARCHAR" property="userSex" />
+    <result column="trigger_times" jdbcType="VARCHAR" property="triggerTimes" />
+    <result column="template_id" jdbcType="VARCHAR" property="templateId" />
+    <result column="template_page" jdbcType="VARCHAR" property="templatePage" />
+    <result column="template_date" jdbcType="VARCHAR" property="templateDate" />
+    <result column="emphasis_keyword" jdbcType="VARCHAR" property="emphasisKeyword" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="state" jdbcType="TINYINT" property="state" />
+    <result column="date_send_count" jdbcType="INTEGER" property="dateSendCount" />
+    <result column="send_count" jdbcType="INTEGER" property="sendCount" />
+    <result column="open_count" jdbcType="INTEGER" property="openCount" />
+    <result column="success_count" jdbcType="INTEGER" property="successCount" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, title, user_behaviors, user_sex, trigger_times, template_id, template_page, template_date, 
+    emphasis_keyword, type, state, date_send_count, send_count, open_count, success_count, 
+    gmt_create, gmt_modified
+  </sql>
+  <select id="selectByExample" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.TemplateSendTaskExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from template_send_task
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from template_send_task
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from template_send_task
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.TemplateSendTaskExample">
+    delete from template_send_task
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.TemplateSendTask" useGeneratedKeys="true">
+    insert into template_send_task (title, user_behaviors, user_sex, 
+      trigger_times, template_id, template_page, 
+      template_date, emphasis_keyword, type, 
+      state, date_send_count, send_count, 
+      open_count, success_count, gmt_create, 
+      gmt_modified)
+    values (#{title,jdbcType=VARCHAR}, #{userBehaviors,jdbcType=VARCHAR}, #{userSex,jdbcType=VARCHAR}, 
+      #{triggerTimes,jdbcType=VARCHAR}, #{templateId,jdbcType=VARCHAR}, #{templatePage,jdbcType=VARCHAR}, 
+      #{templateDate,jdbcType=VARCHAR}, #{emphasisKeyword,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+      #{state,jdbcType=TINYINT}, #{dateSendCount,jdbcType=INTEGER}, #{sendCount,jdbcType=INTEGER}, 
+      #{openCount,jdbcType=INTEGER}, #{successCount,jdbcType=INTEGER}, #{gmtCreate,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.TemplateSendTask" useGeneratedKeys="true">
+    insert into template_send_task
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="title != null">
+        title,
+      </if>
+      <if test="userBehaviors != null">
+        user_behaviors,
+      </if>
+      <if test="userSex != null">
+        user_sex,
+      </if>
+      <if test="triggerTimes != null">
+        trigger_times,
+      </if>
+      <if test="templateId != null">
+        template_id,
+      </if>
+      <if test="templatePage != null">
+        template_page,
+      </if>
+      <if test="templateDate != null">
+        template_date,
+      </if>
+      <if test="emphasisKeyword != null">
+        emphasis_keyword,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="dateSendCount != null">
+        date_send_count,
+      </if>
+      <if test="sendCount != null">
+        send_count,
+      </if>
+      <if test="openCount != null">
+        open_count,
+      </if>
+      <if test="successCount != null">
+        success_count,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="userBehaviors != null">
+        #{userBehaviors,jdbcType=VARCHAR},
+      </if>
+      <if test="userSex != null">
+        #{userSex,jdbcType=VARCHAR},
+      </if>
+      <if test="triggerTimes != null">
+        #{triggerTimes,jdbcType=VARCHAR},
+      </if>
+      <if test="templateId != null">
+        #{templateId,jdbcType=VARCHAR},
+      </if>
+      <if test="templatePage != null">
+        #{templatePage,jdbcType=VARCHAR},
+      </if>
+      <if test="templateDate != null">
+        #{templateDate,jdbcType=VARCHAR},
+      </if>
+      <if test="emphasisKeyword != null">
+        #{emphasisKeyword,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=TINYINT},
+      </if>
+      <if test="dateSendCount != null">
+        #{dateSendCount,jdbcType=INTEGER},
+      </if>
+      <if test="sendCount != null">
+        #{sendCount,jdbcType=INTEGER},
+      </if>
+      <if test="openCount != null">
+        #{openCount,jdbcType=INTEGER},
+      </if>
+      <if test="successCount != null">
+        #{successCount,jdbcType=INTEGER},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.TemplateSendTaskExample" resultType="java.lang.Long">
+    select count(*) from template_send_task
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update template_send_task
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.title != null">
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userBehaviors != null">
+        user_behaviors = #{record.userBehaviors,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userSex != null">
+        user_sex = #{record.userSex,jdbcType=VARCHAR},
+      </if>
+      <if test="record.triggerTimes != null">
+        trigger_times = #{record.triggerTimes,jdbcType=VARCHAR},
+      </if>
+      <if test="record.templateId != null">
+        template_id = #{record.templateId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.templatePage != null">
+        template_page = #{record.templatePage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.templateDate != null">
+        template_date = #{record.templateDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.emphasisKeyword != null">
+        emphasis_keyword = #{record.emphasisKeyword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.state != null">
+        state = #{record.state,jdbcType=TINYINT},
+      </if>
+      <if test="record.dateSendCount != null">
+        date_send_count = #{record.dateSendCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.sendCount != null">
+        send_count = #{record.sendCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.openCount != null">
+        open_count = #{record.openCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.successCount != null">
+        success_count = #{record.successCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.gmtCreate != null">
+        gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null">
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update template_send_task
+    set id = #{record.id,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      user_behaviors = #{record.userBehaviors,jdbcType=VARCHAR},
+      user_sex = #{record.userSex,jdbcType=VARCHAR},
+      trigger_times = #{record.triggerTimes,jdbcType=VARCHAR},
+      template_id = #{record.templateId,jdbcType=VARCHAR},
+      template_page = #{record.templatePage,jdbcType=VARCHAR},
+      template_date = #{record.templateDate,jdbcType=VARCHAR},
+      emphasis_keyword = #{record.emphasisKeyword,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=INTEGER},
+      state = #{record.state,jdbcType=TINYINT},
+      date_send_count = #{record.dateSendCount,jdbcType=INTEGER},
+      send_count = #{record.sendCount,jdbcType=INTEGER},
+      open_count = #{record.openCount,jdbcType=INTEGER},
+      success_count = #{record.successCount,jdbcType=INTEGER},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.TemplateSendTask">
+    update template_send_task
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="userBehaviors != null">
+        user_behaviors = #{userBehaviors,jdbcType=VARCHAR},
+      </if>
+      <if test="userSex != null">
+        user_sex = #{userSex,jdbcType=VARCHAR},
+      </if>
+      <if test="triggerTimes != null">
+        trigger_times = #{triggerTimes,jdbcType=VARCHAR},
+      </if>
+      <if test="templateId != null">
+        template_id = #{templateId,jdbcType=VARCHAR},
+      </if>
+      <if test="templatePage != null">
+        template_page = #{templatePage,jdbcType=VARCHAR},
+      </if>
+      <if test="templateDate != null">
+        template_date = #{templateDate,jdbcType=VARCHAR},
+      </if>
+      <if test="emphasisKeyword != null">
+        emphasis_keyword = #{emphasisKeyword,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=TINYINT},
+      </if>
+      <if test="dateSendCount != null">
+        date_send_count = #{dateSendCount,jdbcType=INTEGER},
+      </if>
+      <if test="sendCount != null">
+        send_count = #{sendCount,jdbcType=INTEGER},
+      </if>
+      <if test="openCount != null">
+        open_count = #{openCount,jdbcType=INTEGER},
+      </if>
+      <if test="successCount != null">
+        success_count = #{successCount,jdbcType=INTEGER},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.TemplateSendTask">
+    update template_send_task
+    set title = #{title,jdbcType=VARCHAR},
+      user_behaviors = #{userBehaviors,jdbcType=VARCHAR},
+      user_sex = #{userSex,jdbcType=VARCHAR},
+      trigger_times = #{triggerTimes,jdbcType=VARCHAR},
+      template_id = #{templateId,jdbcType=VARCHAR},
+      template_page = #{templatePage,jdbcType=VARCHAR},
+      template_date = #{templateDate,jdbcType=VARCHAR},
+      emphasis_keyword = #{emphasisKeyword,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      state = #{state,jdbcType=TINYINT},
+      date_send_count = #{dateSendCount,jdbcType=INTEGER},
+      send_count = #{sendCount,jdbcType=INTEGER},
+      open_count = #{openCount,jdbcType=INTEGER},
+      success_count = #{successCount,jdbcType=INTEGER},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fulihui.redisdubbo.demo.producer.dal.dao.ExtPromotionChannelsMapper">
+    <resultMap id="BaseResultMap" type="com.fulihui.redisdubbo.demo.producer.dal.dataobj.PromotionChannels">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="channels_name" jdbcType="VARCHAR" property="channelsName"/>
+        <result column="channels_code" jdbcType="VARCHAR" property="channelsCode"/>
+        <result column="channels_desc" jdbcType="VARCHAR" property="channelsDesc"/>
+        <result column="channels_proportion" jdbcType="INTEGER" property="channelsProportion"/>
+        <result column="proportion_link" jdbcType="VARCHAR" property="proportionLink"/>
+        <result column="channels_income" jdbcType="INTEGER" property="channelsIncome"/>
+        <result column="account_balance" jdbcType="INTEGER" property="accountBalance"/>
+        <result column="channels_status" jdbcType="VARCHAR" property="channelsStatus"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, channels_name, channels_code, channels_desc, channels_proportion, proportion_link,
+        channels_income, account_balance, channels_status, gmt_create, gmt_modified
+    </sql>
+
+
+    <select id="queryByPid" resultMap="BaseResultMap">
+        select
+        p.id,
+        p.channels_name,
+        p.channels_code,
+        p.channels_desc,
+        p.channels_proportion,
+        p.proportion_link,
+        p.channels_income,
+        p.account_balance,
+        p.channels_status,
+        p.gmt_create,
+        p.gmt_modified
+
+        FROM promotion_channels p
+        JOIN promotion_channels_link l ON p.channels_code = l.channels_code
+        WHERE
+        l.p_id=#{pId} and p.channels_status=#{channelsStatus}
+    </select>
+
+
+    <update id="updateIncomeBalance">
+        update promotion_channels
+        <set>
+            <if test="channelsIncome !=null ">
+                channels_income = channels_income + #{channelsIncome},
+            </if>
+
+            <if test="accountBalance !=null ">
+                account_balance = account_balance + #{accountBalance},
+            </if>
+
+            gmt_modified = now()
+        </set>
+        <where>
+            channels_code = #{channelsCode}
+            <!-- 负值时判断不能将现有余额减成负数 -->
+            <if test="channelsIncome &lt; 0">
+                and channels_income >= -#{channelsIncome}
+            </if>
+            <if test="accountBalance &lt; 0">
+                and account_balance >= -#{accountBalance}
+            </if>
+        </where>
+    </update>
+
+
+</mapper>

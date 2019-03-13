@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fulihui.redisdubbo.demo.producer.dal.dao.SignAwardMapper">
+  <resultMap id="BaseResultMap" type="com.fulihui.redisdubbo.demo.producer.dal.dataobj.SignAward">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="activity_type" jdbcType="VARCHAR" property="activityType" />
+    <result column="sign_count" jdbcType="INTEGER" property="signCount" />
+    <result column="prize_status" jdbcType="VARCHAR" property="prizeStatus" />
+    <result column="prize_type" jdbcType="VARCHAR" property="prizeType" />
+    <result column="prize_percent" jdbcType="INTEGER" property="prizePercent" />
+    <result column="prize_money" jdbcType="INTEGER" property="prizeMoney" />
+    <result column="over_order_money" jdbcType="INTEGER" property="overOrderMoney" />
+    <result column="useful_day" jdbcType="INTEGER" property="usefulDay" />
+    <result column="order_sn" jdbcType="VARCHAR" property="orderSn" />
+    <result column="cycle_time" jdbcType="DATE" property="cycleTime" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="bind_order_status" jdbcType="VARCHAR" property="bindOrderStatus" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, user_id, activity_type, sign_count, prize_status, prize_type, prize_percent, 
+    prize_money, over_order_money, useful_day, order_sn, cycle_time, gmt_create, gmt_modified, 
+    bind_order_status
+  </sql>
+  <select id="selectByExample" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.SignAwardExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sign_award
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sign_award
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sign_award
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.SignAwardExample">
+    delete from sign_award
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.SignAward" useGeneratedKeys="true">
+    insert into sign_award (user_id, activity_type, sign_count, 
+      prize_status, prize_type, prize_percent, 
+      prize_money, over_order_money, useful_day, 
+      order_sn, cycle_time, gmt_create, 
+      gmt_modified, bind_order_status)
+    values (#{userId,jdbcType=VARCHAR}, #{activityType,jdbcType=VARCHAR}, #{signCount,jdbcType=INTEGER}, 
+      #{prizeStatus,jdbcType=VARCHAR}, #{prizeType,jdbcType=VARCHAR}, #{prizePercent,jdbcType=INTEGER}, 
+      #{prizeMoney,jdbcType=INTEGER}, #{overOrderMoney,jdbcType=INTEGER}, #{usefulDay,jdbcType=INTEGER}, 
+      #{orderSn,jdbcType=VARCHAR}, #{cycleTime,jdbcType=DATE}, #{gmtCreate,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP}, #{bindOrderStatus,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.SignAward" useGeneratedKeys="true">
+    insert into sign_award
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="activityType != null">
+        activity_type,
+      </if>
+      <if test="signCount != null">
+        sign_count,
+      </if>
+      <if test="prizeStatus != null">
+        prize_status,
+      </if>
+      <if test="prizeType != null">
+        prize_type,
+      </if>
+      <if test="prizePercent != null">
+        prize_percent,
+      </if>
+      <if test="prizeMoney != null">
+        prize_money,
+      </if>
+      <if test="overOrderMoney != null">
+        over_order_money,
+      </if>
+      <if test="usefulDay != null">
+        useful_day,
+      </if>
+      <if test="orderSn != null">
+        order_sn,
+      </if>
+      <if test="cycleTime != null">
+        cycle_time,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+      <if test="bindOrderStatus != null">
+        bind_order_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="activityType != null">
+        #{activityType,jdbcType=VARCHAR},
+      </if>
+      <if test="signCount != null">
+        #{signCount,jdbcType=INTEGER},
+      </if>
+      <if test="prizeStatus != null">
+        #{prizeStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="prizeType != null">
+        #{prizeType,jdbcType=VARCHAR},
+      </if>
+      <if test="prizePercent != null">
+        #{prizePercent,jdbcType=INTEGER},
+      </if>
+      <if test="prizeMoney != null">
+        #{prizeMoney,jdbcType=INTEGER},
+      </if>
+      <if test="overOrderMoney != null">
+        #{overOrderMoney,jdbcType=INTEGER},
+      </if>
+      <if test="usefulDay != null">
+        #{usefulDay,jdbcType=INTEGER},
+      </if>
+      <if test="orderSn != null">
+        #{orderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="cycleTime != null">
+        #{cycleTime,jdbcType=DATE},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bindOrderStatus != null">
+        #{bindOrderStatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.SignAwardExample" resultType="java.lang.Long">
+    select count(*) from sign_award
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update sign_award
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.activityType != null">
+        activity_type = #{record.activityType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.signCount != null">
+        sign_count = #{record.signCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.prizeStatus != null">
+        prize_status = #{record.prizeStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.prizeType != null">
+        prize_type = #{record.prizeType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.prizePercent != null">
+        prize_percent = #{record.prizePercent,jdbcType=INTEGER},
+      </if>
+      <if test="record.prizeMoney != null">
+        prize_money = #{record.prizeMoney,jdbcType=INTEGER},
+      </if>
+      <if test="record.overOrderMoney != null">
+        over_order_money = #{record.overOrderMoney,jdbcType=INTEGER},
+      </if>
+      <if test="record.usefulDay != null">
+        useful_day = #{record.usefulDay,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderSn != null">
+        order_sn = #{record.orderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cycleTime != null">
+        cycle_time = #{record.cycleTime,jdbcType=DATE},
+      </if>
+      <if test="record.gmtCreate != null">
+        gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null">
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.bindOrderStatus != null">
+        bind_order_status = #{record.bindOrderStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update sign_award
+    set id = #{record.id,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=VARCHAR},
+      activity_type = #{record.activityType,jdbcType=VARCHAR},
+      sign_count = #{record.signCount,jdbcType=INTEGER},
+      prize_status = #{record.prizeStatus,jdbcType=VARCHAR},
+      prize_type = #{record.prizeType,jdbcType=VARCHAR},
+      prize_percent = #{record.prizePercent,jdbcType=INTEGER},
+      prize_money = #{record.prizeMoney,jdbcType=INTEGER},
+      over_order_money = #{record.overOrderMoney,jdbcType=INTEGER},
+      useful_day = #{record.usefulDay,jdbcType=INTEGER},
+      order_sn = #{record.orderSn,jdbcType=VARCHAR},
+      cycle_time = #{record.cycleTime,jdbcType=DATE},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      bind_order_status = #{record.bindOrderStatus,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.SignAward">
+    update sign_award
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="activityType != null">
+        activity_type = #{activityType,jdbcType=VARCHAR},
+      </if>
+      <if test="signCount != null">
+        sign_count = #{signCount,jdbcType=INTEGER},
+      </if>
+      <if test="prizeStatus != null">
+        prize_status = #{prizeStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="prizeType != null">
+        prize_type = #{prizeType,jdbcType=VARCHAR},
+      </if>
+      <if test="prizePercent != null">
+        prize_percent = #{prizePercent,jdbcType=INTEGER},
+      </if>
+      <if test="prizeMoney != null">
+        prize_money = #{prizeMoney,jdbcType=INTEGER},
+      </if>
+      <if test="overOrderMoney != null">
+        over_order_money = #{overOrderMoney,jdbcType=INTEGER},
+      </if>
+      <if test="usefulDay != null">
+        useful_day = #{usefulDay,jdbcType=INTEGER},
+      </if>
+      <if test="orderSn != null">
+        order_sn = #{orderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="cycleTime != null">
+        cycle_time = #{cycleTime,jdbcType=DATE},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bindOrderStatus != null">
+        bind_order_status = #{bindOrderStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.SignAward">
+    update sign_award
+    set user_id = #{userId,jdbcType=VARCHAR},
+      activity_type = #{activityType,jdbcType=VARCHAR},
+      sign_count = #{signCount,jdbcType=INTEGER},
+      prize_status = #{prizeStatus,jdbcType=VARCHAR},
+      prize_type = #{prizeType,jdbcType=VARCHAR},
+      prize_percent = #{prizePercent,jdbcType=INTEGER},
+      prize_money = #{prizeMoney,jdbcType=INTEGER},
+      over_order_money = #{overOrderMoney,jdbcType=INTEGER},
+      useful_day = #{usefulDay,jdbcType=INTEGER},
+      order_sn = #{orderSn,jdbcType=VARCHAR},
+      cycle_time = #{cycleTime,jdbcType=DATE},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      bind_order_status = #{bindOrderStatus,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -15,7 +15,7 @@ public class UserOrderParam extends FormIdParam {
     /**
      * user_order_info.user_order_status
      *
-     * @see com.fulihui.duoduoke.facade.enums.UserOrderStatusEnum
+     * @see com.fulihui.redisdubbo.demo.producer.facade.enums.UserOrderStatusEnum
      * 用户订单状态
      */
     private String orderStatus;

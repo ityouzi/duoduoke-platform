@@ -62,7 +62,7 @@ public class ExemptionGoodsManagerImpl implements ExemptionGoodsManager {
         Long goodsId = param.getGoodsId();
         Date now = new Date();
         //查询活动，判断活动状态
-        String key = "/duoduokeLock/robbingOrder" + userId + goodsId;
+        String key = "/redisdubbo.demo.producerLock/robbingOrder" + userId + goodsId;
 
         InterProcessMutex lock = new InterProcessMutex(curatorFramework, key);
         try {

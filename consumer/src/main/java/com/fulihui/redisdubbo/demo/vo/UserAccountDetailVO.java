@@ -21,7 +21,7 @@ public class UserAccountDetailVO extends ToString {
      * <p>
      * OUTLAY("1", "支出"),;
      *
-     * @see com.fulihui.duoduoke.facade.enums.UserAccountOptTypeEnum
+     * @see com.fulihui.redisdubbo.demo.producer.facade.enums.UserAccountOptTypeEnum
      */
     @ApiModelProperty(value = "0=收入,1=支出")
     private String optType;

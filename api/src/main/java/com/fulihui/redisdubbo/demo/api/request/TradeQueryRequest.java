@@ -32,7 +32,7 @@ public class TradeQueryRequest extends PageRequest {
     private String category;
     /**
      * 交易支付类型
-     * category 为 {@link TradeCategoryEnum#WITH_DRAW } 时，取值 {@link com.fulihui.duoduoke.facade.enums.TradeWithDrawTypeEnum}<p/>
+     * category 为 {@link TradeCategoryEnum#WITH_DRAW } 时，取值 {@link com.fulihui.redisdubbo.demo.producer.facade.enums.TradeWithDrawTypeEnum}<p/>
      */
     private String payType;
 }

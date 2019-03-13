@@ -25,7 +25,7 @@ public class UserWithdrawCreateRequest extends ToString {
     /**
      * user_withdraw.withdraw_type
      * 提现类型[wechat]
-     * @see com.fulihui.duoduoke.facade.enums.TradeWithDrawTypeEnum
+     * @see com.fulihui.redisdubbo.demo.producer.facade.enums.TradeWithDrawTypeEnum
      */
     private String            withdrawType;
 
@@ -51,7 +51,7 @@ public class UserWithdrawCreateRequest extends ToString {
     /**
      * user_withdraw.status
      * 状态[101:待审核][102:审核通过][103:审核驳回][201:打款中][202:打款失败][203打款成功]
-     * @see com.fulihui.duoduoke.facade.enums.WithdrawStatusEnum
+     * @see com.fulihui.redisdubbo.demo.producer.facade.enums.WithdrawStatusEnum
      */
     private String            status;
 

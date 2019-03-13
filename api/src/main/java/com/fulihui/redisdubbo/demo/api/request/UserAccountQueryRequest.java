@@ -22,11 +22,11 @@ public class UserAccountQueryRequest extends PageRequest {
 
     private String            userId;
     /**
-     * @see com.fulihui.duoduoke.facade.enums.UserAccountBizCode
+     * @see com.fulihui.redisdubbo.demo.producer.facade.enums.UserAccountBizCode
      */
     private List<String>      bizCodes;
     /**
-     * @see com.fulihui.duoduoke.facade.enums.UserAccountOptTypeEnum
+     * @see com.fulihui.redisdubbo.demo.producer.facade.enums.UserAccountOptTypeEnum
      */
     private String            optType;
 
@@ -34,7 +34,7 @@ public class UserAccountQueryRequest extends PageRequest {
 
     /**
      *
-     * @see com.fulihui.duoduoke.facade.enums.UserAccountType
+     * @see com.fulihui.redisdubbo.demo.producer.facade.enums.UserAccountType
      * user_account.user_account_type
      * 账户类型
      *

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fulihui.redisdubbo.demo.producer.dal.dao.ExtStoreMapper">
+  <resultMap id="BaseResultMap" type="com.fulihui.redisdubbo.demo.api.dto.StoreDTO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="store_name" jdbcType="VARCHAR" property="storeName" />
+    <result column="store_url" jdbcType="VARCHAR" property="storeUrl" />
+    <result column="recommendation" jdbcType="VARCHAR" property="recommendation" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="presentation" jdbcType="VARCHAR" property="presentation" />
+    <result column="is_preference" jdbcType="VARCHAR" property="isPreference" />
+    <result column="preference_number" jdbcType="INTEGER" property="preferenceNumber" />
+    <result column="preference_url" jdbcType="VARCHAR" property="preferenceUrl" />
+    <result column="pid" jdbcType="VARCHAR" property="pid" />
+    <result column="share_titile" jdbcType="VARCHAR" property="shareTitile" />
+    <result column="share_url" jdbcType="VARCHAR" property="shareUrl" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+
+
+  <sql id="Base_Column_List">
+    id, store_name, store_url, recommendation, start_time, end_time, status, presentation, 
+    is_preference, preference_number, preference_url, pid, share_titile, share_url, gmt_create, 
+    gmt_modified
+  </sql>
+
+  <select id="list" parameterType="com.fulihui.redisdubbo.demo.api.request.StoreListRequest" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from store
+    where 1=1
+    <if test="id != null and id != '' ">
+      AND id=#{id}
+    </if>
+    <if test="storeName != null and storeName != '' ">
+      AND store_name like  CONCAT('',#{storeName},'%')
+    </if>
+    <if test="status != null and status != '' ">
+     AND status=#{status}
+    </if>
+    order by id desc
+    limit #{page},#{rows}
+  </select>
+
+  <select id="listSum"  parameterType="com.fulihui.redisdubbo.demo.api.request.StoreListRequest" resultType="java.lang.Integer">
+    select
+      count(1)
+    from store
+    where 1=1
+    <if test="id != null and id != '' ">
+      AND id=#{id}
+    </if>
+    <if test="storeName != null and storeName != '' ">
+      AND store_name like  CONCAT('',#{storeName},'%')
+    </if>
+    <if test="status != null and status != '' ">
+      AND status=#{status}
+    </if>
+  </select>
+
+  <select id="get"  parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from store
+    where id=#{id}
+  </select>
+
+    <select id="getGoingStoreList"  parameterType="java.util.Date" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from store
+        where status='1' and  is_preference='1'
+        and  start_time <![CDATA[ <= ]]> #{now} and #{now} <![CDATA[ <= ]]> end_time
+        order by preference_number
+    </select>
+
+
+</mapper>

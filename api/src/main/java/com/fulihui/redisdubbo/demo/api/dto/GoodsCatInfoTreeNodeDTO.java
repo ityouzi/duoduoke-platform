@@ -81,11 +81,5 @@ public class GoodsCatInfoTreeNodeDTO extends ToString {
      */
     private String status;
 
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-        throw new java.io.NotSerializableException("com.fulihui.duoduoke.facade.dto.GoodsCatInfoTreeNodeDTO");
-    }
 
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-        throw new java.io.NotSerializableException("com.fulihui.duoduoke.facade.dto.GoodsCatInfoTreeNodeDTO");
-    }
 }

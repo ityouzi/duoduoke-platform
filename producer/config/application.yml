@@ -88,7 +88,7 @@ sharding:
             table-strategy:
               standard:
                 sharding-column: custom_parameters
-                precise-algorithm-class-name: com.fulihui.duoduoke.biz.shard.UserIdAlgorithm
+                precise-algorithm-class-name:  com.fulihui.redisdubbo.demo.producer.biz.shard.UserIdAlgorithm
             actual-data-nodes: ds0.order_info_$->{0..9}
       props:
         sql:

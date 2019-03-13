@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fulihui.redisdubbo.demo.producer.dal.dao.SignUserRecordMapper">
+  <resultMap id="BaseResultMap" type="com.fulihui.redisdubbo.demo.producer.dal.dataobj.SignUserRecord">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="sign_time" jdbcType="TIMESTAMP" property="signTime" />
+    <result column="sign_time_ext" jdbcType="DATE" property="signTimeExt" />
+    <result column="sign_type" jdbcType="VARCHAR" property="signType" />
+    <result column="cycle_time" jdbcType="DATE" property="cycleTime" />
+    <result column="sign_status" jdbcType="VARCHAR" property="signStatus" />
+    <result column="sign_help_user_id" jdbcType="VARCHAR" property="signHelpUserId" />
+    <result column="sign_flop_count" jdbcType="INTEGER" property="signFlopCount" />
+    <result column="share_flop_count" jdbcType="INTEGER" property="shareFlopCount" />
+    <result column="sign_in_prize" jdbcType="VARCHAR" property="signInPrize" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, user_id, sign_time, sign_time_ext, sign_type, cycle_time, sign_status, sign_help_user_id, 
+    sign_flop_count, share_flop_count, sign_in_prize, gmt_create, gmt_modified
+  </sql>
+  <select id="selectByExample" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.SignUserRecordExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sign_user_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sign_user_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sign_user_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.SignUserRecordExample">
+    delete from sign_user_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.SignUserRecord" useGeneratedKeys="true">
+    insert into sign_user_record (user_id, sign_time, sign_time_ext, 
+      sign_type, cycle_time, sign_status, 
+      sign_help_user_id, sign_flop_count, share_flop_count, 
+      sign_in_prize, gmt_create, gmt_modified
+      )
+    values (#{userId,jdbcType=VARCHAR}, #{signTime,jdbcType=TIMESTAMP}, #{signTimeExt,jdbcType=DATE}, 
+      #{signType,jdbcType=VARCHAR}, #{cycleTime,jdbcType=DATE}, #{signStatus,jdbcType=VARCHAR}, 
+      #{signHelpUserId,jdbcType=VARCHAR}, #{signFlopCount,jdbcType=INTEGER}, #{shareFlopCount,jdbcType=INTEGER}, 
+      #{signInPrize,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.SignUserRecord" useGeneratedKeys="true">
+    insert into sign_user_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="signTime != null">
+        sign_time,
+      </if>
+      <if test="signTimeExt != null">
+        sign_time_ext,
+      </if>
+      <if test="signType != null">
+        sign_type,
+      </if>
+      <if test="cycleTime != null">
+        cycle_time,
+      </if>
+      <if test="signStatus != null">
+        sign_status,
+      </if>
+      <if test="signHelpUserId != null">
+        sign_help_user_id,
+      </if>
+      <if test="signFlopCount != null">
+        sign_flop_count,
+      </if>
+      <if test="shareFlopCount != null">
+        share_flop_count,
+      </if>
+      <if test="signInPrize != null">
+        sign_in_prize,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="signTime != null">
+        #{signTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="signTimeExt != null">
+        #{signTimeExt,jdbcType=DATE},
+      </if>
+      <if test="signType != null">
+        #{signType,jdbcType=VARCHAR},
+      </if>
+      <if test="cycleTime != null">
+        #{cycleTime,jdbcType=DATE},
+      </if>
+      <if test="signStatus != null">
+        #{signStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="signHelpUserId != null">
+        #{signHelpUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="signFlopCount != null">
+        #{signFlopCount,jdbcType=INTEGER},
+      </if>
+      <if test="shareFlopCount != null">
+        #{shareFlopCount,jdbcType=INTEGER},
+      </if>
+      <if test="signInPrize != null">
+        #{signInPrize,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.SignUserRecordExample" resultType="java.lang.Long">
+    select count(*) from sign_user_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update sign_user_record
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.signTime != null">
+        sign_time = #{record.signTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.signTimeExt != null">
+        sign_time_ext = #{record.signTimeExt,jdbcType=DATE},
+      </if>
+      <if test="record.signType != null">
+        sign_type = #{record.signType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cycleTime != null">
+        cycle_time = #{record.cycleTime,jdbcType=DATE},
+      </if>
+      <if test="record.signStatus != null">
+        sign_status = #{record.signStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.signHelpUserId != null">
+        sign_help_user_id = #{record.signHelpUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.signFlopCount != null">
+        sign_flop_count = #{record.signFlopCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.shareFlopCount != null">
+        share_flop_count = #{record.shareFlopCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.signInPrize != null">
+        sign_in_prize = #{record.signInPrize,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreate != null">
+        gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null">
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update sign_user_record
+    set id = #{record.id,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=VARCHAR},
+      sign_time = #{record.signTime,jdbcType=TIMESTAMP},
+      sign_time_ext = #{record.signTimeExt,jdbcType=DATE},
+      sign_type = #{record.signType,jdbcType=VARCHAR},
+      cycle_time = #{record.cycleTime,jdbcType=DATE},
+      sign_status = #{record.signStatus,jdbcType=VARCHAR},
+      sign_help_user_id = #{record.signHelpUserId,jdbcType=VARCHAR},
+      sign_flop_count = #{record.signFlopCount,jdbcType=INTEGER},
+      share_flop_count = #{record.shareFlopCount,jdbcType=INTEGER},
+      sign_in_prize = #{record.signInPrize,jdbcType=VARCHAR},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.SignUserRecord">
+    update sign_user_record
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="signTime != null">
+        sign_time = #{signTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="signTimeExt != null">
+        sign_time_ext = #{signTimeExt,jdbcType=DATE},
+      </if>
+      <if test="signType != null">
+        sign_type = #{signType,jdbcType=VARCHAR},
+      </if>
+      <if test="cycleTime != null">
+        cycle_time = #{cycleTime,jdbcType=DATE},
+      </if>
+      <if test="signStatus != null">
+        sign_status = #{signStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="signHelpUserId != null">
+        sign_help_user_id = #{signHelpUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="signFlopCount != null">
+        sign_flop_count = #{signFlopCount,jdbcType=INTEGER},
+      </if>
+      <if test="shareFlopCount != null">
+        share_flop_count = #{shareFlopCount,jdbcType=INTEGER},
+      </if>
+      <if test="signInPrize != null">
+        sign_in_prize = #{signInPrize,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.SignUserRecord">
+    update sign_user_record
+    set user_id = #{userId,jdbcType=VARCHAR},
+      sign_time = #{signTime,jdbcType=TIMESTAMP},
+      sign_time_ext = #{signTimeExt,jdbcType=DATE},
+      sign_type = #{signType,jdbcType=VARCHAR},
+      cycle_time = #{cycleTime,jdbcType=DATE},
+      sign_status = #{signStatus,jdbcType=VARCHAR},
+      sign_help_user_id = #{signHelpUserId,jdbcType=VARCHAR},
+      sign_flop_count = #{signFlopCount,jdbcType=INTEGER},
+      share_flop_count = #{shareFlopCount,jdbcType=INTEGER},
+      sign_in_prize = #{signInPrize,jdbcType=VARCHAR},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

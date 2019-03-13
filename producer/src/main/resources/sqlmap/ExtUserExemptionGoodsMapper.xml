@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fulihui.redisdubbo.demo.producer.dal.dao.ExtUserExemptionGoodsMapper">
+    <resultMap id="BaseResultMap" type="com.fulihui.redisdubbo.demo.producer.dal.dataobj.UserExemptionGoods">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="activity_id" jdbcType="INTEGER" property="activityId"/>
+        <result column="goods_id" jdbcType="BIGINT" property="goodsId"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="pay_amount" jdbcType="INTEGER" property="payAmount"/>
+        <result column="back_amount" jdbcType="INTEGER" property="backAmount"/>
+        <result column="state" jdbcType="VARCHAR" property="state"/>
+        <result column="order_sn" jdbcType="VARCHAR" property="orderSn"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+        <result column="bind_order_status" jdbcType="VARCHAR" property="bindOrderStatus"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        id, activity_id, goods_id, user_id, pay_amount, back_amount, state, order_sn, gmt_create,
+        gmt_modified, bind_order_status
+    </sql>
+
+
+    <select id="queryExceedDay" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        `user_exemption_goods`
+        WHERE
+        `order_sn` IS NOT NULL
+        AND `state` =#{state}
+        AND `bind_order_status` =#{bindOrderStatus}
+        AND TO_DAYS(NOW()) - TO_DAYS(gmt_modified) > 7
+        limit ${offset}, ${limit}
+
+    </select>
+    <select id="queryExceedDayCount" resultType="java.lang.Long">
+        SELECT
+        count(0)
+        FROM
+        `user_exemption_goods`
+        WHERE
+        `order_sn` IS NOT NULL
+        AND `state` =#{state}
+        AND `bind_order_status` =#{bindOrderStatus}
+        AND TO_DAYS(NOW()) - TO_DAYS(gmt_modified) > 7
+    </select>
+
+
+</mapper>

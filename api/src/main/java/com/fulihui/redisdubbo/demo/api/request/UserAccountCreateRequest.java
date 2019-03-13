@@ -23,7 +23,7 @@ public class UserAccountCreateRequest extends AbstractServiceRequest {
 
     /**
      *
-     *@see com.fulihui.duoduoke.facade.enums.UserAccountType
+     *@see com.fulihui.redisdubbo.demo.producer.facade.enums.UserAccountType
      * user_account.user_account_type
      * 账户类型
      *

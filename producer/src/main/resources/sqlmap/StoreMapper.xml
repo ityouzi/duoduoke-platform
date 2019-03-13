@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fulihui.redisdubbo.demo.producer.dal.dao.StoreMapper">
+  <resultMap id="BaseResultMap" type="com.fulihui.redisdubbo.demo.producer.dal.dataobj.Store">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="store_name" jdbcType="VARCHAR" property="storeName" />
+    <result column="store_url" jdbcType="VARCHAR" property="storeUrl" />
+    <result column="recommendation" jdbcType="VARCHAR" property="recommendation" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="presentation" jdbcType="VARCHAR" property="presentation" />
+    <result column="is_preference" jdbcType="VARCHAR" property="isPreference" />
+    <result column="preference_number" jdbcType="INTEGER" property="preferenceNumber" />
+    <result column="preference_url" jdbcType="VARCHAR" property="preferenceUrl" />
+    <result column="pid" jdbcType="VARCHAR" property="pid" />
+    <result column="share_titile" jdbcType="VARCHAR" property="shareTitile" />
+    <result column="share_url" jdbcType="VARCHAR" property="shareUrl" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, store_name, store_url, recommendation, start_time, end_time, status, presentation, 
+    is_preference, preference_number, preference_url, pid, share_titile, share_url, gmt_create, 
+    gmt_modified
+  </sql>
+  <select id="selectByExample" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.StoreExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from store
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from store
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from store
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.StoreExample">
+    delete from store
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.Store" useGeneratedKeys="true">
+    insert into store (store_name, store_url, recommendation, 
+      start_time, end_time, status, 
+      presentation, is_preference, preference_number, 
+      preference_url, pid, share_titile, 
+      share_url, gmt_create, gmt_modified
+      )
+    values (#{storeName,jdbcType=VARCHAR}, #{storeUrl,jdbcType=VARCHAR}, #{recommendation,jdbcType=VARCHAR}, 
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, 
+      #{presentation,jdbcType=VARCHAR}, #{isPreference,jdbcType=VARCHAR}, #{preferenceNumber,jdbcType=INTEGER}, 
+      #{preferenceUrl,jdbcType=VARCHAR}, #{pid,jdbcType=VARCHAR}, #{shareTitile,jdbcType=VARCHAR}, 
+      #{shareUrl,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.Store" useGeneratedKeys="true">
+    insert into store
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="storeName != null">
+        store_name,
+      </if>
+      <if test="storeUrl != null">
+        store_url,
+      </if>
+      <if test="recommendation != null">
+        recommendation,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="presentation != null">
+        presentation,
+      </if>
+      <if test="isPreference != null">
+        is_preference,
+      </if>
+      <if test="preferenceNumber != null">
+        preference_number,
+      </if>
+      <if test="preferenceUrl != null">
+        preference_url,
+      </if>
+      <if test="pid != null">
+        pid,
+      </if>
+      <if test="shareTitile != null">
+        share_titile,
+      </if>
+      <if test="shareUrl != null">
+        share_url,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="storeName != null">
+        #{storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="storeUrl != null">
+        #{storeUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="recommendation != null">
+        #{recommendation,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="presentation != null">
+        #{presentation,jdbcType=VARCHAR},
+      </if>
+      <if test="isPreference != null">
+        #{isPreference,jdbcType=VARCHAR},
+      </if>
+      <if test="preferenceNumber != null">
+        #{preferenceNumber,jdbcType=INTEGER},
+      </if>
+      <if test="preferenceUrl != null">
+        #{preferenceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null">
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="shareTitile != null">
+        #{shareTitile,jdbcType=VARCHAR},
+      </if>
+      <if test="shareUrl != null">
+        #{shareUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.StoreExample" resultType="java.lang.Long">
+    select count(*) from store
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update store
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.storeName != null">
+        store_name = #{record.storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storeUrl != null">
+        store_url = #{record.storeUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recommendation != null">
+        recommendation = #{record.recommendation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.startTime != null">
+        start_time = #{record.startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endTime != null">
+        end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.presentation != null">
+        presentation = #{record.presentation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isPreference != null">
+        is_preference = #{record.isPreference,jdbcType=VARCHAR},
+      </if>
+      <if test="record.preferenceNumber != null">
+        preference_number = #{record.preferenceNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.preferenceUrl != null">
+        preference_url = #{record.preferenceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pid != null">
+        pid = #{record.pid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shareTitile != null">
+        share_titile = #{record.shareTitile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shareUrl != null">
+        share_url = #{record.shareUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreate != null">
+        gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null">
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update store
+    set id = #{record.id,jdbcType=BIGINT},
+      store_name = #{record.storeName,jdbcType=VARCHAR},
+      store_url = #{record.storeUrl,jdbcType=VARCHAR},
+      recommendation = #{record.recommendation,jdbcType=VARCHAR},
+      start_time = #{record.startTime,jdbcType=TIMESTAMP},
+      end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=VARCHAR},
+      presentation = #{record.presentation,jdbcType=VARCHAR},
+      is_preference = #{record.isPreference,jdbcType=VARCHAR},
+      preference_number = #{record.preferenceNumber,jdbcType=INTEGER},
+      preference_url = #{record.preferenceUrl,jdbcType=VARCHAR},
+      pid = #{record.pid,jdbcType=VARCHAR},
+      share_titile = #{record.shareTitile,jdbcType=VARCHAR},
+      share_url = #{record.shareUrl,jdbcType=VARCHAR},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.Store">
+    update store
+    <set>
+      <if test="storeName != null">
+        store_name = #{storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="storeUrl != null">
+        store_url = #{storeUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="recommendation != null">
+        recommendation = #{recommendation,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="presentation != null">
+        presentation = #{presentation,jdbcType=VARCHAR},
+      </if>
+      <if test="isPreference != null">
+        is_preference = #{isPreference,jdbcType=VARCHAR},
+      </if>
+      <if test="preferenceNumber != null">
+        preference_number = #{preferenceNumber,jdbcType=INTEGER},
+      </if>
+      <if test="preferenceUrl != null">
+        preference_url = #{preferenceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null">
+        pid = #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="shareTitile != null">
+        share_titile = #{shareTitile,jdbcType=VARCHAR},
+      </if>
+      <if test="shareUrl != null">
+        share_url = #{shareUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.Store">
+    update store
+    set store_name = #{storeName,jdbcType=VARCHAR},
+      store_url = #{storeUrl,jdbcType=VARCHAR},
+      recommendation = #{recommendation,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=VARCHAR},
+      presentation = #{presentation,jdbcType=VARCHAR},
+      is_preference = #{isPreference,jdbcType=VARCHAR},
+      preference_number = #{preferenceNumber,jdbcType=INTEGER},
+      preference_url = #{preferenceUrl,jdbcType=VARCHAR},
+      pid = #{pid,jdbcType=VARCHAR},
+      share_titile = #{shareTitile,jdbcType=VARCHAR},
+      share_url = #{shareUrl,jdbcType=VARCHAR},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

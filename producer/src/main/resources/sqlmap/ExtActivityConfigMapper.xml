@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fulihui.redisdubbo.demo.producer.dal.dao.ExtActivityConfigMapper">
+  <resultMap id="BaseResultMap" type="com.fulihui.redisdubbo.demo.producer.dal.dataobj.ExtActivityConfig">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <collection property="activityPrize" select="queryActivityPrize" ofType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.ActivitySignPrize" column="activityId={id}" />
+  </resultMap>
+
+  <resultMap id="PrizeResultMap" type="com.fulihui.redisdubbo.demo.producer.dal.dataobj.ActivitySignPrize">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="activity_id" jdbcType="INTEGER" property="activityId" />
+    <result column="sign_count" jdbcType="INTEGER" property="signCount" />
+    <result column="prize_type" jdbcType="INTEGER" property="prizeType" />
+    <result column="prize_percent" jdbcType="INTEGER" property="prizePercent" />
+    <result column="prize_money" jdbcType="INTEGER" property="prizeMoney" />
+    <result column="over_order_money" jdbcType="INTEGER" property="overOrderMoney" />
+    <result column="useful_day" jdbcType="INTEGER" property="usefulDay" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+
+  <select id="queryConflict" resultType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.ActivityConfig">
+    select id,title,start_time as startTime,end_time as endTime from activity_config WHERE
+    `type` = #{type} AND `state` = 1 AND (
+    <![CDATA[ (start_time >= #{startTime} AND start_time <= #{endTime}) ]]> OR
+    <![CDATA[ (end_time >= #{startTime} AND end_time <= #{endTime}) ]]> OR
+    <![CDATA[ (start_time <= #{startTime} AND end_time >=  #{startTime}) ]]> OR
+    <![CDATA[ (start_time >= #{startTime} AND end_time <= #{endTime}) ]]>
+    )
+  </select>
+
+  <select id="queryUsingActivity" resultMap="BaseResultMap">
+    SELECT * FROM activity_config WHERE `type` = #{type} AND `state` = 1 AND  <![CDATA[ (start_time < NOW() AND end_time > NOW()) ]]>
+  </select>
+
+  <select id="queryActivityPrize" resultMap="PrizeResultMap">
+    SELECT * FROM activity_sign_prize WHERE activity_id=#{activityId}
+  </select>
+
+</mapper>

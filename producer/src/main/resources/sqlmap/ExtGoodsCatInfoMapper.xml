@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fulihui.redisdubbo.demo.producer.dal.dao.ExtGoodsCatInfoMapper">
+    <resultMap id="BaseResultMap" type="com.fulihui.redisdubbo.demo.producer.dal.dataobj.GoodsCatInfo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="level" jdbcType="VARCHAR" property="level"/>
+        <result column="cat_id" jdbcType="INTEGER" property="catId"/>
+        <result column="parent_cat_id" jdbcType="INTEGER" property="parentCatId"/>
+        <result column="cat_name" jdbcType="VARCHAR" property="catName"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+        <result column="img" jdbcType="VARCHAR" property="img"/>
+        <result column="icon" jdbcType="VARCHAR" property="icon"/>
+        <result column="sort_index" jdbcType="INTEGER" property="sortIndex"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+    </resultMap>
+
+    <resultMap id="IdNameResultMap" type="com.fulihui.redisdubbo.demo.producer.dal.dataobj.GoodsCatInfo">
+        <result column="cat_id" jdbcType="INTEGER" property="catId"/>
+        <result column="cat_name" jdbcType="VARCHAR" property="catName"/>
+    </resultMap>
+
+
+    <select id="tree" resultMap="BaseResultMap">
+        select id,cat_id , level,parent_cat_id, cat_name ,gmt_create,gmt_modified,img,icon,sort_index,`status`,
+        from goods_cat_info
+        where 1=1
+        <if test="parentCatId != null ">
+            and parent_cat_id = #{parentCatId}
+        </if>
+        <if test="status != null ">
+            and status = #{status}
+        </if>
+
+
+        <if test="levelList != null ">
+            and level in
+            <foreach collection="levelList" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+
+        <if test="limit != null">
+            <if test="offset != null">
+                limit ${offset}, ${limit}
+            </if>
+            <if test="offset == null">
+                limit ${limit}
+            </if>
+        </if>
+    </select>
+
+
+    <select id="count" resultType="com.fulihui.redisdubbo.demo.producer.biz.model.GoodsCatInfoPageCount">
+        select count(1) as count,
+        (
+        CASE
+        WHEN (parent_cat_id = 0 OR parent_cat_id IS NULL) THEN
+        'true'
+        ELSE
+        'false'
+        END
+        ) as isOpen from goods_cat_info
+        where 1=1
+        <if test="parentCatId != null and parentCatId!='' ">
+            and parent_cat_id = #{parentCatId}
+        </if>
+
+        <if test="levelList != null ">
+            and level in
+            <foreach collection="levelList" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+
+    </select>
+
+    <select id="queryByIDArray" resultMap="IdNameResultMap">
+        SELECT cat_id,cat_name FROM goods_cat_info
+        <where>
+            cat_id IN
+            <foreach collection="catIds" open="(" item="catId" close=")" separator=",">
+                #{catId}
+            </foreach>
+        </where>
+        GROUP by cat_id,cat_name
+    </select>
+
+</mapper>

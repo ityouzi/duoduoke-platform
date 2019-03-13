@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Component
 @Setter
 @Getter
-@ConfigurationProperties(prefix = "duoduoke")
+@ConfigurationProperties(prefix = "redisdubbo.demo.producer")
 public class DuoDuoKeConfig implements Serializable {
 
     private static final long serialVersionUID = 3180772229513818514L;

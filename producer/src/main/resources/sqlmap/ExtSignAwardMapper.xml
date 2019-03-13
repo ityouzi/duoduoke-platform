@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fulihui.redisdubbo.demo.producer.dal.dao.ExtSignAwardMapper">
+    <resultMap id="BaseResultMap" type="com.fulihui.redisdubbo.demo.producer.dal.dataobj.SignAward">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="activity_type" jdbcType="VARCHAR" property="activityType"/>
+        <result column="sign_count" jdbcType="INTEGER" property="signCount"/>
+        <result column="prize_status" jdbcType="VARCHAR" property="prizeStatus"/>
+        <result column="prize_type" jdbcType="VARCHAR" property="prizeType"/>
+        <result column="prize_percent" jdbcType="INTEGER" property="prizePercent"/>
+        <result column="prize_money" jdbcType="INTEGER" property="prizeMoney"/>
+        <result column="over_order_money" jdbcType="INTEGER" property="overOrderMoney"/>
+        <result column="useful_day" jdbcType="INTEGER" property="usefulDay"/>
+        <result column="order_sn" jdbcType="VARCHAR" property="orderSn"/>
+        <result column="cycle_time" jdbcType="DATE" property="cycleTime"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+        <result column="bind_order_status" jdbcType="VARCHAR" property="bindOrderStatus"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, user_id, activity_type, sign_count, prize_status, prize_type, prize_percent,
+        prize_money, over_order_money, useful_day, order_sn, cycle_time, gmt_create, gmt_modified ,
+        bind_order_status
+    </sql>
+
+
+    <select id="queryExceedDay"  resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        sign_award
+        WHERE
+        `order_sn` IS NOT NULL
+        AND `prize_status` =#{prizeStatus}
+        AND `bind_order_status` =#{bindOrderStatus}
+        AND TO_DAYS(NOW()) - TO_DAYS(gmt_modified) > 7
+        limit ${offset}, ${limit}
+
+    </select>
+    <select id="queryExceedDayCount" resultType="java.lang.Long">
+        SELECT
+        count(0)
+        FROM
+        sign_award
+        WHERE
+        `order_sn` IS NOT NULL
+        AND `prize_status` =#{prizeStatus}
+        AND `bind_order_status` =#{bindOrderStatus}
+        AND TO_DAYS(NOW()) - TO_DAYS(gmt_modified) > 7
+    </select>
+
+
+    <select id="querySumPrizeMoney" resultType="java.lang.Long">
+        SELECT
+        COALESCE(SUM(prize_money),0)
+        FROM `sign_award`
+        where 1=1
+        AND
+        user_id=#{userId}
+
+        <if test="prizeType != null and prizeType.size() >0 ">
+            AND prize_type in
+            <foreach item="pt" collection="prizeType" separator="," open="(" close=")" index="">
+                #{pt}
+            </foreach>
+        </if>
+
+        <if test="prizeStatus != null and prizeStatus.size() >0 ">
+            AND prize_status in
+            <foreach item="ps" collection="prizeStatus" separator="," open="(" close=")" index="">
+                #{ps}
+            </foreach>
+        </if>
+
+        <if test="activityType != null and activityType.size() >0 ">
+            AND activity_type in
+            <foreach item="at" collection="activityType" separator="," open="(" close=")" index="">
+                #{at}
+            </foreach>
+        </if>
+
+    </select>
+
+
+    <select id="queryLastValidity" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM `sign_award` where 1=1 AND
+        prize_type=#{prizeType} AND
+        prize_status= #{prizeStatus}
+        <if test="activityType != null ">
+            AND activity_type= #{activityType}
+        </if>
+        <![CDATA[ and now() < date_add(gmt_create, interval useful_day day)]]>
+    </select>
+</mapper>

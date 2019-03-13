@@ -12,7 +12,7 @@ import org.near.servicesupport.request.AbstractServiceRequest;
 public class UserFormInvalidRequest extends AbstractServiceRequest {
     private static final long serialVersionUID = -6703049786381802947L;
     /**
-     * @see com.fulihui.duoduoke.facade.enums.SwitchEnum
+     * @see com.fulihui.redisdubbo.demo.producer.facade.enums.SwitchEnum
      */
     private String formStatus;
 

@@ -68,7 +68,7 @@ public class UserWechatLoginRequest extends ToString {
     private String            regUrl;
     /**
      * 用户注册类型
-     * @see com.fulihui.duoduoke.facade.enums.UserTypeEnum
+     * @see com.fulihui.redisdubbo.demo.producer.facade.enums.UserTypeEnum
      */
     private String            userType;
 }

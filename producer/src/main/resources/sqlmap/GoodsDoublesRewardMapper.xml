@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fulihui.redisdubbo.demo.producer.dal.dao.GoodsDoublesRewardMapper">
+  <resultMap id="BaseResultMap" type="com.fulihui.redisdubbo.demo.producer.dal.dataobj.GoodsDoublesReward">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="goods_id" jdbcType="BIGINT" property="goodsId" />
+    <result column="reward_percent" jdbcType="REAL" property="rewardPercent" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="stop_time" jdbcType="TIMESTAMP" property="stopTime" />
+    <result column="activity_stop_time" jdbcType="TIMESTAMP" property="activityStopTime" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="min_normal_price" jdbcType="DECIMAL" property="minNormalPrice" />
+    <result column="min_group_price" jdbcType="DECIMAL" property="minGroupPrice" />
+    <result column="promotion_rate" jdbcType="VARCHAR" property="promotionRate" />
+    <result column="self_promotion" jdbcType="VARCHAR" property="selfPromotion" />
+    <result column="sum_promotion" jdbcType="VARCHAR" property="sumPromotion" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, goods_id, reward_percent, state, start_time, stop_time, activity_stop_time, gmt_create, 
+    gmt_modified, goods_name, min_normal_price, min_group_price, promotion_rate, self_promotion, 
+    sum_promotion
+  </sql>
+  <select id="selectByExample" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.GoodsDoublesRewardExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from goods_doubles_reward
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from goods_doubles_reward
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from goods_doubles_reward
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.GoodsDoublesRewardExample">
+    delete from goods_doubles_reward
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.GoodsDoublesReward" useGeneratedKeys="true">
+    insert into goods_doubles_reward (goods_id, reward_percent, state, 
+      start_time, stop_time, activity_stop_time, 
+      gmt_create, gmt_modified, goods_name, 
+      min_normal_price, min_group_price, promotion_rate, 
+      self_promotion, sum_promotion)
+    values (#{goodsId,jdbcType=BIGINT}, #{rewardPercent,jdbcType=REAL}, #{state,jdbcType=VARCHAR}, 
+      #{startTime,jdbcType=TIMESTAMP}, #{stopTime,jdbcType=TIMESTAMP}, #{activityStopTime,jdbcType=TIMESTAMP}, 
+      #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{goodsName,jdbcType=VARCHAR}, 
+      #{minNormalPrice,jdbcType=DECIMAL}, #{minGroupPrice,jdbcType=DECIMAL}, #{promotionRate,jdbcType=VARCHAR}, 
+      #{selfPromotion,jdbcType=VARCHAR}, #{sumPromotion,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.GoodsDoublesReward" useGeneratedKeys="true">
+    insert into goods_doubles_reward
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+      <if test="rewardPercent != null">
+        reward_percent,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="stopTime != null">
+        stop_time,
+      </if>
+      <if test="activityStopTime != null">
+        activity_stop_time,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+      <if test="goodsName != null">
+        goods_name,
+      </if>
+      <if test="minNormalPrice != null">
+        min_normal_price,
+      </if>
+      <if test="minGroupPrice != null">
+        min_group_price,
+      </if>
+      <if test="promotionRate != null">
+        promotion_rate,
+      </if>
+      <if test="selfPromotion != null">
+        self_promotion,
+      </if>
+      <if test="sumPromotion != null">
+        sum_promotion,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="rewardPercent != null">
+        #{rewardPercent,jdbcType=REAL},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stopTime != null">
+        #{stopTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityStopTime != null">
+        #{activityStopTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsName != null">
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="minNormalPrice != null">
+        #{minNormalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="minGroupPrice != null">
+        #{minGroupPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="promotionRate != null">
+        #{promotionRate,jdbcType=VARCHAR},
+      </if>
+      <if test="selfPromotion != null">
+        #{selfPromotion,jdbcType=VARCHAR},
+      </if>
+      <if test="sumPromotion != null">
+        #{sumPromotion,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.GoodsDoublesRewardExample" resultType="java.lang.Long">
+    select count(*) from goods_doubles_reward
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update goods_doubles_reward
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.goodsId != null">
+        goods_id = #{record.goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="record.rewardPercent != null">
+        reward_percent = #{record.rewardPercent,jdbcType=REAL},
+      </if>
+      <if test="record.state != null">
+        state = #{record.state,jdbcType=VARCHAR},
+      </if>
+      <if test="record.startTime != null">
+        start_time = #{record.startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.stopTime != null">
+        stop_time = #{record.stopTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.activityStopTime != null">
+        activity_stop_time = #{record.activityStopTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtCreate != null">
+        gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null">
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.goodsName != null">
+        goods_name = #{record.goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.minNormalPrice != null">
+        min_normal_price = #{record.minNormalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.minGroupPrice != null">
+        min_group_price = #{record.minGroupPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.promotionRate != null">
+        promotion_rate = #{record.promotionRate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.selfPromotion != null">
+        self_promotion = #{record.selfPromotion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sumPromotion != null">
+        sum_promotion = #{record.sumPromotion,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update goods_doubles_reward
+    set id = #{record.id,jdbcType=INTEGER},
+      goods_id = #{record.goodsId,jdbcType=BIGINT},
+      reward_percent = #{record.rewardPercent,jdbcType=REAL},
+      state = #{record.state,jdbcType=VARCHAR},
+      start_time = #{record.startTime,jdbcType=TIMESTAMP},
+      stop_time = #{record.stopTime,jdbcType=TIMESTAMP},
+      activity_stop_time = #{record.activityStopTime,jdbcType=TIMESTAMP},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      goods_name = #{record.goodsName,jdbcType=VARCHAR},
+      min_normal_price = #{record.minNormalPrice,jdbcType=DECIMAL},
+      min_group_price = #{record.minGroupPrice,jdbcType=DECIMAL},
+      promotion_rate = #{record.promotionRate,jdbcType=VARCHAR},
+      self_promotion = #{record.selfPromotion,jdbcType=VARCHAR},
+      sum_promotion = #{record.sumPromotion,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.GoodsDoublesReward">
+    update goods_doubles_reward
+    <set>
+      <if test="goodsId != null">
+        goods_id = #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="rewardPercent != null">
+        reward_percent = #{rewardPercent,jdbcType=REAL},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stopTime != null">
+        stop_time = #{stopTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityStopTime != null">
+        activity_stop_time = #{activityStopTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsName != null">
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="minNormalPrice != null">
+        min_normal_price = #{minNormalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="minGroupPrice != null">
+        min_group_price = #{minGroupPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="promotionRate != null">
+        promotion_rate = #{promotionRate,jdbcType=VARCHAR},
+      </if>
+      <if test="selfPromotion != null">
+        self_promotion = #{selfPromotion,jdbcType=VARCHAR},
+      </if>
+      <if test="sumPromotion != null">
+        sum_promotion = #{sumPromotion,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.GoodsDoublesReward">
+    update goods_doubles_reward
+    set goods_id = #{goodsId,jdbcType=BIGINT},
+      reward_percent = #{rewardPercent,jdbcType=REAL},
+      state = #{state,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      stop_time = #{stopTime,jdbcType=TIMESTAMP},
+      activity_stop_time = #{activityStopTime,jdbcType=TIMESTAMP},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      goods_name = #{goodsName,jdbcType=VARCHAR},
+      min_normal_price = #{minNormalPrice,jdbcType=DECIMAL},
+      min_group_price = #{minGroupPrice,jdbcType=DECIMAL},
+      promotion_rate = #{promotionRate,jdbcType=VARCHAR},
+      self_promotion = #{selfPromotion,jdbcType=VARCHAR},
+      sum_promotion = #{sumPromotion,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -24,7 +24,7 @@ public interface SignUserConfigServiceClient {
      *
      * @param userId the user id
      * @param state  the state
-     * @see com.fulihui.duoduoke.facade.enums.SwitchEnum
+     * @see com.fulihui.redisdubbo.demo.producer.facade.enums.SwitchEnum
      * @return the t single result
      */
     TSingleResult<SignUserConfigDTO> updateUserConfig(String userId, String state);

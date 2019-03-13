@@ -1,0 +1,753 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fulihui.redisdubbo.demo.producer.dal.dao.DuoduoGoodsInfoZEROMapper">
+  <resultMap id="BaseResultMap" type="com.fulihui.redisdubbo.demo.producer.dal.dataobj.DuoduoGoodsInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="goods_id" property="goodsId" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_desc" jdbcType="VARCHAR" property="goodsDesc" />
+    <result column="goods_thumbnail_url" jdbcType="VARCHAR" property="goodsThumbnailUrl" />
+    <result column="goods_image_url" jdbcType="VARCHAR" property="goodsImageUrl" />
+    <result column="sold_quantity" jdbcType="INTEGER" property="soldQuantity" />
+    <result column="mall_name" jdbcType="VARCHAR" property="mallName" />
+    <result column="min_normal_price" jdbcType="INTEGER" property="minNormalPrice" />
+    <result column="min_group_price" jdbcType="INTEGER" property="minGroupPrice" />
+    <result column="opt_name" jdbcType="VARCHAR" property="optName" />
+    <result column="opt_id" jdbcType="INTEGER" property="optId" />
+    <result column="cat_ids" jdbcType="VARCHAR" property="catIds" />
+    <result column="level_one" jdbcType="INTEGER" property="levelOne" />
+    <result column="level_two" jdbcType="INTEGER" property="levelTwo" />
+    <result column="level_three" jdbcType="INTEGER" property="levelThree" />
+    <result column="has_coupon" jdbcType="VARCHAR" property="hasCoupon" />
+    <result column="avg_serv" jdbcType="INTEGER" property="avgServ" />
+    <result column="avg_lgst" jdbcType="INTEGER" property="avgLgst" />
+    <result column="avg_desc" jdbcType="INTEGER" property="avgDesc" />
+    <result column="goods_gallery_urls" jdbcType="VARCHAR" property="goodsGalleryUrls" />
+    <result column="goods_eval_count" jdbcType="INTEGER" property="goodsEvalCount" />
+    <result column="goods_eval_score" jdbcType="VARCHAR" property="goodsEvalScore" />
+    <result column="promotion_rate" jdbcType="INTEGER" property="promotionRate" />
+    <result column="coupon_end_time" jdbcType="TIMESTAMP" property="couponEndTime" />
+    <result column="coupon_start_time" jdbcType="TIMESTAMP" property="couponStartTime" />
+    <result column="coupon_remain_quantity" jdbcType="INTEGER" property="couponRemainQuantity" />
+    <result column="coupon_total_quantity" jdbcType="INTEGER" property="couponTotalQuantity" />
+    <result column="coupon_discount" jdbcType="INTEGER" property="couponDiscount" />
+    <result column="coupon_min_order_amount" jdbcType="INTEGER" property="couponMinOrderAmount" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="goods_sn" jdbcType="VARCHAR" property="goodsSn" />
+    <result column="goods_type" jdbcType="VARCHAR" property="goodsType" />
+    <result column="detail_update" jdbcType="TIMESTAMP" property="detailUpdate" />
+    <result column="is_choose" jdbcType="VARCHAR" property="isChoose" />
+    <result column="choose_sort" jdbcType="INTEGER" property="chooseSort" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, goods_id, goods_name, goods_desc, goods_thumbnail_url, goods_image_url, sold_quantity,
+    mall_name, min_normal_price, min_group_price, opt_name, opt_id, cat_ids, level_one,
+    level_two, level_three, has_coupon, avg_serv, avg_lgst, avg_desc, goods_gallery_urls,
+    goods_eval_count, goods_eval_score, promotion_rate, coupon_end_time, coupon_start_time,
+    coupon_remain_quantity, coupon_total_quantity, coupon_discount, coupon_min_order_amount,
+    gmt_create, gmt_modified, goods_sn, goods_type, detail_update, is_choose, choose_sort,
+    sort, state
+  </sql>
+  <select id="selectByExample" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.DuoduoGoodsInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from duoduo_goods_info_0
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from duoduo_goods_info_0
+    where id = #{id}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from duoduo_goods_info_0
+    where id = #{id}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.DuoduoGoodsInfoExample">
+    delete from duoduo_goods_info_0
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.DuoduoGoodsInfo" useGeneratedKeys="true">
+    insert into duoduo_goods_info_0 (goods_id, goods_name, goods_desc,
+      goods_thumbnail_url, goods_image_url, sold_quantity,
+      mall_name, min_normal_price, min_group_price,
+      opt_name, opt_id, cat_ids,
+      level_one, level_two, level_three,
+      has_coupon, avg_serv, avg_lgst,
+      avg_desc, goods_gallery_urls, goods_eval_count,
+      goods_eval_score, promotion_rate, coupon_end_time,
+      coupon_start_time, coupon_remain_quantity,
+      coupon_total_quantity, coupon_discount, coupon_min_order_amount,
+      gmt_create, gmt_modified, goods_sn,
+      goods_type, detail_update, is_choose,
+      choose_sort, sort, state
+      )
+    values (#{goodsId}, #{goodsName,jdbcType=VARCHAR}, #{goodsDesc,jdbcType=VARCHAR},
+      #{goodsThumbnailUrl,jdbcType=VARCHAR}, #{goodsImageUrl,jdbcType=VARCHAR}, #{soldQuantity},
+      #{mallName,jdbcType=VARCHAR}, #{minNormalPrice}, #{minGroupPrice},
+      #{optName,jdbcType=VARCHAR}, #{optId}, #{catIds,jdbcType=VARCHAR},
+      #{levelOne}, #{levelTwo}, #{levelThree},
+      #{hasCoupon,jdbcType=VARCHAR}, #{avgServ}, #{avgLgst},
+      #{avgDesc}, #{goodsGalleryUrls,jdbcType=VARCHAR}, #{goodsEvalCount},
+      #{goodsEvalScore,jdbcType=VARCHAR}, #{promotionRate}, #{couponEndTime,jdbcType=TIMESTAMP},
+      #{couponStartTime,jdbcType=TIMESTAMP}, #{couponRemainQuantity},
+      #{couponTotalQuantity}, #{couponDiscount}, #{couponMinOrderAmount},
+      #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{goodsSn,jdbcType=VARCHAR},
+      #{goodsType,jdbcType=VARCHAR}, #{detailUpdate,jdbcType=TIMESTAMP}, #{isChoose,jdbcType=VARCHAR},
+      #{chooseSort}, #{sort}, #{state,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.DuoduoGoodsInfo" useGeneratedKeys="true">
+    insert into duoduo_goods_info_0
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+      <if test="goodsName != null">
+        goods_name,
+      </if>
+      <if test="goodsDesc != null">
+        goods_desc,
+      </if>
+      <if test="goodsThumbnailUrl != null">
+        goods_thumbnail_url,
+      </if>
+      <if test="goodsImageUrl != null">
+        goods_image_url,
+      </if>
+      <if test="soldQuantity != null">
+        sold_quantity,
+      </if>
+      <if test="mallName != null">
+        mall_name,
+      </if>
+      <if test="minNormalPrice != null">
+        min_normal_price,
+      </if>
+      <if test="minGroupPrice != null">
+        min_group_price,
+      </if>
+      <if test="optName != null">
+        opt_name,
+      </if>
+      <if test="optId != null">
+        opt_id,
+      </if>
+      <if test="catIds != null">
+        cat_ids,
+      </if>
+      <if test="levelOne != null">
+        level_one,
+      </if>
+      <if test="levelTwo != null">
+        level_two,
+      </if>
+      <if test="levelThree != null">
+        level_three,
+      </if>
+      <if test="hasCoupon != null">
+        has_coupon,
+      </if>
+      <if test="avgServ != null">
+        avg_serv,
+      </if>
+      <if test="avgLgst != null">
+        avg_lgst,
+      </if>
+      <if test="avgDesc != null">
+        avg_desc,
+      </if>
+      <if test="goodsGalleryUrls != null">
+        goods_gallery_urls,
+      </if>
+      <if test="goodsEvalCount != null">
+        goods_eval_count,
+      </if>
+      <if test="goodsEvalScore != null">
+        goods_eval_score,
+      </if>
+      <if test="promotionRate != null">
+        promotion_rate,
+      </if>
+      <if test="couponEndTime != null">
+        coupon_end_time,
+      </if>
+      <if test="couponStartTime != null">
+        coupon_start_time,
+      </if>
+      <if test="couponRemainQuantity != null">
+        coupon_remain_quantity,
+      </if>
+      <if test="couponTotalQuantity != null">
+        coupon_total_quantity,
+      </if>
+      <if test="couponDiscount != null">
+        coupon_discount,
+      </if>
+      <if test="couponMinOrderAmount != null">
+        coupon_min_order_amount,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+      <if test="goodsSn != null">
+        goods_sn,
+      </if>
+      <if test="goodsType != null">
+        goods_type,
+      </if>
+      <if test="detailUpdate != null">
+        detail_update,
+      </if>
+      <if test="isChoose != null">
+        is_choose,
+      </if>
+      <if test="chooseSort != null">
+        choose_sort,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="goodsId != null">
+        #{goodsId},
+      </if>
+      <if test="goodsName != null">
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsDesc != null">
+        #{goodsDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsThumbnailUrl != null">
+        #{goodsThumbnailUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImageUrl != null">
+        #{goodsImageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="soldQuantity != null">
+        #{soldQuantity},
+      </if>
+      <if test="mallName != null">
+        #{mallName,jdbcType=VARCHAR},
+      </if>
+      <if test="minNormalPrice != null">
+        #{minNormalPrice},
+      </if>
+      <if test="minGroupPrice != null">
+        #{minGroupPrice},
+      </if>
+      <if test="optName != null">
+        #{optName,jdbcType=VARCHAR},
+      </if>
+      <if test="optId != null">
+        #{optId},
+      </if>
+      <if test="catIds != null">
+        #{catIds,jdbcType=VARCHAR},
+      </if>
+      <if test="levelOne != null">
+        #{levelOne},
+      </if>
+      <if test="levelTwo != null">
+        #{levelTwo},
+      </if>
+      <if test="levelThree != null">
+        #{levelThree},
+      </if>
+      <if test="hasCoupon != null">
+        #{hasCoupon,jdbcType=VARCHAR},
+      </if>
+      <if test="avgServ != null">
+        #{avgServ},
+      </if>
+      <if test="avgLgst != null">
+        #{avgLgst},
+      </if>
+      <if test="avgDesc != null">
+        #{avgDesc},
+      </if>
+      <if test="goodsGalleryUrls != null">
+        #{goodsGalleryUrls,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsEvalCount != null">
+        #{goodsEvalCount},
+      </if>
+      <if test="goodsEvalScore != null">
+        #{goodsEvalScore,jdbcType=VARCHAR},
+      </if>
+      <if test="promotionRate != null">
+        #{promotionRate},
+      </if>
+      <if test="couponEndTime != null">
+        #{couponEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="couponStartTime != null">
+        #{couponStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="couponRemainQuantity != null">
+        #{couponRemainQuantity},
+      </if>
+      <if test="couponTotalQuantity != null">
+        #{couponTotalQuantity},
+      </if>
+      <if test="couponDiscount != null">
+        #{couponDiscount},
+      </if>
+      <if test="couponMinOrderAmount != null">
+        #{couponMinOrderAmount},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsSn != null">
+        #{goodsSn,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsType != null">
+        #{goodsType,jdbcType=VARCHAR},
+      </if>
+      <if test="detailUpdate != null">
+        #{detailUpdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isChoose != null">
+        #{isChoose,jdbcType=VARCHAR},
+      </if>
+      <if test="chooseSort != null">
+        #{chooseSort},
+      </if>
+      <if test="sort != null">
+        #{sort},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.DuoduoGoodsInfoExample" resultType="java.lang.Long">
+    select count(*) from duoduo_goods_info_0
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update duoduo_goods_info_0
+    <set>
+      <if test="record.id != null">
+        id = #{record.id},
+      </if>
+      <if test="record.goodsId != null">
+        goods_id = #{record.goodsId},
+      </if>
+      <if test="record.goodsName != null">
+        goods_name = #{record.goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsDesc != null">
+        goods_desc = #{record.goodsDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsThumbnailUrl != null">
+        goods_thumbnail_url = #{record.goodsThumbnailUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsImageUrl != null">
+        goods_image_url = #{record.goodsImageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.soldQuantity != null">
+        sold_quantity = #{record.soldQuantity},
+      </if>
+      <if test="record.mallName != null">
+        mall_name = #{record.mallName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.minNormalPrice != null">
+        min_normal_price = #{record.minNormalPrice},
+      </if>
+      <if test="record.minGroupPrice != null">
+        min_group_price = #{record.minGroupPrice},
+      </if>
+      <if test="record.optName != null">
+        opt_name = #{record.optName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.optId != null">
+        opt_id = #{record.optId},
+      </if>
+      <if test="record.catIds != null">
+        cat_ids = #{record.catIds,jdbcType=VARCHAR},
+      </if>
+      <if test="record.levelOne != null">
+        level_one = #{record.levelOne},
+      </if>
+      <if test="record.levelTwo != null">
+        level_two = #{record.levelTwo},
+      </if>
+      <if test="record.levelThree != null">
+        level_three = #{record.levelThree},
+      </if>
+      <if test="record.hasCoupon != null">
+        has_coupon = #{record.hasCoupon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.avgServ != null">
+        avg_serv = #{record.avgServ},
+      </if>
+      <if test="record.avgLgst != null">
+        avg_lgst = #{record.avgLgst},
+      </if>
+      <if test="record.avgDesc != null">
+        avg_desc = #{record.avgDesc},
+      </if>
+      <if test="record.goodsGalleryUrls != null">
+        goods_gallery_urls = #{record.goodsGalleryUrls,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsEvalCount != null">
+        goods_eval_count = #{record.goodsEvalCount},
+      </if>
+      <if test="record.goodsEvalScore != null">
+        goods_eval_score = #{record.goodsEvalScore,jdbcType=VARCHAR},
+      </if>
+      <if test="record.promotionRate != null">
+        promotion_rate = #{record.promotionRate},
+      </if>
+      <if test="record.couponEndTime != null">
+        coupon_end_time = #{record.couponEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.couponStartTime != null">
+        coupon_start_time = #{record.couponStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.couponRemainQuantity != null">
+        coupon_remain_quantity = #{record.couponRemainQuantity},
+      </if>
+      <if test="record.couponTotalQuantity != null">
+        coupon_total_quantity = #{record.couponTotalQuantity},
+      </if>
+      <if test="record.couponDiscount != null">
+        coupon_discount = #{record.couponDiscount},
+      </if>
+      <if test="record.couponMinOrderAmount != null">
+        coupon_min_order_amount = #{record.couponMinOrderAmount},
+      </if>
+      <if test="record.gmtCreate != null">
+        gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null">
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.goodsSn != null">
+        goods_sn = #{record.goodsSn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsType != null">
+        goods_type = #{record.goodsType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.detailUpdate != null">
+        detail_update = #{record.detailUpdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isChoose != null">
+        is_choose = #{record.isChoose,jdbcType=VARCHAR},
+      </if>
+      <if test="record.chooseSort != null">
+        choose_sort = #{record.chooseSort},
+      </if>
+      <if test="record.sort != null">
+        sort = #{record.sort},
+      </if>
+      <if test="record.state != null">
+        state = #{record.state,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update duoduo_goods_info_0
+    set id = #{record.id},
+    goods_id = #{record.goodsId},
+    goods_name = #{record.goodsName,jdbcType=VARCHAR},
+    goods_desc = #{record.goodsDesc,jdbcType=VARCHAR},
+    goods_thumbnail_url = #{record.goodsThumbnailUrl,jdbcType=VARCHAR},
+    goods_image_url = #{record.goodsImageUrl,jdbcType=VARCHAR},
+    sold_quantity = #{record.soldQuantity},
+    mall_name = #{record.mallName,jdbcType=VARCHAR},
+    min_normal_price = #{record.minNormalPrice},
+    min_group_price = #{record.minGroupPrice},
+    opt_name = #{record.optName,jdbcType=VARCHAR},
+    opt_id = #{record.optId},
+    cat_ids = #{record.catIds,jdbcType=VARCHAR},
+    level_one = #{record.levelOne},
+    level_two = #{record.levelTwo},
+    level_three = #{record.levelThree},
+    has_coupon = #{record.hasCoupon,jdbcType=VARCHAR},
+    avg_serv = #{record.avgServ},
+    avg_lgst = #{record.avgLgst},
+    avg_desc = #{record.avgDesc},
+    goods_gallery_urls = #{record.goodsGalleryUrls,jdbcType=VARCHAR},
+    goods_eval_count = #{record.goodsEvalCount},
+    goods_eval_score = #{record.goodsEvalScore,jdbcType=VARCHAR},
+    promotion_rate = #{record.promotionRate},
+    coupon_end_time = #{record.couponEndTime,jdbcType=TIMESTAMP},
+    coupon_start_time = #{record.couponStartTime,jdbcType=TIMESTAMP},
+    coupon_remain_quantity = #{record.couponRemainQuantity},
+    coupon_total_quantity = #{record.couponTotalQuantity},
+    coupon_discount = #{record.couponDiscount},
+    coupon_min_order_amount = #{record.couponMinOrderAmount},
+    gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+    gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+    goods_sn = #{record.goodsSn,jdbcType=VARCHAR},
+    goods_type = #{record.goodsType,jdbcType=VARCHAR},
+    detail_update = #{record.detailUpdate,jdbcType=TIMESTAMP},
+    is_choose = #{record.isChoose,jdbcType=VARCHAR},
+    choose_sort = #{record.chooseSort},
+    sort = #{record.sort},
+    state = #{record.state,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.DuoduoGoodsInfo">
+    update duoduo_goods_info_0
+    <set>
+      <if test="goodsId != null">
+        goods_id = #{goodsId},
+      </if>
+      <if test="goodsName != null">
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsDesc != null">
+        goods_desc = #{goodsDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsThumbnailUrl != null">
+        goods_thumbnail_url = #{goodsThumbnailUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImageUrl != null">
+        goods_image_url = #{goodsImageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="soldQuantity != null">
+        sold_quantity = #{soldQuantity},
+      </if>
+      <if test="mallName != null">
+        mall_name = #{mallName,jdbcType=VARCHAR},
+      </if>
+      <if test="minNormalPrice != null">
+        min_normal_price = #{minNormalPrice},
+      </if>
+      <if test="minGroupPrice != null">
+        min_group_price = #{minGroupPrice},
+      </if>
+      <if test="optName != null">
+        opt_name = #{optName,jdbcType=VARCHAR},
+      </if>
+      <if test="optId != null">
+        opt_id = #{optId},
+      </if>
+      <if test="catIds != null">
+        cat_ids = #{catIds,jdbcType=VARCHAR},
+      </if>
+      <if test="levelOne != null">
+        level_one = #{levelOne},
+      </if>
+      <if test="levelTwo != null">
+        level_two = #{levelTwo},
+      </if>
+      <if test="levelThree != null">
+        level_three = #{levelThree},
+      </if>
+      <if test="hasCoupon != null">
+        has_coupon = #{hasCoupon,jdbcType=VARCHAR},
+      </if>
+      <if test="avgServ != null">
+        avg_serv = #{avgServ},
+      </if>
+      <if test="avgLgst != null">
+        avg_lgst = #{avgLgst},
+      </if>
+      <if test="avgDesc != null">
+        avg_desc = #{avgDesc},
+      </if>
+      <if test="goodsGalleryUrls != null">
+        goods_gallery_urls = #{goodsGalleryUrls,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsEvalCount != null">
+        goods_eval_count = #{goodsEvalCount},
+      </if>
+      <if test="goodsEvalScore != null">
+        goods_eval_score = #{goodsEvalScore,jdbcType=VARCHAR},
+      </if>
+      <if test="promotionRate != null">
+        promotion_rate = #{promotionRate},
+      </if>
+      <if test="couponEndTime != null">
+        coupon_end_time = #{couponEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="couponStartTime != null">
+        coupon_start_time = #{couponStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="couponRemainQuantity != null">
+        coupon_remain_quantity = #{couponRemainQuantity},
+      </if>
+      <if test="couponTotalQuantity != null">
+        coupon_total_quantity = #{couponTotalQuantity},
+      </if>
+      <if test="couponDiscount != null">
+        coupon_discount = #{couponDiscount},
+      </if>
+      <if test="couponMinOrderAmount != null">
+        coupon_min_order_amount = #{couponMinOrderAmount},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsSn != null">
+        goods_sn = #{goodsSn,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsType != null">
+        goods_type = #{goodsType,jdbcType=VARCHAR},
+      </if>
+      <if test="detailUpdate != null">
+        detail_update = #{detailUpdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isChoose != null">
+        is_choose = #{isChoose,jdbcType=VARCHAR},
+      </if>
+      <if test="chooseSort != null">
+        choose_sort = #{chooseSort},
+      </if>
+      <if test="sort != null">
+        sort = #{sort},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fulihui.redisdubbo.demo.producer.dal.dataobj.DuoduoGoodsInfo">
+    update duoduo_goods_info_0
+    set goods_id = #{goodsId},
+      goods_name = #{goodsName,jdbcType=VARCHAR},
+      goods_desc = #{goodsDesc,jdbcType=VARCHAR},
+      goods_thumbnail_url = #{goodsThumbnailUrl,jdbcType=VARCHAR},
+      goods_image_url = #{goodsImageUrl,jdbcType=VARCHAR},
+      sold_quantity = #{soldQuantity},
+      mall_name = #{mallName,jdbcType=VARCHAR},
+      min_normal_price = #{minNormalPrice},
+      min_group_price = #{minGroupPrice},
+      opt_name = #{optName,jdbcType=VARCHAR},
+      opt_id = #{optId},
+      cat_ids = #{catIds,jdbcType=VARCHAR},
+      level_one = #{levelOne},
+      level_two = #{levelTwo},
+      level_three = #{levelThree},
+      has_coupon = #{hasCoupon,jdbcType=VARCHAR},
+      avg_serv = #{avgServ},
+      avg_lgst = #{avgLgst},
+      avg_desc = #{avgDesc},
+      goods_gallery_urls = #{goodsGalleryUrls,jdbcType=VARCHAR},
+      goods_eval_count = #{goodsEvalCount},
+      goods_eval_score = #{goodsEvalScore,jdbcType=VARCHAR},
+      promotion_rate = #{promotionRate},
+      coupon_end_time = #{couponEndTime,jdbcType=TIMESTAMP},
+      coupon_start_time = #{couponStartTime,jdbcType=TIMESTAMP},
+      coupon_remain_quantity = #{couponRemainQuantity},
+      coupon_total_quantity = #{couponTotalQuantity},
+      coupon_discount = #{couponDiscount},
+      coupon_min_order_amount = #{couponMinOrderAmount},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      goods_sn = #{goodsSn,jdbcType=VARCHAR},
+      goods_type = #{goodsType,jdbcType=VARCHAR},
+      detail_update = #{detailUpdate,jdbcType=TIMESTAMP},
+      is_choose = #{isChoose,jdbcType=VARCHAR},
+      choose_sort = #{chooseSort},
+      sort = #{sort},
+      state = #{state,jdbcType=VARCHAR}
+    where id = #{id}
+  </update>
+</mapper>

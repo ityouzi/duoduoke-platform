@@ -81,7 +81,7 @@ public class UserRewardRecordManagerImpl implements UserRewardRecordManager {
         Date now = new Date();
         boolean isSend = false;
         boolean isSuccess = false;
-        String key = "/duoduokeLock/userHelp" + userId + orderSn;
+        String key = "/redisdubbo.demo.producerLock/userHelp" + userId + orderSn;
         InterProcessMutex lock = new InterProcessMutex(curatorFramework, key);
         try {
             boolean acquire = lock.acquire(50, TimeUnit.SECONDS);

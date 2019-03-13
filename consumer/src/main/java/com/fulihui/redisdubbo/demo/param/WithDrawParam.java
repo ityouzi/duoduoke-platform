@@ -17,7 +17,7 @@ import lombok.ToString;
 @ToString
 public class WithDrawParam extends FormIdParam {
     /**
-     * 提现方式 {@link com.fulihui.duoduoke.facade.enums.TradeWithDrawTypeEnum}
+     * 提现方式 {@link com.fulihui.redisdubbo.demo.producer.facade.enums.TradeWithDrawTypeEnum}
      */
     @ApiModelProperty("提现方式")
     private String withDrawTo;

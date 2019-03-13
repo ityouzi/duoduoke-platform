@@ -37,7 +37,7 @@ public class SwaggerConfig {
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2).globalOperationParameters(setHeaderToken()).enable(swaggerOpen)
                 .apiInfo(apiInfo()).select()
-                .apis(RequestHandlerSelectors.basePackage("com.fulihui.duoduoke.web.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.fulihui.redisdubbo.demo.controller"))
                 .paths(PathSelectors.any()).build();
     }
 

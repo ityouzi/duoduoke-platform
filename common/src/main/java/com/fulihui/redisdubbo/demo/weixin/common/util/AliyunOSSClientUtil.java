@@ -33,11 +33,11 @@ public class AliyunOSSClientUtil {
 	//阿里云API的密钥Access Key Secret
 	private static String ACCESS_KEY_SECRET ="lOXNNqdTRrP6pOUteRDvjzdGtV4z6Q";
 	//阿里云API的bucket名称
-	private static String BACKET_NAME ="duoduoke";
+	private static String BACKET_NAME ="redisdubbo.demo.producer";
 	//阿里云API的文件夹名称
-	private static String FOLDER ="duoduoke/";
+	private static String FOLDER ="redisdubbo.demo.producer/";
 
-	private static String key ="http://duoduoke.oss-cn-hangzhou.aliyuncs.com/";*/
+	private static String key ="http://redisdubbo.demo.producer.oss-cn-hangzhou.aliyuncs.com/";*/
 
     //阿里云API的内或外网域名
     private static String ENDPOINT;

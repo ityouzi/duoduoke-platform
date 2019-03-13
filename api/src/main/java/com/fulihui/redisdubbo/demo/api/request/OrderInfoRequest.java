@@ -23,7 +23,7 @@ public class OrderInfoRequest extends PageRequest {
     /**
      * user_order_info.user_order_status
      *
-     * @see com.fulihui.duoduoke.facade.enums.UserOrderStatusEnum
+     * @see com.fulihui.redisdubbo.demo.producer.facade.enums.UserOrderStatusEnum
      * 用户订单状态
      */
     private List<String> userOrderStatus;
@@ -32,7 +32,7 @@ public class OrderInfoRequest extends PageRequest {
     /**
      * user_order_info.user_order_status
      *
-     * @see com.fulihui.duoduoke.facade.enums.DuoDuoOrderStatusEnum
+     * @see com.fulihui.redisdubbo.demo.producer.facade.enums.DuoDuoOrderStatusEnum
      * 多多客订单状态
      */
     private List<String> orderStatus;
