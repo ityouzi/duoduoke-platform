@@ -47,7 +47,6 @@ public class UserRepositoryImpl implements UserRepository {
         record.setCreateBy(operator);
         record.setGmtModified(now);
         record.setModifiedBy(operator);
-
         userDetailMapper.insertSelective(record);
     }
 
