@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fulihui.duoduoke.demo.producer.dal.dao.HomeColumnMapper">
+  <resultMap id="BaseResultMap" type="com.fulihui.duoduoke.demo.producer.dal.dataobj.HomeColumn">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="column_name" jdbcType="VARCHAR" property="columnName" />
+    <result column="column_img" jdbcType="VARCHAR" property="columnImg" />
+    <result column="column_url" jdbcType="VARCHAR" property="columnUrl" />
+    <result column="banner_img" jdbcType="VARCHAR" property="bannerImg" />
+    <result column="channel_type" jdbcType="INTEGER" property="channelType" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, column_name, column_img, column_url, banner_img, channel_type, gmt_create, gmt_modified
+  </sql>
+  <select id="selectByExample" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.HomeColumnExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from home_column
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from home_column
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from home_column
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.HomeColumnExample">
+    delete from home_column
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.HomeColumn" useGeneratedKeys="true">
+    insert into home_column (column_name, column_img, column_url, 
+      banner_img, channel_type, gmt_create, 
+      gmt_modified)
+    values (#{columnName,jdbcType=VARCHAR}, #{columnImg,jdbcType=VARCHAR}, #{columnUrl,jdbcType=VARCHAR}, 
+      #{bannerImg,jdbcType=VARCHAR}, #{channelType,jdbcType=INTEGER}, #{gmtCreate,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.HomeColumn" useGeneratedKeys="true">
+    insert into home_column
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="columnName != null">
+        column_name,
+      </if>
+      <if test="columnImg != null">
+        column_img,
+      </if>
+      <if test="columnUrl != null">
+        column_url,
+      </if>
+      <if test="bannerImg != null">
+        banner_img,
+      </if>
+      <if test="channelType != null">
+        channel_type,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="columnName != null">
+        #{columnName,jdbcType=VARCHAR},
+      </if>
+      <if test="columnImg != null">
+        #{columnImg,jdbcType=VARCHAR},
+      </if>
+      <if test="columnUrl != null">
+        #{columnUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="bannerImg != null">
+        #{bannerImg,jdbcType=VARCHAR},
+      </if>
+      <if test="channelType != null">
+        #{channelType,jdbcType=INTEGER},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.HomeColumnExample" resultType="java.lang.Long">
+    select count(*) from home_column
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update home_column
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.columnName != null">
+        column_name = #{record.columnName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.columnImg != null">
+        column_img = #{record.columnImg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.columnUrl != null">
+        column_url = #{record.columnUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bannerImg != null">
+        banner_img = #{record.bannerImg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.channelType != null">
+        channel_type = #{record.channelType,jdbcType=INTEGER},
+      </if>
+      <if test="record.gmtCreate != null">
+        gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null">
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update home_column
+    set id = #{record.id,jdbcType=INTEGER},
+      column_name = #{record.columnName,jdbcType=VARCHAR},
+      column_img = #{record.columnImg,jdbcType=VARCHAR},
+      column_url = #{record.columnUrl,jdbcType=VARCHAR},
+      banner_img = #{record.bannerImg,jdbcType=VARCHAR},
+      channel_type = #{record.channelType,jdbcType=INTEGER},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.HomeColumn">
+    update home_column
+    <set>
+      <if test="columnName != null">
+        column_name = #{columnName,jdbcType=VARCHAR},
+      </if>
+      <if test="columnImg != null">
+        column_img = #{columnImg,jdbcType=VARCHAR},
+      </if>
+      <if test="columnUrl != null">
+        column_url = #{columnUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="bannerImg != null">
+        banner_img = #{bannerImg,jdbcType=VARCHAR},
+      </if>
+      <if test="channelType != null">
+        channel_type = #{channelType,jdbcType=INTEGER},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.HomeColumn">
+    update home_column
+    set column_name = #{columnName,jdbcType=VARCHAR},
+      column_img = #{columnImg,jdbcType=VARCHAR},
+      column_url = #{columnUrl,jdbcType=VARCHAR},
+      banner_img = #{bannerImg,jdbcType=VARCHAR},
+      channel_type = #{channelType,jdbcType=INTEGER},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

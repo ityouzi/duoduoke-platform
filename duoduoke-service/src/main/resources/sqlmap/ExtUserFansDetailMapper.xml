@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fulihui.duoduoke.demo.producer.dal.dao.ExtUserFansDetailMapper">
+    <resultMap id="BaseResultMap" type="com.fulihui.duoduoke.demo.producer.dal.dataobj.UserFansDetail">
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="one_fans_num" jdbcType="INTEGER" property="oneFansNum"/>
+        <result column="two_fans_num" jdbcType="INTEGER" property="twoFansNum"/>
+        <result column="subsidy_amount" jdbcType="INTEGER" property="subsidyAmount"/>
+        <result column="order_num" jdbcType="INTEGER" property="orderNum"/>
+    </resultMap>
+
+
+    <select id="querySumByUserId" resultMap="BaseResultMap">
+        SELECT user_id AS userId,
+        COALESCE (SUM(one_fans_num), 0) AS one_fans_num,
+        COALESCE (SUM(two_fans_num), 0) AS two_fans_num,
+        COALESCE (SUM(subsidy_amount), 0) AS subsidy_amount,
+        COALESCE (SUM(order_num), 0) AS order_num
+        FROM
+        `user_fans_detail`
+        WHERE
+        user_id = #{userId}
+        <if test="gmtCreate != null">
+            AND date_format(`gmt_create`, '%Y%m') = date_format(#{gmtCreate}, '%Y%m')
+        </if>
+    </select>
+
+</mapper>

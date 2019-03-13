@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fulihui.duoduoke.demo.producer.dal.dao.ExtPromotionChannelsOrderMapper">
+    <resultMap id="BaseResultMap" type="com.fulihui.duoduoke.demo.producer.dal.dataobj.PromotionChannelsOrder">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="channels_code" jdbcType="VARCHAR" property="channelsCode"/>
+        <result column="order_sn" jdbcType="VARCHAR" property="orderSn"/>
+        <result column="goods_id" jdbcType="VARCHAR" property="goodsId"/>
+        <result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
+        <result column="goods_thumbnail_url" jdbcType="VARCHAR" property="goodsThumbnailUrl"/>
+        <result column="goods_quantity" jdbcType="INTEGER" property="goodsQuantity"/>
+        <result column="goods_price" jdbcType="INTEGER" property="goodsPrice"/>
+        <result column="order_amount" jdbcType="INTEGER" property="orderAmount"/>
+        <result column="order_create_time" jdbcType="TIMESTAMP" property="orderCreateTime"/>
+        <result column="order_settle_time" jdbcType="TIMESTAMP" property="orderSettleTime"/>
+        <result column="order_verify_time" jdbcType="TIMESTAMP" property="orderVerifyTime"/>
+        <result column="order_receive_time" jdbcType="TIMESTAMP" property="orderReceiveTime"/>
+        <result column="order_pay_time" jdbcType="TIMESTAMP" property="orderPayTime"/>
+        <result column="order_pay_time_ext" jdbcType="DATE" property="orderPayTimeExt"/>
+        <result column="promotion_rate" jdbcType="INTEGER" property="promotionRate"/>
+        <result column="promotion_amount" jdbcType="INTEGER" property="promotionAmount"/>
+        <result column="p_id" jdbcType="VARCHAR" property="pId"/>
+        <result column="custom_parameters" jdbcType="VARCHAR" property="customParameters"/>
+        <result column="order_status" jdbcType="VARCHAR" property="orderStatus"/>
+        <result column="order_status_desc" jdbcType="VARCHAR" property="orderStatusDesc"/>
+        <result column="user_order_status" jdbcType="VARCHAR" property="userOrderStatus"/>
+        <result column="user_order_status_desc" jdbcType="VARCHAR" property="userOrderStatusDesc"/>
+        <result column="verify_time" jdbcType="TIMESTAMP" property="verifyTime"/>
+        <result column="order_group_success_time" jdbcType="TIMESTAMP" property="orderGroupSuccessTime"/>
+        <result column="order_modify_at" jdbcType="TIMESTAMP" property="orderModifyAt"/>
+        <result column="order_modify_at_ext" jdbcType="DATE" property="orderModifyAtExt"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="batch_no" jdbcType="VARCHAR" property="batchNo"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="group_id" jdbcType="VARCHAR" property="groupId"/>
+        <result column="auth_duo_id" jdbcType="VARCHAR" property="authDuoId"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+        <result column="order_commission_snapshot" jdbcType="INTEGER" property="orderCommissionSnapshot"/>
+        <result column="order_promotion_source" jdbcType="VARCHAR" property="orderPromotionSource"/>
+        <result column="order_promotion_commission" jdbcType="DOUBLE" property="orderPromotionCommission"/>
+        <result column="promo_type" jdbcType="VARCHAR" property="promoType"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, channels_code, order_sn, goods_id, goods_name, goods_thumbnail_url, goods_quantity,
+        goods_price, order_amount, order_create_time, order_settle_time, order_verify_time,
+        order_receive_time, order_pay_time, promotion_rate, promotion_amount, p_id, custom_parameters,
+        order_status, order_status_desc, user_order_status, user_order_status_desc, verify_time,
+        order_group_success_time, order_modify_at, order_modify_at_ext, status, batch_no,
+        type, group_id, auth_duo_id, gmt_create, gmt_modified, order_commission_snapshot,
+        order_promotion_source, order_promotion_commission, promo_type
+    </sql>
+
+
+    <resultMap id="BaseResultMapGroup" type="com.fulihui.duoduoke.demo.producer.dal.dataobj.GroupChannelsOrder">
+        <result column="order_pay_time_ext" jdbcType="DATE" property="orderPayTimeExt"/>
+        <result column="promo_type" jdbcType="VARCHAR" property="promoType"/>
+        <result column="p_id" jdbcType="VARCHAR" property="pId"/>
+        <result column="count" jdbcType="INTEGER" property="count"/>
+        <result column="orderAmount" jdbcType="INTEGER" property="orderAmount"/>
+        <result column="promotionAmount" jdbcType="INTEGER" property="promotionAmount"/>
+        <result column="order_modify_at_ext" jdbcType="DATE" property="orderModifyAtExt"/>
+
+    </resultMap>
+
+
+    <select id="queryGroup" resultMap="BaseResultMapGroup">
+        select
+        order_pay_time_ext ,
+        promo_type ,
+        p_id ,
+        count(1) as count
+        , COALESCE(SUM(order_amount),0) as orderAmount
+        , COALESCE(SUM(promotion_amount),0) as promotionAmount
+        from promotion_channels_order
+        where 1=1
+
+        <if test="channelsCode != null and channelsCode != ''">
+            and channels_code = #{channelsCode}
+        </if>
+
+        <if test="startDate != null">
+            <![CDATA[ and order_pay_time_ext >= #{startDate} ]]>
+        </if>
+        <if test="endDate != null">
+            <![CDATA[ and order_pay_time_ext < DATE_ADD(#{endDate}, INTERVAL 0 DAY) ]]>
+        </if>
+
+        <if test="promoType != null and promoType != ''">
+            and promo_type = #{promoType}
+        </if>
+
+        <if test="orderStatusList != null and orderStatusList.size() > 0">
+            and order_status IN
+            <foreach collection="orderStatusList" item="orderStatus" open="(" separator="," close=")">
+                #{orderStatus}
+            </foreach>
+        </if>
+
+
+        <if test="userOrderStatusList != null and userOrderStatusList.size() > 0">
+            and user_order_status IN
+            <foreach collection="userOrderStatusList" item="userOrderStatus" open="(" separator="," close=")">
+                #{userOrderStatus}
+            </foreach>
+        </if>
+
+
+        <if test="startDateModify != null">
+            <![CDATA[ and order_modify_at_ext >= #{startDateModify} ]]>
+        </if>
+        <if test="endDateModify != null">
+            <![CDATA[ and order_modify_at_ext <= DATE_ADD(#{endDateModify}, INTERVAL 0 DAY) ]]>
+        </if>
+
+
+        GROUP BY order_pay_time_ext,promo_type,p_id
+        order by order_pay_time_ext desc
+        limit #{start}, #{rows}
+
+    </select>
+
+
+
+
+
+    <select id="queryGroupCount" resultType="java.lang.Integer">
+        select count(1) from ( select count(1)
+        from promotion_channels_order
+        where 1=1
+
+        <if test="channelsCode != null and channelsCode != ''">
+            and channels_code = #{channelsCode}
+        </if>
+
+
+        <if test="startDate != null">
+            <![CDATA[ and order_pay_time_ext >= #{startDate} ]]>
+        </if>
+        <if test="endDate != null">
+            <![CDATA[ and order_pay_time_ext < DATE_ADD(#{endDate}, INTERVAL 0 DAY) ]]>
+        </if>
+
+        <if test="promoType != null and promoType != ''">
+            and promo_type = #{promoType}
+        </if>
+
+        <if test="orderStatusList != null and orderStatusList.size() > 0">
+            and order_status IN
+            <foreach collection="orderStatusList" item="orderStatus" open="(" separator="," close=")">
+                #{orderStatus}
+            </foreach>
+        </if>
+
+        <if test="userOrderStatusList != null and userOrderStatusList.size() > 0">
+            and user_order_status IN
+            <foreach collection="userOrderStatusList" item="userOrderStatus" open="(" separator="," close=")">
+                #{userOrderStatus}
+            </foreach>
+        </if>
+
+
+        <if test="startDateModify != null">
+            <![CDATA[ and order_modify_at_ext >= #{startDateModify} ]]>
+        </if>
+        <if test="endDateModify != null">
+            <![CDATA[ and order_modify_at_ext <= DATE_ADD(#{endDateModify}, INTERVAL 0 DAY) ]]>
+        </if>
+
+
+        GROUP BY order_pay_time_ext,promo_type,p_id
+
+        ) g
+    </select>
+
+
+
+
+
+
+
+
+    <select id="queryGroupModify" resultMap="BaseResultMapGroup">
+        select
+        order_modify_at_ext ,
+        promo_type ,
+        p_id ,
+        count(1) as count
+        , COALESCE(SUM(order_amount),0) as orderAmount
+        , COALESCE(SUM(promotion_amount),0) as promotionAmount
+        from promotion_channels_order
+        where 1=1
+
+        <if test="channelsCode != null and channelsCode != ''">
+            and channels_code = #{channelsCode}
+        </if>
+
+        <if test="startDate != null">
+            <![CDATA[ and order_pay_time_ext >= #{startDate} ]]>
+        </if>
+        <if test="endDate != null">
+            <![CDATA[ and order_pay_time_ext < DATE_ADD(#{endDate}, INTERVAL 0 DAY) ]]>
+        </if>
+
+        <if test="promoType != null and promoType != ''">
+            and promo_type = #{promoType}
+        </if>
+
+        <if test="orderStatusList != null and orderStatusList.size() > 0">
+            and order_status IN
+            <foreach collection="orderStatusList" item="orderStatus" open="(" separator="," close=")">
+                #{orderStatus}
+            </foreach>
+        </if>
+
+
+        <if test="userOrderStatusList != null and userOrderStatusList.size() > 0">
+            and user_order_status IN
+            <foreach collection="userOrderStatusList" item="userOrderStatus" open="(" separator="," close=")">
+                #{userOrderStatus}
+            </foreach>
+        </if>
+
+
+        <if test="startDateModify != null">
+            <![CDATA[ and order_modify_at_ext >= #{startDateModify} ]]>
+        </if>
+        <if test="endDateModify != null">
+            <![CDATA[ and order_modify_at_ext <= DATE_ADD(#{endDateModify}, INTERVAL 0 DAY) ]]>
+        </if>
+
+
+        GROUP BY order_modify_at_ext,promo_type,p_id
+        order by order_modify_at_ext desc
+        limit #{start}, #{rows}
+
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+    <select id="queryGroupCountModify" resultType="java.lang.Integer">
+        select count(1) from ( select count(1)
+        from promotion_channels_order
+        where 1=1
+
+        <if test="channelsCode != null and channelsCode != ''">
+            and channels_code = #{channelsCode}
+        </if>
+
+
+        <if test="startDate != null">
+            <![CDATA[ and order_pay_time_ext >= #{startDate} ]]>
+        </if>
+        <if test="endDate != null">
+            <![CDATA[ and order_pay_time_ext < DATE_ADD(#{endDate}, INTERVAL 0 DAY) ]]>
+        </if>
+
+        <if test="promoType != null and promoType != ''">
+            and promo_type = #{promoType}
+        </if>
+
+        <if test="orderStatusList != null and orderStatusList.size() > 0">
+            and order_status IN
+            <foreach collection="orderStatusList" item="orderStatus" open="(" separator="," close=")">
+                #{orderStatus}
+            </foreach>
+        </if>
+
+        <if test="userOrderStatusList != null and userOrderStatusList.size() > 0">
+            and user_order_status IN
+            <foreach collection="userOrderStatusList" item="userOrderStatus" open="(" separator="," close=")">
+                #{userOrderStatus}
+            </foreach>
+        </if>
+
+
+        <if test="startDateModify != null">
+            <![CDATA[ and order_modify_at_ext >= #{startDateModify} ]]>
+        </if>
+        <if test="endDateModify != null">
+            <![CDATA[ and order_modify_at_ext <= DATE_ADD(#{endDateModify}, INTERVAL 0 DAY) ]]>
+        </if>
+
+        GROUP BY order_modify_at_ext,promo_type,p_id
+
+        ) g
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

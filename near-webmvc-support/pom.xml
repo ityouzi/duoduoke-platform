@@ -10,8 +10,9 @@
     <packaging>jar</packaging>
 
     <parent>
-        <groupId>com.fulihui.redisdubbo.demo</groupId>
-        <artifactId>demo-redis-parent-dubbo-springboot</artifactId>
+
+        <groupId>com.fulihui</groupId>
+        <artifactId>duoduoke-platform</artifactId>
         <version>1.0.0</version>
     </parent>
     <dependencies>

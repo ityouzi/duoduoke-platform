@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fulihui.duoduoke.demo.producer.dal.dao.ExtGoodSearchRecordMapper">
+    <resultMap id="BaseResultMap" type="com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodSearchRecordStatistics">
+        <result column="search_content" jdbcType="VARCHAR" property="searchContent" />
+        <result column="is_result" jdbcType="VARCHAR" property="isResult" />
+        <result column="search_count" jdbcType="INTEGER" property="searchCount" />
+        <result column="user_search_count" jdbcType="INTEGER" property="userSearchCount" />
+    </resultMap>
+  <select id="selectStatistics" resultMap="BaseResultMap">
+      select search_content,is_result,count(user_id) as user_search_count, sum(search_count) as search_count
+        from(SELECT search_content,is_result,user_id,COUNT(user_id) as search_count from good_search_record where gmt_create between #{startTime} and #{endTime}
+          group by search_content,is_result,user_id) as tab
+      group by search_content,is_result order by search_count desc limit #{offset},#{rows}
+  </select>
+
+</mapper>

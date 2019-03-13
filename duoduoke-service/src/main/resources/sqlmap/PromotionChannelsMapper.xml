@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fulihui.duoduoke.demo.producer.dal.dao.PromotionChannelsMapper">
+  <resultMap id="BaseResultMap" type="com.fulihui.duoduoke.demo.producer.dal.dataobj.PromotionChannels">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="channels_name" jdbcType="VARCHAR" property="channelsName" />
+    <result column="channels_code" jdbcType="VARCHAR" property="channelsCode" />
+    <result column="channels_desc" jdbcType="VARCHAR" property="channelsDesc" />
+    <result column="channels_proportion" jdbcType="INTEGER" property="channelsProportion" />
+    <result column="proportion_link" jdbcType="VARCHAR" property="proportionLink" />
+    <result column="channels_income" jdbcType="INTEGER" property="channelsIncome" />
+    <result column="account_balance" jdbcType="INTEGER" property="accountBalance" />
+    <result column="channels_status" jdbcType="VARCHAR" property="channelsStatus" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, channels_name, channels_code, channels_desc, channels_proportion, proportion_link, 
+    channels_income, account_balance, channels_status, gmt_create, gmt_modified
+  </sql>
+  <select id="selectByExample" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.PromotionChannelsExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from promotion_channels
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from promotion_channels
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from promotion_channels
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.PromotionChannelsExample">
+    delete from promotion_channels
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.PromotionChannels" useGeneratedKeys="true">
+    insert into promotion_channels (channels_name, channels_code, channels_desc, 
+      channels_proportion, proportion_link, channels_income, 
+      account_balance, channels_status, gmt_create, 
+      gmt_modified)
+    values (#{channelsName,jdbcType=VARCHAR}, #{channelsCode,jdbcType=VARCHAR}, #{channelsDesc,jdbcType=VARCHAR}, 
+      #{channelsProportion,jdbcType=INTEGER}, #{proportionLink,jdbcType=VARCHAR}, #{channelsIncome,jdbcType=INTEGER}, 
+      #{accountBalance,jdbcType=INTEGER}, #{channelsStatus,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.PromotionChannels" useGeneratedKeys="true">
+    insert into promotion_channels
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="channelsName != null">
+        channels_name,
+      </if>
+      <if test="channelsCode != null">
+        channels_code,
+      </if>
+      <if test="channelsDesc != null">
+        channels_desc,
+      </if>
+      <if test="channelsProportion != null">
+        channels_proportion,
+      </if>
+      <if test="proportionLink != null">
+        proportion_link,
+      </if>
+      <if test="channelsIncome != null">
+        channels_income,
+      </if>
+      <if test="accountBalance != null">
+        account_balance,
+      </if>
+      <if test="channelsStatus != null">
+        channels_status,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="channelsName != null">
+        #{channelsName,jdbcType=VARCHAR},
+      </if>
+      <if test="channelsCode != null">
+        #{channelsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="channelsDesc != null">
+        #{channelsDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="channelsProportion != null">
+        #{channelsProportion,jdbcType=INTEGER},
+      </if>
+      <if test="proportionLink != null">
+        #{proportionLink,jdbcType=VARCHAR},
+      </if>
+      <if test="channelsIncome != null">
+        #{channelsIncome,jdbcType=INTEGER},
+      </if>
+      <if test="accountBalance != null">
+        #{accountBalance,jdbcType=INTEGER},
+      </if>
+      <if test="channelsStatus != null">
+        #{channelsStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.PromotionChannelsExample" resultType="java.lang.Long">
+    select count(*) from promotion_channels
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update promotion_channels
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.channelsName != null">
+        channels_name = #{record.channelsName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.channelsCode != null">
+        channels_code = #{record.channelsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.channelsDesc != null">
+        channels_desc = #{record.channelsDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.channelsProportion != null">
+        channels_proportion = #{record.channelsProportion,jdbcType=INTEGER},
+      </if>
+      <if test="record.proportionLink != null">
+        proportion_link = #{record.proportionLink,jdbcType=VARCHAR},
+      </if>
+      <if test="record.channelsIncome != null">
+        channels_income = #{record.channelsIncome,jdbcType=INTEGER},
+      </if>
+      <if test="record.accountBalance != null">
+        account_balance = #{record.accountBalance,jdbcType=INTEGER},
+      </if>
+      <if test="record.channelsStatus != null">
+        channels_status = #{record.channelsStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreate != null">
+        gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null">
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update promotion_channels
+    set id = #{record.id,jdbcType=INTEGER},
+      channels_name = #{record.channelsName,jdbcType=VARCHAR},
+      channels_code = #{record.channelsCode,jdbcType=VARCHAR},
+      channels_desc = #{record.channelsDesc,jdbcType=VARCHAR},
+      channels_proportion = #{record.channelsProportion,jdbcType=INTEGER},
+      proportion_link = #{record.proportionLink,jdbcType=VARCHAR},
+      channels_income = #{record.channelsIncome,jdbcType=INTEGER},
+      account_balance = #{record.accountBalance,jdbcType=INTEGER},
+      channels_status = #{record.channelsStatus,jdbcType=VARCHAR},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.PromotionChannels">
+    update promotion_channels
+    <set>
+      <if test="channelsName != null">
+        channels_name = #{channelsName,jdbcType=VARCHAR},
+      </if>
+      <if test="channelsCode != null">
+        channels_code = #{channelsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="channelsDesc != null">
+        channels_desc = #{channelsDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="channelsProportion != null">
+        channels_proportion = #{channelsProportion,jdbcType=INTEGER},
+      </if>
+      <if test="proportionLink != null">
+        proportion_link = #{proportionLink,jdbcType=VARCHAR},
+      </if>
+      <if test="channelsIncome != null">
+        channels_income = #{channelsIncome,jdbcType=INTEGER},
+      </if>
+      <if test="accountBalance != null">
+        account_balance = #{accountBalance,jdbcType=INTEGER},
+      </if>
+      <if test="channelsStatus != null">
+        channels_status = #{channelsStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.PromotionChannels">
+    update promotion_channels
+    set channels_name = #{channelsName,jdbcType=VARCHAR},
+      channels_code = #{channelsCode,jdbcType=VARCHAR},
+      channels_desc = #{channelsDesc,jdbcType=VARCHAR},
+      channels_proportion = #{channelsProportion,jdbcType=INTEGER},
+      proportion_link = #{proportionLink,jdbcType=VARCHAR},
+      channels_income = #{channelsIncome,jdbcType=INTEGER},
+      account_balance = #{accountBalance,jdbcType=INTEGER},
+      channels_status = #{channelsStatus,jdbcType=VARCHAR},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

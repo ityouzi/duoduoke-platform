@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fulihui.duoduoke.demo.producer.dal.dao.ExtSignUserRecordMapper">
+    <resultMap id="BaseResultMap" type="com.fulihui.duoduoke.demo.producer.dal.dataobj.SignUserRecord">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="sign_time" jdbcType="TIMESTAMP" property="signTime"/>
+        <result column="sign_time_ext" jdbcType="DATE" property="signTimeExt"/>
+        <result column="sign_type" jdbcType="VARCHAR" property="signType"/>
+        <result column="cycle_time" jdbcType="DATE" property="cycleTime"/>
+        <result column="sign_status" jdbcType="VARCHAR" property="signStatus"/>
+        <result column="sign_help_user_id" jdbcType="VARCHAR" property="signHelpUserId"/>
+        <result column="sign_flop_count" jdbcType="INTEGER" property="signFlopCount"/>
+        <result column="share_flop_count" jdbcType="INTEGER" property="shareFlopCount"/>
+        <result column="sign_in_prize" jdbcType="VARCHAR" property="signInPrize"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, user_id, sign_time, sign_time_ext, sign_type, cycle_time, sign_status, sign_help_user_id,
+        sign_flop_count, share_flop_count, sign_in_prize, gmt_create, gmt_modified
+    </sql>
+
+    <select id="select" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sign_user_record
+        where cycle_time =#{cycleTime}
+        group by user_id
+    </select>
+
+
+    <select id="queryBeforeSignUser" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM sign_user_record WHERE
+        ( TO_DAYS( NOW( ) ) - TO_DAYS( sign_time) = 6
+        or TO_DAYS( NOW( ) ) - TO_DAYS( sign_time) = 7
+        or TO_DAYS( NOW( ) ) - TO_DAYS( sign_time) = 1
+        or TO_DAYS( NOW( ) ) - TO_DAYS( sign_time) =2
+        )
+        GROUP BY user_id
+    </select>
+
+
+    <update id="modifyCount" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.SignUserRecord">
+        UPDATE
+        sign_user_record
+        <set>
+            <if test="signFlopCount != null">
+                sign_flop_count = sign_flop_count + #{signFlopCount},
+            </if>
+            <if test="shareFlopCount != null">
+                share_flop_count = share_flop_count + #{shareFlopCount},
+            </if>
+            gmt_modified = now()
+        </set>
+        WHERE user_id = #{userId}
+        AND id = #{id}
+        <!--小于-->
+        <if test="signFlopCount &lt; 0">
+            <![CDATA[ AND sign_flop_count >= -#{signFlopCount} ]]>
+        </if>
+        <!--小于-->
+        <if test="shareFlopCount &lt; 0">
+            <![CDATA[ AND share_flop_count >= -#{shareFlopCount} ]]>
+        </if>
+    </update>
+
+</mapper>

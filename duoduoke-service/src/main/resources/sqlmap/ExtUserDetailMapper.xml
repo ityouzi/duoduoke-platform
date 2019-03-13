@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fulihui.duoduoke.demo.producer.dal.dao.ExtUserDetailMapper">
+    <resultMap id="BaseResultMap" type="com.fulihui.duoduoke.demo.producer.dal.dataobj.UserDetailAdmin">
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="one_fans_num" jdbcType="INTEGER" property="oneFansNum"/>
+        <result column="two_fans_num" jdbcType="INTEGER" property="twoFansNum"/>
+        <result column="balance" jdbcType="INTEGER" property="balance"/>
+        <result column="user_referee" jdbcType="VARCHAR" property="userReferee"/>
+    </resultMap>
+
+
+    <resultMap id="UserDetailMap" type="com.fulihui.duoduoke.demo.producer.dal.dataobj.UserDetail">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="gender" jdbcType="CHAR" property="gender"/>
+        <result column="id_card" jdbcType="VARCHAR" property="idCard"/>
+        <result column="mobile_no" jdbcType="VARCHAR" property="mobileNo"/>
+        <result column="birthday" jdbcType="VARCHAR" property="birthday"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="user_source" jdbcType="VARCHAR" property="userSource"/>
+        <result column="user_referee" jdbcType="VARCHAR" property="userReferee"/>
+        <result column="user_referee_ids" jdbcType="VARCHAR" property="userRefereeIds"/>
+        <result column="marker" jdbcType="VARCHAR" property="marker"/>
+        <result column="reg_date" jdbcType="DATE" property="regDate"/>
+        <result column="level" jdbcType="INTEGER" property="level"/>
+        <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl" />
+    </resultMap>
+
+
+    <select id="queryAdminList" resultMap="BaseResultMap">
+        select ud.user_id,ud.gmt_create,ud.user_referee,fd.one_fans_num,fd.two_fans_num,ua.balance from user_detail ud
+        left join user_fans_detail fd on ud.user_id = fd.user_id
+        LEFT JOIN user_account ua on ud.user_id = ua.user_id
+        <where>
+            <if test="userId != null">
+                AND ud.user_id = #{userId}
+            </if>
+            <if test="userReferee != null">
+                AND ud.user_referee = #{userReferee}
+            </if>
+            <if test="startTime != null">
+                AND ud.gmt_create &gt; #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND ud.gmt_create &lt; #{endTime}
+            </if>
+        </where>
+        limit #{offset},#{rows}
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM user_detail
+        <where>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="userReferee != null">
+                AND user_referee = #{userReferee}
+            </if>
+            <if test="startTime != null">
+                AND gmt_create &gt; #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND gmt_create &lt; #{endTime}
+            </if>
+        </where>
+    </select>
+
+    <sql id="Base_Column_List">
+    id, user_id, nickname, name, gender, id_card, mobile_no, birthday, gmt_create, create_by,
+    gmt_modified, modified_by, user_source, user_referee, user_referee_ids, marker, reg_date,
+    level,avatar_url
+  </sql>
+
+    <select id="queryUser" resultMap="UserDetailMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        `user_detail`
+        WHERE
+        user_referee != '' and user_referee_ids =''
+    </select>
+
+
+    <resultMap id="ExtUserDetailCountMap" type="com.fulihui.duoduoke.demo.producer.dal.dataobj.ExtUserDetailCount">
+        <result column="user_referee" property="userReferee"/>
+        <result column="reg_date" property="regDate"/>
+        <result column="count" property="count"/>
+    </resultMap>
+
+    <select id="queryData" resultMap="ExtUserDetailCountMap">
+        SELECT user_referee,
+        reg_date ,
+        count(1) as `count`
+        FROM
+        user_detail GROUP BY user_referee,reg_date
+    </select>
+
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.UserDetail">
+        update user_detail
+        <set>
+            <if test="nickname != null">
+                nickname = #{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                gender = #{gender,jdbcType=CHAR},
+            </if>
+            <if test="idCard != null">
+                id_card = #{idCard,jdbcType=VARCHAR},
+            </if>
+            <if test="mobileNo != null">
+                mobile_no = #{mobileNo,jdbcType=VARCHAR},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                modified_by = #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="userSource != null">
+                user_source = #{userSource,jdbcType=VARCHAR},
+            </if>
+            <if test="userReferee != null">
+                user_referee = #{userReferee,jdbcType=VARCHAR},
+            </if>
+            <if test="userRefereeIds != null">
+                user_referee_ids = #{userRefereeIds,jdbcType=VARCHAR},
+            </if>
+            <if test="marker != null">
+                marker = #{marker,jdbcType=VARCHAR},
+            </if>
+            <if test="regDate != null">
+                reg_date = #{regDate,jdbcType=DATE},
+            </if>
+            <if test="level != null">
+                level = #{level,jdbcType=INTEGER},
+            </if>
+
+            <if test="avatarUrl != null">
+                avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=INTEGER}
+    </update>
+
+</mapper>

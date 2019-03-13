@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fulihui.duoduoke.demo.producer.dal.dao.ExtGoodsMarkMapper">
+  <resultMap id="BaseResultMap" type="com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsMark">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="goods_id" jdbcType="BIGINT" property="goodsId" />
+    <result column="mark_id" jdbcType="INTEGER" property="markId" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="stop_time" jdbcType="TIMESTAMP" property="stopTime" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="mark_url" jdbcType="VARCHAR" property="markUrl" />
+    <result column="mark_name" jdbcType="VARCHAR" property="markName" />
+  </resultMap>
+
+    <update id="updateGoodsMarkByMarkId">
+
+        UPDATE goods_mark set mark_url= #{markUrl}, gmt_modified = NOW() where mark_id = #{markId}
+
+    </update>
+
+
+
+  <select id="selectByIdTime" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsMark" resultMap="BaseResultMap">
+    select
+    a.id as id,
+    a.goods_id as goods_id,
+    a.mark_id as mark_id,
+    a.start_time as start_time,
+    a.stop_time as stop_time,
+    a.gmt_create as gmt_create,
+    a.gmt_modified as gmt_modified,
+    b.mark_url as mark_url,
+    b.mark_name as mark_name
+    from goods_mark a left join corner_mark b on a.mark_id = b.id
+    <where>
+      <if test="goodsId != null">
+        and a.goods_id = #{goodsId}
+      </if>
+      <if test="id != null">
+        and a.id = #{id}
+      </if>
+      <if test="startTime != null">
+        and a.start_time &lt;= #{startTime}
+      </if>
+      <if test="stopTime != null">
+        and a.stop_time &gt;= #{stopTime}
+      </if>
+    </where>
+  </select>
+
+
+  <select id="queryUsingGoodsMark" resultMap="BaseResultMap">
+    select
+    a.id as id,
+    a.goods_id as goods_id,
+    a.mark_id as mark_id,
+    a.start_time as start_time,
+    a.stop_time as stop_time,
+    a.gmt_create as gmt_create,
+    a.gmt_modified as gmt_modified,
+    b.mark_url as mark_url,
+    b.mark_name as mark_name
+    from goods_mark a left join corner_mark b on a.mark_id = b.id
+  </select>
+
+</mapper>

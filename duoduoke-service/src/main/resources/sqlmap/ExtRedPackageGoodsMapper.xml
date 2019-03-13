@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fulihui.duoduoke.demo.producer.dal.dao.ExtRedPackageGoodsMapper">
+  <resultMap id="BaseResultMap" type="com.fulihui.duoduoke.demo.api.dto.RedPackageGoodsDTO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="rpf_id" jdbcType="INTEGER" property="rpfId" />
+    <result column="goods_id" jdbcType="BIGINT" property="goodsId" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="rpf_type" jdbcType="INTEGER" property="rpfType" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_desc" jdbcType="VARCHAR" property="goodsDesc" />
+    <result column="goods_thumbnail_url" jdbcType="VARCHAR" property="goodsThumbnailUrl" />
+    <result column="goods_image_url" jdbcType="VARCHAR" property="goodsImageUrl" />
+    <result column="sold_quantity" jdbcType="INTEGER" property="soldQuantity" />
+    <result column="mall_name" jdbcType="VARCHAR" property="mallName" />
+    <result column="min_normal_price" jdbcType="INTEGER" property="minNormalPrice" />
+    <result column="min_group_price" jdbcType="INTEGER" property="minGroupPrice" />
+    <result column="opt_name" jdbcType="VARCHAR" property="optName" />
+    <result column="opt_id" jdbcType="INTEGER" property="optId" />
+    <result column="cat_ids" jdbcType="VARCHAR" property="catIds" />
+    <result column="level_one" jdbcType="INTEGER" property="levelOne" />
+    <result column="level_two" jdbcType="INTEGER" property="levelTwo" />
+    <result column="level_three" jdbcType="INTEGER" property="levelThree" />
+    <result column="has_coupon" jdbcType="VARCHAR" property="hasCoupon" />
+    <result column="avg_serv" jdbcType="INTEGER" property="avgServ" />
+    <result column="avg_lgst" jdbcType="INTEGER" property="avgLgst" />
+    <result column="avg_desc" jdbcType="INTEGER" property="avgDesc" />
+    <result column="goods_gallery_urls" jdbcType="VARCHAR" property="goodsGalleryUrls" />
+    <result column="goods_eval_count" jdbcType="INTEGER" property="goodsEvalCount" />
+    <result column="goods_eval_score" jdbcType="VARCHAR" property="goodsEvalScore" />
+    <result column="promotion_rate" jdbcType="INTEGER" property="promotionRate" />
+    <result column="coupon_end_time" jdbcType="TIMESTAMP" property="couponEndTime" />
+    <result column="coupon_start_time" jdbcType="TIMESTAMP" property="couponStartTime" />
+    <result column="coupon_remain_quantity" jdbcType="INTEGER" property="couponRemainQuantity" />
+    <result column="coupon_total_quantity" jdbcType="INTEGER" property="couponTotalQuantity" />
+    <result column="coupon_discount" jdbcType="INTEGER" property="couponDiscount" />
+    <result column="coupon_min_order_amount" jdbcType="INTEGER" property="couponMinOrderAmount" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="goods_sn" jdbcType="VARCHAR" property="goodsSn" />
+    <result column="goods_type" jdbcType="VARCHAR" property="goodsType" />
+    <result column="detail_update" jdbcType="TIMESTAMP" property="detailUpdate" />
+    <result column="is_choose" jdbcType="VARCHAR" property="isChoose" />
+    <result column="choose_sort" jdbcType="INTEGER" property="chooseSort" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+  </resultMap>
+
+  <resultMap id="goodsInfoMap" type="com.fulihui.duoduoke.demo.producer.dal.dataobj.DuoduoGoodsInfo">
+    <result column="goods_id" property="goodsId" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_desc" jdbcType="VARCHAR" property="goodsDesc" />
+    <result column="goods_thumbnail_url" jdbcType="VARCHAR" property="goodsThumbnailUrl" />
+    <result column="goods_image_url" jdbcType="VARCHAR" property="goodsImageUrl" />
+    <result column="sold_quantity" jdbcType="INTEGER" property="soldQuantity" />
+    <result column="mall_name" jdbcType="VARCHAR" property="mallName" />
+    <result column="min_normal_price" jdbcType="INTEGER" property="minNormalPrice" />
+    <result column="min_group_price" jdbcType="INTEGER" property="minGroupPrice" />
+    <result column="opt_name" jdbcType="VARCHAR" property="optName" />
+    <result column="opt_id" jdbcType="INTEGER" property="optId" />
+    <result column="cat_ids" jdbcType="VARCHAR" property="catIds" />
+    <result column="level_one" jdbcType="INTEGER" property="levelOne" />
+    <result column="level_two" jdbcType="INTEGER" property="levelTwo" />
+    <result column="level_three" jdbcType="INTEGER" property="levelThree" />
+    <result column="has_coupon" jdbcType="VARCHAR" property="hasCoupon" />
+    <result column="avg_serv" jdbcType="INTEGER" property="avgServ" />
+    <result column="avg_lgst" jdbcType="INTEGER" property="avgLgst" />
+    <result column="avg_desc" jdbcType="INTEGER" property="avgDesc" />
+    <result column="goods_gallery_urls" jdbcType="VARCHAR" property="goodsGalleryUrls" />
+    <result column="goods_eval_count" jdbcType="INTEGER" property="goodsEvalCount" />
+    <result column="goods_eval_score" jdbcType="VARCHAR" property="goodsEvalScore" />
+    <result column="promotion_rate" jdbcType="INTEGER" property="promotionRate" />
+    <result column="coupon_end_time" jdbcType="TIMESTAMP" property="couponEndTime" />
+    <result column="coupon_start_time" jdbcType="TIMESTAMP" property="couponStartTime" />
+    <result column="coupon_remain_quantity" jdbcType="INTEGER" property="couponRemainQuantity" />
+    <result column="coupon_total_quantity" jdbcType="INTEGER" property="couponTotalQuantity" />
+    <result column="coupon_discount" jdbcType="INTEGER" property="couponDiscount" />
+    <result column="coupon_min_order_amount" jdbcType="INTEGER" property="couponMinOrderAmount" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="goods_sn" jdbcType="VARCHAR" property="goodsSn" />
+    <result column="goods_type" jdbcType="VARCHAR" property="goodsType" />
+    <result column="detail_update" jdbcType="TIMESTAMP" property="detailUpdate" />
+    <result column="is_choose" jdbcType="VARCHAR" property="isChoose" />
+    <result column="choose_sort" jdbcType="INTEGER" property="chooseSort" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+  </resultMap>
+
+
+  <select id="queryFieldGoods" resultMap="BaseResultMap">
+    SELECT rpd.sort,rpd.id, dgi.* from
+    (select * from  red_package_goods where rpf_id=#{rpfId} and rpf_type=#{rpfType}
+      <if test="orderByClause!=null and orderByClause=='sort'">
+        ORDER BY sort DESC
+      </if>
+    ) rpd INNER JOIN ${goodsTable} dgi
+    ON rpd.goods_id = dgi.goods_id
+    <if test="goodsName!=null and goodsName!=''">
+      and dgi.goods_name=#{goodsName}
+    </if>
+    <if test="goodsId!=null">
+      and dgi.goods_id=#{goodsId}
+    </if>
+    <if test="state!=null">
+      and dgi.state=#{state}
+    </if>
+    <if test="orderByClause!=null and orderByClause!='sort'">
+      ORDER BY dgi.${orderByClause} DESC
+    </if>
+    LIMIT #{offset},#{rows}
+  </select>
+
+  <select id="queryFieldGoodsCount" resultType="java.lang.Integer">
+    SELECT count(1)
+    from (select dgi.goods_id from red_package_goods rpd inner JOIN ${goodsTable} dgi
+    ON rpd.goods_id = dgi.goods_id
+    where rpd.rpf_id=#{rpfId} and rpd.rpf_type=#{rpfType}
+      <if test="goodsName!=null and goodsName!=''">
+        and dgi.goods_name=#{goodsName}
+      </if>
+      <if test="goodsId!=null">
+        and dgi.goods_id=#{goodsId}
+      </if>
+      <if test="state!=null">
+        and dgi.state=#{state}
+      </if>
+    ) tab
+  </select>
+  
+  <select id="queryUsingGoods" resultMap="goodsInfoMap">
+    SELECT dgi.* from
+    (SELECT rpg.goods_id from red_package_goods rpg INNER JOIN red_package_field rpf  on rpg.rpf_id = rpf.id group by rpg.goods_id limit #{skip},#{rows}) tab1
+    INNER JOIN ${goodsTable} dgi
+    on tab1.goods_id = dgi.goods_id
+  </select>
+
+</mapper>
