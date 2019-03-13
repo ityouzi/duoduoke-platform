@@ -11,7 +11,7 @@ fi
 
 
 
-nohup java $JAVA_OPTS $JAVA_DEBUG_OPTS   -jar   consumer.jar > stdout.log 2>&1 &
+nohup java $JAVA_OPTS $JAVA_DEBUG_OPTS   -jar   duoduoke-web.jar > stdout.log 2>&1 &
 
 echo $! > tpid
 echo Start Success!

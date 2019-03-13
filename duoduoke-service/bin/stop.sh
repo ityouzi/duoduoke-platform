@@ -3,7 +3,7 @@
 #!/bin/sh
 
 
-APP_NAME=producer
+APP_NAME=duoduoke-service
 
 tpid=`ps -ef|grep java |grep $APP_NAME|grep -v grep|grep -v kill|awk '{print $2}'`
 if [ -z "$tpid" ]; then

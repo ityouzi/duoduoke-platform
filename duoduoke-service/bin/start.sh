@@ -10,7 +10,7 @@ if [[ "$1" = "debug" ]]; then
 fi
 
 
-nohup java $JAVA_OPTS $JAVA_DEBUG_OPTS   -jar   producer.jar > stdout.log 2>&1 &
+nohup java $JAVA_OPTS $JAVA_DEBUG_OPTS   -jar   duoduoke-service.jar > stdout.log 2>&1 &
 
 echo $! > tpid
 echo Start Success!
