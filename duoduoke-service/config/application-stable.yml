@@ -12,6 +12,8 @@ dubbo:
   protocol:
     name: dubbo
     port: -1
+    serialization: json
+
   registry:
     address: zookeeper://127.0.0.1:${embedded.zookeeper.port}
     password: fulihui.com
