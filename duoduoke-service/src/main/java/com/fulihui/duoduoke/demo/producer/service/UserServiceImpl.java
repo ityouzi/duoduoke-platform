@@ -16,19 +16,20 @@ import com.fulihui.duoduoke.demo.api.request.UserQueryRequest;
 import com.fulihui.duoduoke.demo.api.request.UserUpdateRequest;
 import com.fulihui.duoduoke.demo.api.request.UserWechatLoginRequest;
 import com.fulihui.duoduoke.demo.api.util.Collections;
+import com.fulihui.duoduoke.demo.common.sequence.ConcurrentSequence;
+import com.fulihui.duoduoke.demo.common.util.BeanConvUtil;
+import com.fulihui.duoduoke.demo.common.util.RedisUtils;
+import com.fulihui.duoduoke.demo.producer.dal.dao.ExtUserDetailMapper;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.UserDetail;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.UserDetailAdmin;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.UserDetailExample;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.WechatAuth;
+import com.fulihui.duoduoke.demo.producer.lock.DistributedLock;
 import com.fulihui.duoduoke.demo.producer.manager.PassiveTaskDefinition;
 import com.fulihui.duoduoke.demo.producer.manager.UserFansManager;
 import com.fulihui.duoduoke.demo.producer.model.UserModel;
 import com.fulihui.duoduoke.demo.producer.repository.UserRepository;
 import com.fulihui.duoduoke.demo.producer.repository.WechatAuthRepository;
-import com.fulihui.duoduoke.demo.producer.dal.dao.ExtUserDetailMapper;
-import com.fulihui.duoduoke.demo.common.sequence.ConcurrentSequence;
-import com.fulihui.duoduoke.demo.common.util.BeanConvUtil;
-import com.fulihui.duoduoke.demo.common.util.RedisUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.dubbo.config.annotation.Service;
@@ -43,6 +44,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -79,34 +81,51 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ExtUserDetailMapper extUserDetailMapper;
 
+    @Resource
+    DistributedLock zookeeperDistributedLock;
+
     @Override
     @Transactional
     public TSingleResult<UserDTO> wechatLogin(UserWechatLoginRequest request) {
         ServiceAssert.notNull(request, Errors.Commons.REQUEST_PARAMETER_ERROR);
         ServiceAssert.notBlank(request.getUserType(), Errors.Commons.REQUEST_PARAMETER_ERROR);
-        UserTypeEnum userType = EnumUtil.queryByCode(request.getUserType(), UserTypeEnum.class);
-        WechatAuthDTO weChat = wechatRepository.queryByOpenId(request.getOpenId(), userType);
-        Date date = new Date();
-        UserDTO res;
-        // 已注册
-        if (weChat != null) {
-            res = userRepository.queryByUserId(weChat.getUserId());
-            if (res == null) {
-                String userId = takeUser(request, date, weChat.getUserId());
-                res = userRepository.queryByUserId(userId);
+
+        String key = "wechatLogin_userInfo_" + request.getOpenId();
+        boolean lockResult = zookeeperDistributedLock.lock(key, 3000);
+        LOGGER.info(lockResult ? "order_sn_userInfo_.get lock success : " + key
+                : "get lock failed : " + key);
+        UserDTO res = null;
+        if (lockResult) {
+            try {
+                UserTypeEnum userType = EnumUtil.queryByCode(request.getUserType(), UserTypeEnum.class);
+                WechatAuthDTO weChat = wechatRepository.queryByOpenId(request.getOpenId(), userType);
+                Date date = new Date();
+                // 已注册
+                if (weChat != null) {
+                    res = userRepository.queryByUserId(weChat.getUserId());
+                    if (res == null) {
+                        String userId = takeUser(request, date, weChat.getUserId());
+                        res = userRepository.queryByUserId(userId);
+                    }
+                } else { // 未注册
+                    String userId = takeUser(request, date, String.valueOf(concurrentSequence.nextId()));
+                    WechatAuth wRecord = new WechatAuth();
+                    wRecord.setOpenId(request.getOpenId());
+                    wRecord.setAppid(request.getAppid());
+                    wRecord.setUnionid(request.getUnionid());
+                    wRecord.setUserId(userId);
+                    wRecord.setUserType(userType.getCode());
+                    wechatRepository.insert(wRecord, null);
+                    res = userRepository.queryByUserId(userId);
+                    //用户第一次打开小程序
+                    recordUserBehaviors(res, TemplateSendTaskBehaviorsEnum.NEW_TOADY, userType);
+                }
+            } catch (Exception e) {
+                LOGGER.error(e.getMessage(), e);
+            } finally {
+                zookeeperDistributedLock.releaseLock(key);
+                LOGGER.info("wechatLogin_userInfo_.release lock : " + key);
             }
-        } else { // 未注册
-            String userId = takeUser(request, date, String.valueOf(concurrentSequence.nextId()));
-            WechatAuth wRecord = new WechatAuth();
-            wRecord.setOpenId(request.getOpenId());
-            wRecord.setAppid(request.getAppid());
-            wRecord.setUnionid(request.getUnionid());
-            wRecord.setUserId(userId);
-            wRecord.setUserType(userType.getCode());
-            wechatRepository.insert(wRecord, null);
-            res = userRepository.queryByUserId(userId);
-            //用户第一次打开小程序
-            recordUserBehaviors(res, TemplateSendTaskBehaviorsEnum.NEW_TOADY, userType);
         }
         return ResultBuilder.succTSingle(res);
     }
