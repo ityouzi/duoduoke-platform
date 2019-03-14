@@ -117,8 +117,7 @@ public class UserServiceImpl implements UserService {
                     wRecord.setUserType(userType.getCode());
                     wechatRepository.insert(wRecord, null);
                     res = userRepository.queryByUserId(userId);
-                    //用户第一次打开小程序
-                    recordUserBehaviors(res, TemplateSendTaskBehaviorsEnum.NEW_TOADY, userType);
+
                 }
             } catch (Exception e) {
                 LOGGER.error(e.getMessage(), e);
