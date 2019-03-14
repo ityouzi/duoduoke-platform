@@ -1,13 +1,14 @@
 package com.fulihui.duoduoke.demo.web.security;
 
 
-import com.fulihui.duoduoke.demo.api.api.UserService;
-import com.fulihui.duoduoke.demo.api.api.WechatAuthService;
 import com.fulihui.duoduoke.demo.api.dto.UserDTO;
 import com.fulihui.duoduoke.demo.api.dto.WechatAuthDTO;
 import com.fulihui.duoduoke.demo.api.enums.UserTypeEnum;
+import com.fulihui.duoduoke.demo.web.integration.UserServiceClient;
+import com.fulihui.duoduoke.demo.web.integration.WechatAuthServiceClient;
 import com.fulihui.duoduoke.demo.web.security.common.AuthUserModel;
 import org.near.servicesupport.result.TSingleResult;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,15 +23,17 @@ import static org.near.servicesupport.util.ServiceResultUtil.checkResult;
 @Service
 @Order(1)
 public class UserDetailsServiceImpl implements UserDetailsService {
-
+    @Autowired
+    UserServiceClient userServiceClient;
+    @Autowired
+    WechatAuthServiceClient wechatAuthServiceClient;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        UserService bean = ApplicationUtil.applicationContext.getBean(UserService.class);
 
         //查询主体信息
-        UserDTO user = bean.queryByUserId(username).getValue();
+        UserDTO user = userServiceClient.queryByUserId(username).getValue();
         if (user == null) {
             throw new UsernameNotFoundException(
                     String.format("No user found with username '%s'.", username));
@@ -41,7 +44,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         model.setUserId(user.getUserId());
         try {
             //查询授权信息
-            TSingleResult<WechatAuthDTO> result = ApplicationUtil.applicationContext.getBean(WechatAuthService.class).queryByUserId(user.getUserId(),
+            TSingleResult<WechatAuthDTO> result = wechatAuthServiceClient.queryByUserId(user.getUserId(),
                     UserTypeEnum.MINI_USER);
             checkResult(result);
             if (result.getValue() != null) {
