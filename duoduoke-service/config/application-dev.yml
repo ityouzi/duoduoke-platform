@@ -44,6 +44,10 @@ spring:
       max-active: 100
       # 连接池最大阻塞等待时间（使用负值表示没有限制）
       max-wait: -1
+
+  lock:
+    zk:
+      serverLists: 127.0.0.1:2181
 server:
   port: 8081
 
