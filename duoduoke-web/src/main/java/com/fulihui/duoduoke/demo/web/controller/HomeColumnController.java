@@ -64,7 +64,6 @@ public class HomeColumnController {
             try {
                 HomeColumnRequest request = new HomeColumnRequest();
                 TMultiResult<HomeColumnDTO> result = homeColumnService.queryPage(request);
-                System.out.println(result);
                 checkResult(result);
                 list = result.getValues().stream().map(item -> {
                     HomeColumnVO vo = new HomeColumnVO();

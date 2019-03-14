@@ -162,6 +162,5 @@ class A {
         List list = Lists.newArrayList(a1, a2, a3, a4, a5, a6, a7);
         Object o = JSON.toJSON(list);
         System.out.println(o);
-        System.out.println(Integer.MAX_VALUE);
     }
 }

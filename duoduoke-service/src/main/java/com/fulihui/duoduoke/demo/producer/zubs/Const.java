@@ -42,11 +42,4 @@ public class Const {
         }
     }
 
-    public static void main(String[] args) {
-        Date now = new Date();
-        System.out.println(DateUtils.formatNewFormat(CHECK_TIME));
-        if (now.after(CHECK_TIME)) {
-            System.out.println(1);
-        }
-    }
 }
