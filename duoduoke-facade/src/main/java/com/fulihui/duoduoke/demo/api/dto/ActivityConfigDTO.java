@@ -2,6 +2,7 @@ package com.fulihui.duoduoke.demo.api.dto;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
+import org.near.toolkit.model.ToString;
 
 import java.util.Date;
 
@@ -10,7 +11,7 @@ import java.util.Date;
  * @date: 2018/10/15 12:33
  */
 @Data
-public class ActivityConfigDTO {
+public class ActivityConfigDTO extends ToString {
 
     /**
      * 标识列
@@ -59,14 +60,15 @@ public class ActivityConfigDTO {
 
     /**
      * 获取扩展字段的泛型值
+     *
      * @param <T>
      * @return
      */
     public <T> T getExtendObject(Class<T> classType) {
         if (classType == String.class) {
-            return (T)extend;
-        }else {
-            return (T)JSONObject.parseObject(extend,classType);
+            return (T) extend;
+        } else {
+            return (T) JSONObject.parseObject(extend, classType);
         }
     }
 }
