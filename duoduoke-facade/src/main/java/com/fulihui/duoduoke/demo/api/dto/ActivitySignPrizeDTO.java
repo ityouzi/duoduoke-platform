@@ -1,6 +1,7 @@
 package com.fulihui.duoduoke.demo.api.dto;
 
 import lombok.Data;
+import org.near.toolkit.model.ToString;
 
 import java.util.Date;
 
@@ -9,7 +10,7 @@ import java.util.Date;
  * @date: 2018/10/15 19:19
  */
 @Data
-public class ActivitySignPrizeDTO {
+public class ActivitySignPrizeDTO extends ToString {
 
     /**
      * 主键
@@ -54,11 +55,11 @@ public class ActivitySignPrizeDTO {
     /**
      * 创建时间
      */
-    private Date    gmtCreate;
+    private Date gmtCreate;
 
     /**
      * 修改时间
      */
-    private Date    gmtModified;
+    private Date gmtModified;
 
 }
