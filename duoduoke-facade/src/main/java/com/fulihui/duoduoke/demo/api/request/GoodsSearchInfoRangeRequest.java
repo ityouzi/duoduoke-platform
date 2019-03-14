@@ -1,13 +1,14 @@
 package com.fulihui.duoduoke.demo.api.request;
 
 import lombok.Data;
+import org.near.toolkit.model.ToString;
 
 /**
  * @author: JY
  * @date: 2018/9/13 16:40
  */
 @Data
-public class GoodsSearchInfoRangeRequest {
+public class GoodsSearchInfoRangeRequest extends ToString {
 
     //如果左区间不限制，range_from传空就行，右区间不限制，range_to传空就行
     private int range_to;
