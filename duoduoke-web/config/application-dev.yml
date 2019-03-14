@@ -106,7 +106,7 @@ dubbo:
   consumer:
     version: 1.0.0
     check: false
-    timeout: 10000
+    timeout: 50000
     validation: true
 
 server:
