@@ -14,81 +14,81 @@ import java.io.Serializable;
 @Component
 @Setter
 @Getter
-@ConfigurationProperties(prefix = "duoduoke.demo.producer")
+@ConfigurationProperties(prefix = "duoduoke")
 public class DuoDuoKeConfig implements Serializable {
 
     private static final long serialVersionUID = 3180772229513818514L;
     /**
      * client_id：
      */
-    private String            clientId;
+    private String clientId;
 
     /**
      * client_secret
      */
-    private String            clientSecret;
+    private String clientSecret;
 
     /**
      * 微信小程序appid
      */
 
-    private String            miniAppid;
+    private String miniAppid;
 
     /**
      * 微信小程序appSecret
      */
 
-    private String            miniAppSecret;
+    private String miniAppSecret;
 
     /**
      * authUrl
      */
-    private String            authUrl;
+    private String authUrl;
 
     /**
      * templateUrl
      */
-    private String            templateUrl;
+    private String templateUrl;
 
     /**
      * tokenUrl
      */
-    private String            tokenUrl;
+    private String tokenUrl;
 
     /**
      * 微信商户平台商户id
      */
-    private String            mchid;
+    private String mchid;
 
     /**
      * 微信商户平台转账证书文件夹地址
      */
-    private String            certFile;
+    private String certFile;
     /**
      * zk 地址
      */
-    private String            zkAddress;
+    private String zkAddress;
 
-    private String            minipage;
+    private String minipage;
 
-    private String            miniProductPage;
+    private String miniProductPage;
 
-    private String            duoAuthCallBackUrl;
+    private String duoAuthCallBackUrl;
 
-    private String            duoTokenUrl;
-
-    /**
-     * 微信公众号appId
-     */
-    private String            wxPnAppId;
+    private String duoTokenUrl;
 
     /**
      * 微信公众号appId
      */
-    private String            wxPnAppSecret;
+    private String wxPnAppId;
+
+    /**
+     * 微信公众号appId
+     */
+    private String wxPnAppSecret;
     /**
      * 微信公众号授权回调地址
      */
-    private String            wxPnCallbackUrl;
+    private String wxPnCallbackUrl;
 
 }
