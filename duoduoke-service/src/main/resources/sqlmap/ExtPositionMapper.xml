@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fulihui.duoduoke.demo.producer.dal.dao.ExtPositionMapper">
+  <resultMap id="BaseResultMap" type="com.fulihui.duoduoke.demo.producer.dal.dataobj.Position">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="position_code" jdbcType="VARCHAR" property="positionCode" />
+    <result column="position_name" jdbcType="VARCHAR" property="positionName" />
+    <result column="module_code" jdbcType="VARCHAR" property="moduleCode" />
+    <result column="module_name" jdbcType="VARCHAR" property="moduleName" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, position_code, position_name, module_code, module_name, gmt_create, gmt_modified
+  </sql>
+
+  <select id="selectByPosition" parameterType="com.fulihui.duoduoke.demo.producer.model.PositionAddSelectModel" resultType="java.lang.Long">
+    select
+      id
+    from position
+    where  position_code =#{postionCode} and module_code = #{moduleCode}
+  </select>
+
+</mapper>

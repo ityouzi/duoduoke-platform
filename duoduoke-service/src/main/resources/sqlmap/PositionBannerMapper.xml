@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fulihui.duoduoke.demo.producer.dal.dao.PositionBannerMapper">
+  <resultMap id="BaseResultMap" type="com.fulihui.duoduoke.demo.producer.dal.dataobj.PositionBanner">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="position_code" jdbcType="VARCHAR" property="positionCode" />
+    <result column="position_id" jdbcType="BIGINT" property="positionId" />
+    <result column="banner_id" jdbcType="BIGINT" property="bannerId" />
+    <result column="param_json" jdbcType="VARCHAR" property="paramJson" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="order_by" jdbcType="INTEGER" property="orderBy" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, position_code, position_id, banner_id, param_json, status, order_by, gmt_create, 
+    gmt_modified, start_time, end_time
+  </sql>
+  <select id="selectByExample" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.PositionBannerExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from position_banner
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from position_banner
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from position_banner
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.PositionBannerExample">
+    delete from position_banner
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.PositionBanner" useGeneratedKeys="true">
+    insert into position_banner (position_code, position_id, banner_id, 
+      param_json, status, order_by, 
+      gmt_create, gmt_modified, start_time, 
+      end_time)
+    values (#{positionCode,jdbcType=VARCHAR}, #{positionId,jdbcType=BIGINT}, #{bannerId,jdbcType=BIGINT}, 
+      #{paramJson,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{orderBy,jdbcType=INTEGER}, 
+      #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{startTime,jdbcType=TIMESTAMP}, 
+      #{endTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.PositionBanner" useGeneratedKeys="true">
+    insert into position_banner
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="positionCode != null">
+        position_code,
+      </if>
+      <if test="positionId != null">
+        position_id,
+      </if>
+      <if test="bannerId != null">
+        banner_id,
+      </if>
+      <if test="paramJson != null">
+        param_json,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="orderBy != null">
+        order_by,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="positionCode != null">
+        #{positionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="positionId != null">
+        #{positionId,jdbcType=BIGINT},
+      </if>
+      <if test="bannerId != null">
+        #{bannerId,jdbcType=BIGINT},
+      </if>
+      <if test="paramJson != null">
+        #{paramJson,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="orderBy != null">
+        #{orderBy,jdbcType=INTEGER},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.PositionBannerExample" resultType="java.lang.Long">
+    select count(*) from position_banner
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update position_banner
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.positionCode != null">
+        position_code = #{record.positionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.positionId != null">
+        position_id = #{record.positionId,jdbcType=BIGINT},
+      </if>
+      <if test="record.bannerId != null">
+        banner_id = #{record.bannerId,jdbcType=BIGINT},
+      </if>
+      <if test="record.paramJson != null">
+        param_json = #{record.paramJson,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderBy != null">
+        order_by = #{record.orderBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.gmtCreate != null">
+        gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null">
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.startTime != null">
+        start_time = #{record.startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endTime != null">
+        end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update position_banner
+    set id = #{record.id,jdbcType=BIGINT},
+      position_code = #{record.positionCode,jdbcType=VARCHAR},
+      position_id = #{record.positionId,jdbcType=BIGINT},
+      banner_id = #{record.bannerId,jdbcType=BIGINT},
+      param_json = #{record.paramJson,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      order_by = #{record.orderBy,jdbcType=INTEGER},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      start_time = #{record.startTime,jdbcType=TIMESTAMP},
+      end_time = #{record.endTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.PositionBanner">
+    update position_banner
+    <set>
+      <if test="positionCode != null">
+        position_code = #{positionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="positionId != null">
+        position_id = #{positionId,jdbcType=BIGINT},
+      </if>
+      <if test="bannerId != null">
+        banner_id = #{bannerId,jdbcType=BIGINT},
+      </if>
+      <if test="paramJson != null">
+        param_json = #{paramJson,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="orderBy != null">
+        order_by = #{orderBy,jdbcType=INTEGER},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.PositionBanner">
+    update position_banner
+    set position_code = #{positionCode,jdbcType=VARCHAR},
+      position_id = #{positionId,jdbcType=BIGINT},
+      banner_id = #{bannerId,jdbcType=BIGINT},
+      param_json = #{paramJson,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      order_by = #{orderBy,jdbcType=INTEGER},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
