@@ -20,7 +20,7 @@ import com.fulihui.duoduoke.demo.producer.util.Consts;
 import com.fulihui.duoduoke.demo.common.config.DuoDuoKeConfig;
 import com.fulihui.duoduoke.demo.common.config.RedisContent;
 import com.fulihui.duoduoke.demo.common.util.RedisUtils;
-import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.DuoduoHttpClient;
+import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.DuoHttpClient;
 import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.request.DuoGoodsSearchRequest;
 import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.DuoGoodsSearchResult;
 import com.google.common.collect.Lists;
@@ -81,7 +81,7 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
      * The Duoduo http client.
      */
     @Autowired
-    DuoduoHttpClient duoduoHttpClient;
+    DuoHttpClient duoHttpClient;
     /**
      * The Good search record mapper.
      */

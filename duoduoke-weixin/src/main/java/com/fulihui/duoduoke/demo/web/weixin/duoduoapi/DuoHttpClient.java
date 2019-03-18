@@ -8,7 +8,7 @@ import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.DuoResult;
  * @Author: xiaoming
  * @version: v 0.1 2018/7/6 0006 16:04
  */
-public interface DuoduoHttpClient {
+public interface DuoHttpClient {
 
     /**
      * 调用服务

@@ -20,7 +20,7 @@ import com.fulihui.duoduoke.demo.producer.util.SignUtil;
 import com.fulihui.duoduoke.demo.common.config.DuoDuoKeConfig;
 import com.fulihui.duoduoke.demo.common.config.RedisContent;
 import com.fulihui.duoduoke.demo.common.util.RedisUtils;
-import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.DuoduoHttpClient;
+import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.DuoHttpClient;
 import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.request.DuoGoodsDetailRequest;
 import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.request.DuoGoodsRecommendRequest;
 import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.request.DuoGoodsRequest;
@@ -52,7 +52,7 @@ public class DuoduoGoodsManagerImpl implements DuoduoGoodsManager {
     @Autowired
     RedisUtils redisUtils;
     @Autowired
-    private DuoduoHttpClient duoduoHttpClient;
+    private DuoHttpClient duoHttpClient;
     @Autowired
     private GoodsCatInfoRepository goodsCatInfoRepository;
     @Autowired
@@ -308,7 +308,7 @@ public class DuoduoGoodsManagerImpl implements DuoduoGoodsManager {
         String sign = SignUtil
                 .genServiceSign(ClassFieldsUtil.obj2StrVal(request), stringObjectMap, duoDuoKeConfig.getClientSecret());
         request.setSign(sign);
-        DuoGoodsRecommendResult duoduoGoodsRecommendResult = duoduoHttpClient.invokeService(request);
+        DuoGoodsRecommendResult duoduoGoodsRecommendResult = duoHttpClient.invokeService(request);
         if (duoduoGoodsRecommendResult.isSuccess()) {
             List<DuoGoodsApiResult> list = duoduoGoodsRecommendResult.getList();
             for (DuoGoodsApiResult apiResult : list) {
@@ -347,7 +347,7 @@ public class DuoduoGoodsManagerImpl implements DuoduoGoodsManager {
         String sign = SignUtil.genServiceSign(ClassFieldsUtil.obj2StrVal(request), stringObjectMap,
                 duoDuoKeConfig.getClientSecret());
         request.setSign(sign);
-        DuoGoodsResult duoduoGoodsResult = duoduoHttpClient.invokeService(request);
+        DuoGoodsResult duoduoGoodsResult = duoHttpClient.invokeService(request);
 
         List<DuoduoGoodsInfo> infoList = null;
         int count = 0;
@@ -510,7 +510,7 @@ public class DuoduoGoodsManagerImpl implements DuoduoGoodsManager {
         String sign = SignUtil.genServiceSign(ClassFieldsUtil.obj2StrVal(request), stringObjectMap,
                 duoDuoKeConfig.getClientSecret());
         request.setSign(sign);
-        DuoGoodsDetailResult duoduoGoodsResult = duoduoHttpClient.invokeService(request);
+        DuoGoodsDetailResult duoduoGoodsResult = duoHttpClient.invokeService(request);
         return duoduoGoodsResult;
     }
 
@@ -701,7 +701,7 @@ public class DuoduoGoodsManagerImpl implements DuoduoGoodsManager {
         String sign = SignUtil.genServiceSign(ClassFieldsUtil.obj2StrVal(request), stringObjectMap,
                 duoDuoKeConfig.getClientSecret());
         request.setSign(sign);
-        DuoGoodsResult duoduoGoodsResult = duoduoHttpClient.invokeService(request);
+        DuoGoodsResult duoduoGoodsResult = duoHttpClient.invokeService(request);
         return duoduoGoodsResult;
     }
 

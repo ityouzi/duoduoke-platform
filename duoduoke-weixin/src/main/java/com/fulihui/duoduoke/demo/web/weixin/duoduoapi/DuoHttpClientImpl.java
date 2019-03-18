@@ -18,7 +18,7 @@ import com.fulihui.duoduoke.demo.web.weixin.weixin.http.HttpClientUtilRequest;
  * @version: v 0.1 2018/7/6 0006 16:04
  */
 @Component
-public class DuoduoHttpClientImpl implements DuoduoHttpClient {
+public class DuoHttpClientImpl implements DuoHttpClient {
 
 
     @Override

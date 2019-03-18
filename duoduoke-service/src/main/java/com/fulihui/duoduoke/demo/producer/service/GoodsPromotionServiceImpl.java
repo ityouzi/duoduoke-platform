@@ -7,7 +7,7 @@ import com.fulihui.duoduoke.demo.api.request.GoodsPromotionGenerateRequest;
 import com.fulihui.duoduoke.demo.api.response.GoodsPromotionUrlResponse;
 import com.fulihui.duoduoke.demo.producer.util.ClassFieldsUtil;
 import com.fulihui.duoduoke.demo.common.config.DuoDuoKeConfig;
-import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.DuoduoHttpClient;
+import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.DuoHttpClient;
 import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.request.DuoGoodsGenerateRequest;
 import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.GoodsPromotionUrlGenerateResult;
 import org.apache.dubbo.config.annotation.Service;
@@ -35,7 +35,7 @@ import static org.near.servicesupport.util.ServiceAssert.notNull;
 public class GoodsPromotionServiceImpl implements GoodsPromotionService {
 
     @Autowired
-    DuoduoHttpClient duoduoHttpClient;
+    DuoHttpClient duoHttpClient;
     @Autowired
     DuoDuoKeConfig duoDuoKeConfig;
 
@@ -63,7 +63,7 @@ public class GoodsPromotionServiceImpl implements GoodsPromotionService {
         String sign = genServiceSign(ClassFieldsUtil.obj2StrVal(generate), strValMap,
                 duoDuoKeConfig.getClientSecret());
         generate.setSign(sign);
-        GoodsPromotionUrlGenerateResult result = duoduoHttpClient.invokeService(generate);
+        GoodsPromotionUrlGenerateResult result = duoHttpClient.invokeService(generate);
         List<GoodsPromotionUrlResponse> urlResponses = getGoodsPromotionUrlResponses(result);
         return ResultBuilder.succTMulti(urlResponses);
     }
