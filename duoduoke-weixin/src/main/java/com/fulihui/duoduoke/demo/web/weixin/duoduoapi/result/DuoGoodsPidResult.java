@@ -8,7 +8,7 @@ import org.near.toolkit.model.ToString;
  * @author lizhi
  * @date 2018-7-9
  */
-public class DuoduoGoodsPidResult extends DuoduoJsonResult {
+public class DuoGoodsPidResult extends DuoJsonResult {
 
     private static final long serialVersionUID = 8792517084849740241L;
     /**

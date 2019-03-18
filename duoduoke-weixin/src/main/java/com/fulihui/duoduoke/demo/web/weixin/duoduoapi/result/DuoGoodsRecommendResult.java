@@ -5,10 +5,10 @@ import java.util.List;
 /**
  * Created by lizhi on 2018/7/6 0006.
  */
-public class DuoduoGoodsRecommendResult extends DuoduoJsonResult{
+public class DuoGoodsRecommendResult extends DuoJsonResult {
 
 
-    private List<DuoduoGoodsApiResult> list;
+    private List<DuoGoodsApiResult> list;
 
     private String total;
 
@@ -18,7 +18,7 @@ public class DuoduoGoodsRecommendResult extends DuoduoJsonResult{
      *
      * @return property value of list
      */
-    public List<DuoduoGoodsApiResult> getList() {
+    public List<DuoGoodsApiResult> getList() {
         return list;
     }
 
@@ -27,7 +27,7 @@ public class DuoduoGoodsRecommendResult extends DuoduoJsonResult{
      *
      * @param list value to be assigned to property list
      */
-    public void setList(List<DuoduoGoodsApiResult> list) {
+    public void setList(List<DuoGoodsApiResult> list) {
         this.list = list;
     }
 

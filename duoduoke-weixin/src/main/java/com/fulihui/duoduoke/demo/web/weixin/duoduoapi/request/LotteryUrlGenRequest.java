@@ -2,11 +2,15 @@ package com.fulihui.duoduoke.demo.web.weixin.duoduoapi.request;
 
 import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.LotteryUrlGenResult;
 import com.fulihui.duoduoke.demo.web.weixin.weixin.http.HttpMethodEnum;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Created by lizhi on 2018-12-06.
  */
-public class LotteryUrlGenRequest extends DuoduoJsonRequest<LotteryUrlGenResult> {
+@Setter
+@Getter
+public class LotteryUrlGenRequest extends DuoJsonRequest<LotteryUrlGenResult> {
 
     @Override
     protected void childParam() {

@@ -7,7 +7,7 @@ import org.near.toolkit.model.ToString;
 /**
  * Created by lizhi on 2018-7-9.
  */
-public class DuoduoGoodsSearchResult extends DuoduoJsonResult {
+public class DuoGoodsSearchResult extends DuoJsonResult {
 
     private static final long serialVersionUID = 587531104576055239L;
     /**

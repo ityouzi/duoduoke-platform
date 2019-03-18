@@ -2,7 +2,7 @@ package com.fulihui.duoduoke.demo.web.weixin.duoduoapi.request;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.DuoduoGoodsResult;
+import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.DuoGoodsResult;
 import com.fulihui.duoduoke.demo.web.weixin.weixin.http.HttpMethodEnum;
 
 /**
@@ -10,7 +10,7 @@ import com.fulihui.duoduoke.demo.web.weixin.weixin.http.HttpMethodEnum;
  * @Author: xiaoming
  * @version: v 0.1 2018/7/7 0007 13:54
  */
-public class DuoduoGoodsRequest extends DuoduoJsonRequest<DuoduoGoodsResult> {
+public class DuoGoodsRequest extends DuoJsonRequest<DuoGoodsResult> {
 
     private String keyword;
 
@@ -57,16 +57,16 @@ public class DuoduoGoodsRequest extends DuoduoJsonRequest<DuoduoGoodsResult> {
     }
 
     @Override
-    public DuoduoGoodsResult parseResult(String respStr) {
-        DuoduoGoodsResult result = new DuoduoGoodsResult();
+    public DuoGoodsResult parseResult(String respStr) {
+        DuoGoodsResult result;
         JSONObject jsonObject = JSONObject.parseObject(respStr);
         JSONObject personObject = jsonObject.getJSONObject("goods_search_response");
         if(personObject == null){
             JSONObject errorObject = jsonObject.getJSONObject("error_response");
-            result = JSON.parseObject(errorObject.toString(), DuoduoGoodsResult.class);
+            result = JSON.parseObject(errorObject.toString(), DuoGoodsResult.class);
             return result;
         }else {
-            result = JSON.parseObject(personObject.toString(), DuoduoGoodsResult.class);
+            result = JSON.parseObject(personObject.toString(), DuoGoodsResult.class);
             checkResult(result);
             return result;
         }

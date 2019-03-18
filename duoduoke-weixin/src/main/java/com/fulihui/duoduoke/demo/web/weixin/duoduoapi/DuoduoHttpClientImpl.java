@@ -7,8 +7,8 @@ import java.util.Map;
 import org.near.toolkit.common.StringUtil;
 import org.springframework.stereotype.Component;
 
-import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.request.DuoduoRequest;
-import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.DuoduoResult;
+import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.request.DuoRequest;
+import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.DuoResult;
 import com.fulihui.duoduoke.demo.web.weixin.weixin.http.HttpClientUtil;
 import com.fulihui.duoduoke.demo.web.weixin.weixin.http.HttpClientUtilRequest;
 
@@ -22,7 +22,7 @@ public class DuoduoHttpClientImpl implements DuoduoHttpClient {
 
 
     @Override
-    public <T extends DuoduoResult> T invokeService(DuoduoRequest<T> request) {
+    public <T extends DuoResult> T invokeService(DuoRequest<T> request) {
         if (StringUtil.isBlank(request.service())) {
             throw new IllegalArgumentException("service can not be blank");
         }
@@ -57,7 +57,7 @@ public class DuoduoHttpClientImpl implements DuoduoHttpClient {
      * @see
      */
     @Override
-    public String assembleURL(DuoduoRequest<String> request) {
+    public String assembleURL(DuoRequest<String> request) {
         if (StringUtil.isBlank(request.service())) {
             throw new IllegalArgumentException("service can not be blank");
         }

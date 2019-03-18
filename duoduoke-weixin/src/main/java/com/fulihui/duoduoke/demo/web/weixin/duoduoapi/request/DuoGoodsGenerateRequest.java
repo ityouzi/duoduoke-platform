@@ -15,7 +15,7 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-public class DuoduoGoodsGenerateRequest extends DuoduoJsonRequest<GoodsPromotionUrlGenerateResult> {
+public class DuoGoodsGenerateRequest extends DuoJsonRequest<GoodsPromotionUrlGenerateResult> {
 
     private static final long serialVersionUID = 2280213285246906402L;
     /**

@@ -1,7 +1,7 @@
 package com.fulihui.duoduoke.demo.web.weixin.duoduoapi.request;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.DuoduoCmsPromUrlGenerateResult;
+import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.DuoCmsPromUrlGenerateResult;
 import com.fulihui.duoduoke.demo.web.weixin.weixin.http.HttpMethodEnum;
 
 import lombok.Getter;
@@ -14,8 +14,8 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-public class DuoduoCmsPromUrlGenerateRequest extends
-                                             DuoduoJsonRequest<DuoduoCmsPromUrlGenerateResult> {
+public class DuoCmsPromUrlGenerateRequest extends
+        DuoJsonRequest<DuoCmsPromUrlGenerateResult> {
     private static final long serialVersionUID = 1651503032322651393L;
     /**
      * 非必填 是否生成短链接。true-是，false-否，默认false
@@ -87,9 +87,9 @@ public class DuoduoCmsPromUrlGenerateRequest extends
     }
 
     @Override
-    public DuoduoCmsPromUrlGenerateResult parseResult(String respStr) {
-        DuoduoCmsPromUrlGenerateResult result = JSONObject.parseObject(respStr,
-            DuoduoCmsPromUrlGenerateResult.class);
+    public DuoCmsPromUrlGenerateResult parseResult(String respStr) {
+        DuoCmsPromUrlGenerateResult result = JSONObject.parseObject(respStr,
+            DuoCmsPromUrlGenerateResult.class);
         checkResult(result);
         return result;
     }

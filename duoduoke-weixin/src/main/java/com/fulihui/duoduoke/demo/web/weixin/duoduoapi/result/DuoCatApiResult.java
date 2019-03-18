@@ -5,7 +5,7 @@ import org.near.toolkit.model.ToString;
 /**
  * Created by lizhi on 2018/7/6 0006.
  */
-public class DuoduoCatApiResult extends ToString{
+public class DuoCatApiResult extends ToString{
 
     private String level;
 

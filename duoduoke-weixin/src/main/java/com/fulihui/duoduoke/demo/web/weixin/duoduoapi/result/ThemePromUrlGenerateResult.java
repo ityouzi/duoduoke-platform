@@ -9,7 +9,7 @@ import java.util.List;
  * @author lizhi
  * @date 2018-12-06
  */
-public class ThemePromUrlGenerateResult extends DuoduoJsonResult {
+public class ThemePromUrlGenerateResult extends DuoJsonResult {
     private static final long                     serialVersionUID = 7407789860621194121L;
 
     /**

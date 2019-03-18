@@ -8,7 +8,7 @@ import org.near.toolkit.model.ToString;
  * @author lizhi
  * @date 2018-7-8
  */
-public class OrderSnIncrementResult extends DuoduoJsonResult {
+public class OrderSnIncrementResult extends DuoJsonResult {
 
 
     /**

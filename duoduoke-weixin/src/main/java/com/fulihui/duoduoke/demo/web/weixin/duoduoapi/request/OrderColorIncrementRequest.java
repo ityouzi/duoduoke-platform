@@ -11,7 +11,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class OrderColorIncrementRequest extends DuoduoJsonRequest<OrderColorIncrementResult> {
+public class OrderColorIncrementRequest extends DuoJsonRequest<OrderColorIncrementResult> {
     private static final long serialVersionUID = -8966607925923725856L;
 
     /**

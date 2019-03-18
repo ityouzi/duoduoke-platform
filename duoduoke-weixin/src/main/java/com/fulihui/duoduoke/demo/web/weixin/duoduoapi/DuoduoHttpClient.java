@@ -1,7 +1,7 @@
 package com.fulihui.duoduoke.demo.web.weixin.duoduoapi;
 
-import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.request.DuoduoRequest;
-import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.DuoduoResult;
+import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.request.DuoRequest;
+import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.DuoResult;
 
 /**
  * @Description:
@@ -15,13 +15,13 @@ public interface DuoduoHttpClient {
      * @param request request
      * @return WeixinJsonResult
      */
-    <T extends DuoduoResult> T invokeService(DuoduoRequest<T> request);
+    <T extends DuoResult> T invokeService(DuoRequest<T> request);
 
     /**
      * 获取请求地址
      * @param request request
      * @return String
      */
-    String assembleURL(DuoduoRequest<String> request);
+    String assembleURL(DuoRequest<String> request);
 
 }

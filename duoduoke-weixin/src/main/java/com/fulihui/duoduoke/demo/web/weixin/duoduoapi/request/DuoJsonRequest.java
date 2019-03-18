@@ -5,14 +5,14 @@ import java.util.TreeMap;
 
 import org.near.toolkit.common.StringUtil;
 
-import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.DuoduoJsonResult;
+import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.DuoJsonResult;
 
 /**
  * @Description:
  * @Author: xiaoming
  * @version: v 0.1 2018/7/6 0006 16:08
  */
-public abstract class DuoduoJsonRequest<T> extends DuoduoRequest<T> {
+public abstract class DuoJsonRequest<T> extends DuoRequest<T> {
 
     private static final long serialVersionUID = 7676814609092840162L;
 
@@ -55,7 +55,7 @@ public abstract class DuoduoJsonRequest<T> extends DuoduoRequest<T> {
         }
     }
 
-    protected void checkResult(DuoduoJsonResult result) {
+    protected void checkResult(DuoJsonResult result) {
         result.setSuccess(StringUtil.isBlank(result.getError_code())
                 || StringUtil.isBlank(result.getError_msg()));
     }

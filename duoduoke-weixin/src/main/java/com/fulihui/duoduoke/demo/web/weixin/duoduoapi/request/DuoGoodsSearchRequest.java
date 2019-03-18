@@ -1,7 +1,7 @@
 package com.fulihui.duoduoke.demo.web.weixin.duoduoapi.request;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.DuoduoGoodsSearchResult;
+import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.DuoGoodsSearchResult;
 import com.fulihui.duoduoke.demo.web.weixin.weixin.http.HttpMethodEnum;
 
 import lombok.Getter;
@@ -15,7 +15,7 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-public class DuoduoGoodsSearchRequest extends DuoduoJsonRequest<DuoduoGoodsSearchResult> {
+public class DuoGoodsSearchRequest extends DuoJsonRequest<DuoGoodsSearchResult> {
 
     /**
      * 非必填
@@ -120,8 +120,8 @@ public class DuoduoGoodsSearchRequest extends DuoduoJsonRequest<DuoduoGoodsSearc
     }
 
     @Override
-    public DuoduoGoodsSearchResult parseResult(String respStr) {
-        DuoduoGoodsSearchResult result = JSONObject.parseObject(respStr, DuoduoGoodsSearchResult.class);
+    public DuoGoodsSearchResult parseResult(String respStr) {
+        DuoGoodsSearchResult result = JSONObject.parseObject(respStr, DuoGoodsSearchResult.class);
         checkResult(result);
         return result;
     }

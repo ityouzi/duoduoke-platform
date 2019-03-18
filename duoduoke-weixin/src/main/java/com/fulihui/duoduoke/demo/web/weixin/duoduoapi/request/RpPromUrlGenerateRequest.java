@@ -13,7 +13,7 @@ import lombok.Data;
  * @date 2018-12-06
  */
 @Data
-public class RpPromUrlGenerateRequest extends DuoduoJsonRequest<RpPromUrlGenerateResult> {
+public class RpPromUrlGenerateRequest extends DuoJsonRequest<RpPromUrlGenerateResult> {
     private static final long serialVersionUID = -8191004317304868808L;
     /**
      * 是否生成短链接。true-是，false-否，默认false

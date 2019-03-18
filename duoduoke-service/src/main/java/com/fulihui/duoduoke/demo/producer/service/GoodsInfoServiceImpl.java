@@ -15,15 +15,14 @@ import com.fulihui.duoduoke.demo.producer.manager.DuoduoGoodsManager;
 import com.fulihui.duoduoke.demo.producer.repository.DuoduoGoodsInfoRepository;
 import com.fulihui.duoduoke.demo.producer.dal.dao.GoodSearchRecordMapper;
 import com.fulihui.duoduoke.demo.producer.dal.dao.GoodsTabelMapper;
-import com.fulihui.duoduoke.demo.producer.dal.dataobj.*;
 import com.fulihui.duoduoke.demo.producer.util.ClassFieldsUtil;
 import com.fulihui.duoduoke.demo.producer.util.Consts;
 import com.fulihui.duoduoke.demo.common.config.DuoDuoKeConfig;
 import com.fulihui.duoduoke.demo.common.config.RedisContent;
 import com.fulihui.duoduoke.demo.common.util.RedisUtils;
 import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.DuoduoHttpClient;
-import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.request.DuoduoGoodsSearchRequest;
-import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.DuoduoGoodsSearchResult;
+import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.request.DuoGoodsSearchRequest;
+import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.DuoGoodsSearchResult;
 import com.google.common.collect.Lists;
 import org.apache.dubbo.config.annotation.Service;
 import org.apache.http.HttpEntity;
@@ -119,7 +118,7 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
 
         ServiceAssert.notNull(infoRequest, Errors.Commons.REQUEST_PARAMETER_ERROR);
         String millis = String.valueOf(System.currentTimeMillis());
-        DuoduoGoodsSearchRequest search = new DuoduoGoodsSearchRequest();
+        DuoGoodsSearchRequest search = new DuoGoodsSearchRequest();
         search.setType("pdd.ddk.goods.search");
         search.setClient_id(duoDuoKeConfig.getClientId());
         search.setTimestamp(millis);
@@ -188,15 +187,15 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
             String respStr = EntityUtils.toString(entity);
             LOGGER.debug("success Response: {}", respStr);
 
-            DuoduoGoodsSearchResult result = JSONObject.parseObject(respStr,
-                    DuoduoGoodsSearchResult.class);
+            DuoGoodsSearchResult result = JSONObject.parseObject(respStr,
+                    DuoGoodsSearchResult.class);
             boolean bl = (StringUtil.isBlank(result.getError_code())
                     || StringUtil.isBlank(result.getError_msg()));
-            DuoduoGoodsSearchResult.GoodsSearchResponseBean goodsSearchResponse = result
+            DuoGoodsSearchResult.GoodsSearchResponseBean goodsSearchResponse = result
                     .getGoods_search_response();
             if (goodsSearchResponse != null) {
                 count = goodsSearchResponse.getTotal_count();
-                List<DuoduoGoodsSearchResult.GoodsSearchResponseBean.GoodsListBean> goodsList = goodsSearchResponse
+                List<DuoGoodsSearchResult.GoodsSearchResponseBean.GoodsListBean> goodsList = goodsSearchResponse
                         .getGoods_list();
                 if (!isEmpty(goodsList)) {
                     collect = goodsList.stream().map(i -> {

@@ -8,7 +8,7 @@ import org.near.toolkit.model.ToString;
  * @author lizhi
  * @date 2018-7-8
  */
-public class GoodsPromotionUrlGenerateResult extends DuoduoJsonResult{
+public class GoodsPromotionUrlGenerateResult extends DuoJsonResult {
     /**
      * goods_promotion_url_generate_response : {"goods_promotion_url_list":[{"url":"http://m.hutaojie.com/xxx.html?goods_id=10060234&pid=81_1812886&t=8yOvLw9Qjf9MhoZd8MmOS457aKLZUvx_WWYosfUHsPE=","short_url":"http://apiv2.hutaojie.com/api/d/dCBnwc"}]}
      */

@@ -7,7 +7,7 @@ import java.util.List;
  * 生成红包推广链接
  * Created by lizhi on 2018-12-06.
  */
-public class RpPromUrlGenerateResult extends DuoduoJsonResult {
+public class RpPromUrlGenerateResult extends DuoJsonResult {
     private static final long                  serialVersionUID = -3046711033820289690L;
 
     /**

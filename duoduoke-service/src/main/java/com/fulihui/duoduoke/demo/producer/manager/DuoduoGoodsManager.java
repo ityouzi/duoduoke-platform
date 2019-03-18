@@ -6,8 +6,8 @@ import com.fulihui.duoduoke.demo.api.request.GoodsInfoRecommendRequest;
 import com.fulihui.duoduoke.demo.api.request.GoodsSearchRequest;
 import com.fulihui.duoduoke.demo.api.response.GoodsSearchResponse;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.DuoduoGoodsInfo;
-import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.request.DuoduoGoodsRequest;
-import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.DuoduoGoodsResult;
+import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.request.DuoGoodsRequest;
+import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.DuoGoodsResult;
 import org.near.servicesupport.result.TPageResult;
 
 import java.util.Date;
@@ -74,7 +74,7 @@ public interface DuoduoGoodsManager {
      */
     TPageResult<DuoduoGoodsInfo> queryGoods(GetDuoduoGoodsListRequest getDuoduoGoodsListRequest);
 
-    DuoduoGoodsResult duoduoGoodsRequest(Integer page, Integer pageSize, DuoduoGoodsRequest request);
+    DuoGoodsResult duoduoGoodsRequest(Integer page, Integer pageSize, DuoGoodsRequest request);
 
     GoodsSearchResponse duoduoGoodsSearch(Integer page, Integer rows, Integer totalMaxPage, GoodsSearchRequest request, String isChoose);
 

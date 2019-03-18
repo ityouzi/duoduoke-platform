@@ -1,7 +1,7 @@
 package com.fulihui.duoduoke.demo.web.weixin.duoduoapi.request;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.DuoduoGoodsPidResult;
+import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.DuoGoodsPidResult;
 import com.fulihui.duoduoke.demo.web.weixin.weixin.http.HttpMethodEnum;
 
 import lombok.Getter;
@@ -13,7 +13,7 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-public class DuoduoGoodsPidRequest extends DuoduoJsonRequest<DuoduoGoodsPidResult> {
+public class DuoGoodsPidRequest extends DuoJsonRequest<DuoGoodsPidResult> {
 
 
     private static final long serialVersionUID = -4630586958245008164L;
@@ -40,8 +40,8 @@ public class DuoduoGoodsPidRequest extends DuoduoJsonRequest<DuoduoGoodsPidResul
     }
 
     @Override
-    public DuoduoGoodsPidResult parseResult(String respStr) {
-        DuoduoGoodsPidResult duoduoGoodsPidResult = JSONObject.parseObject(respStr, DuoduoGoodsPidResult.class);
+    public DuoGoodsPidResult parseResult(String respStr) {
+        DuoGoodsPidResult duoduoGoodsPidResult = JSONObject.parseObject(respStr, DuoGoodsPidResult.class);
         checkResult(duoduoGoodsPidResult);
         return duoduoGoodsPidResult;
     }

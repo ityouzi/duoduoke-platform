@@ -8,7 +8,7 @@ import com.fulihui.duoduoke.demo.api.response.GoodsPromotionUrlResponse;
 import com.fulihui.duoduoke.demo.producer.util.ClassFieldsUtil;
 import com.fulihui.duoduoke.demo.common.config.DuoDuoKeConfig;
 import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.DuoduoHttpClient;
-import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.request.DuoduoGoodsGenerateRequest;
+import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.request.DuoGoodsGenerateRequest;
 import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.GoodsPromotionUrlGenerateResult;
 import org.apache.dubbo.config.annotation.Service;
 import org.near.servicesupport.result.ResultBuilder;
@@ -46,7 +46,7 @@ public class GoodsPromotionServiceImpl implements GoodsPromotionService {
         notBlank(request.getP_id(), REQUEST_PARAMETER_ERROR);
         notBlank(request.getCustom_parameters(), REQUEST_PARAMETER_ERROR);
 
-        DuoduoGoodsGenerateRequest generate = new DuoduoGoodsGenerateRequest();
+        DuoGoodsGenerateRequest generate = new DuoGoodsGenerateRequest();
         generate.setType("pdd.ddk.goods.promotion.url.generate");
         generate.setClient_id(duoDuoKeConfig.getClientId());
         generate.setTimestamp(System.currentTimeMillis() + "");

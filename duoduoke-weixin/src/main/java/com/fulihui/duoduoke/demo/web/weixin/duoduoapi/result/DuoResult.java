@@ -7,6 +7,6 @@ import org.near.toolkit.model.ToString;
  * @Author: xiaoming
  * @version: v 0.1 2018/7/6 0006 16:14
  */
-public abstract class DuoduoResult extends ToString {
+public abstract class DuoResult extends ToString {
     private static final long serialVersionUID = -7644720348661249353L;
 }

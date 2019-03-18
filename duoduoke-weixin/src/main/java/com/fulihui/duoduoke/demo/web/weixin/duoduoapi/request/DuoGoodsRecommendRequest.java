@@ -2,22 +2,30 @@ package com.fulihui.duoduoke.demo.web.weixin.duoduoapi.request;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.DuoduoGoodsDetailResult;
+import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.DuoGoodsRecommendResult;
 import com.fulihui.duoduoke.demo.web.weixin.weixin.http.HttpMethodEnum;
+import lombok.Data;
 
 /**
- * @Description: pdd.ddk.goods.search（多多进宝商品查询）
+ * @Description:
  * @Author: xiaoming
- * @version: v 0.1 2018/7/7 0007 13:54
+ * @version: v 0.1 2018/8/14 0014 17:11
  */
-public class DuoduoGoodsDetailRequest extends DuoduoJsonRequest<DuoduoGoodsDetailResult> {
+@Data
+public class DuoGoodsRecommendRequest extends DuoJsonRequest<DuoGoodsRecommendResult> {
 
-    private String goods_id_list;
+    private int offset;
+
+    private int limit;
+
+    private int channel_type;
 
 
     @Override
     protected void childParam() {
-        addParam("goods_id_list", goods_id_list);
+        addParam("offset", offset + "");
+        addParam("limit", limit + "");
+        addParam("channel_type", channel_type + "");
     }
 
     @Override
@@ -31,16 +39,16 @@ public class DuoduoGoodsDetailRequest extends DuoduoJsonRequest<DuoduoGoodsDetai
     }
 
     @Override
-    public DuoduoGoodsDetailResult parseResult(String respStr) {
-        DuoduoGoodsDetailResult result;
+    public DuoGoodsRecommendResult parseResult(String respStr) {
+        DuoGoodsRecommendResult result;
         JSONObject jsonObject = JSONObject.parseObject(respStr);
-        JSONObject personObject = jsonObject.getJSONObject("goods_detail_response");
+        JSONObject personObject = jsonObject.getJSONObject("goods_basic_detail_response");
         if (personObject == null) {
             JSONObject errorObject = jsonObject.getJSONObject("error_response");
-            result = JSON.parseObject(errorObject.toString(), DuoduoGoodsDetailResult.class);
+            result = JSON.parseObject(errorObject.toString(), DuoGoodsRecommendResult.class);
             return result;
         } else {
-            result = JSON.parseObject(personObject.toString(), DuoduoGoodsDetailResult.class);
+            result = JSON.parseObject(personObject.toString(), DuoGoodsRecommendResult.class);
             checkResult(result);
             return result;
         }
@@ -54,13 +62,5 @@ public class DuoduoGoodsDetailRequest extends DuoduoJsonRequest<DuoduoGoodsDetai
     @Override
     public String requestData() {
         return null;
-    }
-
-    public String getGoods_id_list() {
-        return goods_id_list;
-    }
-
-    public void setGoods_id_list(String goods_id_list) {
-        this.goods_id_list = goods_id_list;
     }
 }

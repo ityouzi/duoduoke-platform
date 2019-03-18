@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * @author wahaha
  */
-public class DuoOrderDetailGetResult extends DuoduoJsonResult {
+public class DuoOrderDetailGetResult extends DuoJsonResult {
 
     private static final long serialVersionUID = -5146002878359596895L;
     /**

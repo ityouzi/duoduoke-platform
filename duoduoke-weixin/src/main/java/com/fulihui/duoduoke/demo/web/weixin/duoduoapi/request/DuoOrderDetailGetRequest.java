@@ -3,11 +3,15 @@ package com.fulihui.duoduoke.demo.web.weixin.duoduoapi.request;
 import com.alibaba.fastjson.JSONObject;
 import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.DuoOrderDetailGetResult;
 import com.fulihui.duoduoke.demo.web.weixin.weixin.http.HttpMethodEnum;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author wahaha
  */
-public class DuoOrderDetailGetRequest   extends DuoduoJsonRequest<DuoOrderDetailGetResult> {
+@Setter
+@Getter
+public class DuoOrderDetailGetRequest   extends DuoJsonRequest<DuoOrderDetailGetResult> {
 
 
     /**

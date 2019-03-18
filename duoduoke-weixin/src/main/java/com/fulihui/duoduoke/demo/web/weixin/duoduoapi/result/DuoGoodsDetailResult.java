@@ -5,18 +5,18 @@ import java.util.List;
 /**
  * Created by lizhi on 2018/7/6 0006.
  */
-public class DuoduoGoodsDetailResult extends DuoduoJsonResult{
+public class DuoGoodsDetailResult extends DuoJsonResult {
 
 
-    private List<DuoduoGoodsDetailApiResult> goods_details;
+    private List<DuoGoodsDetailApiResult> goods_details;
 
     private String total_count;
 
-    public List<DuoduoGoodsDetailApiResult> getGoods_details() {
+    public List<DuoGoodsDetailApiResult> getGoods_details() {
         return goods_details;
     }
 
-    public void setGoods_details(List<DuoduoGoodsDetailApiResult> goods_details) {
+    public void setGoods_details(List<DuoGoodsDetailApiResult> goods_details) {
         this.goods_details = goods_details;
     }
 

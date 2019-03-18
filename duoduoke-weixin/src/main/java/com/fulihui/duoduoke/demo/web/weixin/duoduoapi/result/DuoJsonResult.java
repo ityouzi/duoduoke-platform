@@ -5,7 +5,7 @@ package com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result;
  * @Author: xiaoming
  * @version: v 0.1 2018/7/6 0006 16:10
  */
-public class DuoduoJsonResult extends DuoduoResult {
+public class DuoJsonResult extends DuoResult {
 
     private static final long serialVersionUID = -1301760348595553532L;
     protected boolean success;
