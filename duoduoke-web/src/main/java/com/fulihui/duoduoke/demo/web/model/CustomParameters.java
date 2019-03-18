@@ -15,18 +15,18 @@ public class CustomParameters extends ToString {
     /**
      * 订单用户Id
      */
-    private String            userId;
+    private String userId;
     /**
      * 订单推荐人
      */
-    private String            OrderUserReferee;
+    private String orderUserReferee;
     /**
      * 推广渠道
      */
-    private String            channelsCode;
+    private String channelsCode;
     /**
      * 订单来源
      */
-    private String            orderSource;
+    private String orderSource;
 
 }
