@@ -2,7 +2,7 @@ package com.fulihui.duoduoke.demo.producer.service;
 
 import com.fulihui.duoduoke.demo.api.api.GoodsInfoService;
 import com.fulihui.duoduoke.demo.api.api.RedPackageGoodsService;
-import com.fulihui.duoduoke.demo.api.dto.DuoduoGoodsInfoDTO;
+import com.fulihui.duoduoke.demo.api.dto.GoodsInfoDTO;
 import com.fulihui.duoduoke.demo.api.dto.RedPackageGoodsDTO;
 import com.fulihui.duoduoke.demo.api.request.GetDuoduoGoodsListRequest;
 import com.fulihui.duoduoke.demo.api.request.RedPackageGoodsRequest;
@@ -10,7 +10,7 @@ import com.fulihui.duoduoke.demo.producer.dal.dataobj.RedPackageField;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.RedPackageGoods;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.RedPackageGoodsExample;
 import com.fulihui.duoduoke.demo.producer.manager.DuoduoGoodsManager;
-import com.fulihui.duoduoke.demo.producer.repository.DuoGoodsInfoRepository;
+import com.fulihui.duoduoke.demo.producer.repository.GoodsInfoRepository;
 import com.fulihui.duoduoke.demo.producer.dal.dao.ExtRedPackageGoodsMapper;
 import com.fulihui.duoduoke.demo.producer.dal.dao.RedPackageFieldMapper;
 import com.fulihui.duoduoke.demo.producer.dal.dao.RedPackageGoodsMapper;
@@ -46,7 +46,7 @@ public class RedPackageGoodsServiceImpl implements RedPackageGoodsService {
     @Autowired
     RedPackageFieldMapper redPackageFieldMapper;
     @Autowired
-    DuoGoodsInfoRepository duoGoodsInfoRepository;
+    GoodsInfoRepository goodsInfoRepository;
     @Autowired
     DuoduoGoodsManager duoduoGoodsManager;
     @Autowired
@@ -98,7 +98,7 @@ public class RedPackageGoodsServiceImpl implements RedPackageGoodsService {
         params.put("goodsId", request.getGoodsId());
         params.put("state", request.getState());
         params.put("orderByClause", request.getOrderByClause());
-        params.put("goodsTable", duoGoodsInfoRepository.getUseTableName());
+        params.put("goodsTable", goodsInfoRepository.getUseTableName());
 
         //查询总条数
         long count = extRedPackageGoodsMapper.queryFieldGoodsCount(params);
@@ -132,7 +132,7 @@ public class RedPackageGoodsServiceImpl implements RedPackageGoodsService {
             listRequest.setCouponPrice(packageField.getAssistanceRedPacket());
         }
 
-        TPageResult<DuoduoGoodsInfoDTO> result = goodsInfoService.searchCouponGoods(listRequest);
+        TPageResult<GoodsInfoDTO> result = goodsInfoService.searchCouponGoods(listRequest);
 
         if (result != null && result.getValues() != null) {
 
@@ -209,7 +209,7 @@ public class RedPackageGoodsServiceImpl implements RedPackageGoodsService {
             Map<String, Object> params = Maps.newHashMap();
             params.put("skip", skip);
             params.put("rows", rows);
-            params.put("goodsTable", duoGoodsInfoRepository.getUseTableName());
+            params.put("goodsTable", goodsInfoRepository.getUseTableName());
 
             List<DuoGoodsInfo> goodsInfos = extRedPackageGoodsMapper.queryUsingGoods(params);
 

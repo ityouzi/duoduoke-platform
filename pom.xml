@@ -18,7 +18,7 @@
         <module>duoduoke-web</module>
         <module>duoduoke-weixin</module>
         <module>duoduoke-common</module>
-
+        <module>duoduoke-job</module>
         <module>near-service-support</module>
         <module>near-toolkit</module>
         <module>near-webmvc-support</module>
@@ -61,6 +61,12 @@
             <dependency>
                 <groupId>com.fulihui</groupId>
                 <artifactId>duoduoke-common</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fulihui</groupId>
+                <artifactId>duoduoke-job</artifactId>
                 <version>1.0.0</version>
             </dependency>
 

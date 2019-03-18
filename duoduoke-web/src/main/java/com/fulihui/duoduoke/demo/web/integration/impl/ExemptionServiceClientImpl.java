@@ -6,7 +6,7 @@ import com.fulihui.duoduoke.demo.api.api.ExemptionService;
 import com.fulihui.duoduoke.demo.api.api.GoodsInfoService;
 import com.fulihui.duoduoke.demo.api.api.UserExemptionService;
 import com.fulihui.duoduoke.demo.api.dto.ActivityConfigDTO;
-import com.fulihui.duoduoke.demo.api.dto.DuoduoGoodsInfoDTO;
+import com.fulihui.duoduoke.demo.api.dto.GoodsInfoDTO;
 import com.fulihui.duoduoke.demo.api.dto.ExemptionGoodsDTO;
 import com.fulihui.duoduoke.demo.api.dto.UserExemptionGoodsDTO;
 import com.fulihui.duoduoke.demo.api.enums.ActivityStateEnum;
@@ -222,9 +222,9 @@ public class ExemptionServiceClientImpl implements ExemptionServiceClient {
                     }
 
                     //查询商品图片地址
-                    DuoduoGoodsInfoRequest goodsInfoRequest = new DuoduoGoodsInfoRequest();
+                    GoodsInfoRequest goodsInfoRequest = new GoodsInfoRequest();
                     goodsInfoRequest.setGoodsId(tempModel.getGoodsId());
-                    TSingleResult<DuoduoGoodsInfoDTO> goodsResult = goodsInfoService
+                    TSingleResult<GoodsInfoDTO> goodsResult = goodsInfoService
                         .queryGoodsDetailNO(goodsInfoRequest);
                     if (goodsResult.getValue() != null) {
                         tempModel.setGoodsThumbnailUrl(goodsResult.getValue().getGoodsThumbnailUrl());

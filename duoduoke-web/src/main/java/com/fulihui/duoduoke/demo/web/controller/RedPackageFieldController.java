@@ -1,7 +1,7 @@
 package com.fulihui.duoduoke.demo.web.controller;
 
 
-import com.fulihui.duoduoke.demo.api.dto.DuoduoGoodsInfoDTO;
+import com.fulihui.duoduoke.demo.api.dto.GoodsInfoDTO;
 import com.fulihui.duoduoke.demo.api.dto.RedPackageFieldDTO;
 import com.fulihui.duoduoke.demo.api.dto.RedPackageGoodsDTO;
 import com.fulihui.duoduoke.demo.api.dto.UserRedPackageRecordDTO;
@@ -109,8 +109,8 @@ public class RedPackageFieldController {
         TPageResult<RedPackageGoodsDTO> result = redPackageGoodsServiceClient.listInAPI(request);
         List<RedPackageGoodsDTO> values = result.getValues();
 
-        List<DuoduoGoodsInfoDTO> list = values.stream().map(input -> {
-            DuoduoGoodsInfoDTO infoDTO = new DuoduoGoodsInfoDTO();
+        List<GoodsInfoDTO> list = values.stream().map(input -> {
+            GoodsInfoDTO infoDTO = new GoodsInfoDTO();
             BeanUtils.copyProperties(input, infoDTO);
             return infoDTO;
         }).collect(Collectors.toList());

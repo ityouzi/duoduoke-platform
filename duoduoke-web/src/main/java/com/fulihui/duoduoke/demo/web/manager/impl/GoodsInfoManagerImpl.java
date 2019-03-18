@@ -2,7 +2,7 @@ package com.fulihui.duoduoke.demo.web.manager.impl;
 
 import com.fulihui.duoduoke.demo.api.api.GoodsInfoService;
 import com.fulihui.duoduoke.demo.api.api.MarkService;
-import com.fulihui.duoduoke.demo.api.dto.DuoduoGoodsInfoDTO;
+import com.fulihui.duoduoke.demo.api.dto.GoodsInfoDTO;
 import com.fulihui.duoduoke.demo.api.dto.GoodsDoublesRewardDTO;
 import com.fulihui.duoduoke.demo.api.dto.GoodsMarkDTO;
 import com.fulihui.duoduoke.demo.api.enums.RedPackageConfigStatusEnum;
@@ -54,7 +54,7 @@ public class GoodsInfoManagerImpl implements GoodsInfoManager {
             .getLogger(GoodsInfoManagerImpl.class);
 
     @Override
-    public List<GoodsInfo> toVOList(List<DuoduoGoodsInfoDTO> list) {
+    public List<GoodsInfo> toVOList(List<GoodsInfoDTO> list) {
         //返利佣金配置百分比
         Integer commission = appConfigFactory.getCommission().intValue();
         //分享配置百分比
@@ -84,7 +84,7 @@ public class GoodsInfoManagerImpl implements GoodsInfoManager {
         listRequest.setSortType(0);
         listRequest.setHasCoupon(true);
 
-        TPageResult<DuoduoGoodsInfoDTO> result = goodsInfoService.searchCouponGoods(listRequest);
+        TPageResult<GoodsInfoDTO> result = goodsInfoService.searchCouponGoods(listRequest);
 
         List<GoodsInfo> list = null;
 
@@ -102,7 +102,7 @@ public class GoodsInfoManagerImpl implements GoodsInfoManager {
     }
 
     @Override
-    public GoodsInfo toVO(DuoduoGoodsInfoDTO dto, BigDecimal yuanBig, Integer commission,
+    public GoodsInfo toVO(GoodsInfoDTO dto, BigDecimal yuanBig, Integer commission,
                           Integer shareProportion) {
         if (dto == null || dto.getGoodsId() == null) {
             return null;

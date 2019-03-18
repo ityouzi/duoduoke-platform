@@ -9,7 +9,7 @@ import java.util.Date;
  * @date: 2018/9/3 15:31
  */
 @Data
-public class RedPackageGoodsDTO extends DuoduoGoodsInfoDTO {
+public class RedPackageGoodsDTO extends GoodsInfoDTO {
 
     /**
      * 主键

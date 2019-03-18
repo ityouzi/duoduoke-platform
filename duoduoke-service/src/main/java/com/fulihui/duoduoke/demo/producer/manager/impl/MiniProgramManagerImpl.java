@@ -30,7 +30,7 @@ import java.util.Map;
 @Component
 public class MiniProgramManagerImpl implements MiniProgramManager {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DuoduoGoodsManagerImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MiniProgramManagerImpl.class);
 
     /**
      * 查询下程序绑定的模板
@@ -46,7 +46,6 @@ public class MiniProgramManagerImpl implements MiniProgramManager {
         if (result != null) {
             JSONObject jsonObject = JSONObject.parseObject(result);
             if (jsonObject.getInteger("errcode") == 0) {
-                JSONArray list = jsonObject.getJSONArray("list");
                 return JSONArray.parseArray(jsonObject.getString("list"), WxTemplateModel.class);
             }
         }

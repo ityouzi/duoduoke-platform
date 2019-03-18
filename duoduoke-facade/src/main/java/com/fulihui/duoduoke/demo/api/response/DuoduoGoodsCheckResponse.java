@@ -1,7 +1,7 @@
 package com.fulihui.duoduoke.demo.api.response;
 
 
-import com.fulihui.duoduoke.demo.api.dto.DuoduoGoodsInfoDTO;
+import com.fulihui.duoduoke.demo.api.dto.GoodsInfoDTO;
 import lombok.Getter;
 import lombok.Setter;
 import org.near.toolkit.model.ToString;
@@ -18,5 +18,5 @@ public class DuoduoGoodsCheckResponse extends ToString {
 
     private static final long serialVersionUID = -6013479400946520076L;
 
-    private List<DuoduoGoodsInfoDTO> result;
+    private List<GoodsInfoDTO> result;
 }

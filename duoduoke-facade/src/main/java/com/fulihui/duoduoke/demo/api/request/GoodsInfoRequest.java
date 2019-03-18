@@ -7,7 +7,7 @@ import org.near.servicesupport.request.PageRequest;
 import java.util.Date;
 
 @Setter @Getter
-public class DuoduoGoodsInfoRequest extends PageRequest {
+public class GoodsInfoRequest extends PageRequest {
     private static final long serialVersionUID = -4254698836990658501L;
     /**
     *

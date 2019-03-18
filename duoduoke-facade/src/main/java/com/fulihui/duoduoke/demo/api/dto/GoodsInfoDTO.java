@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Setter
 @Getter
-public class DuoduoGoodsInfoDTO extends ToString {
+public class GoodsInfoDTO extends ToString {
     private static final long serialVersionUID = -4254698836990658501L;
     /**
      * duoduo_goods_info.id

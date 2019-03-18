@@ -2,10 +2,10 @@ package com.fulihui.duoduoke.demo.web.controller;
 
 
 import com.fulihui.duoduoke.demo.api.api.GoodsInfoService;
-import com.fulihui.duoduoke.demo.api.dto.DuoduoGoodsInfoDTO;
+import com.fulihui.duoduoke.demo.api.dto.GoodsInfoDTO;
 import com.fulihui.duoduoke.demo.api.dto.ExemptionGoodsDTO;
 import com.fulihui.duoduoke.demo.api.enums.GoodsStateEnum;
-import com.fulihui.duoduoke.demo.api.request.DuoduoGoodsInfoRequest;
+import com.fulihui.duoduoke.demo.api.request.GoodsInfoRequest;
 import com.fulihui.duoduoke.demo.api.request.IdRequest;
 import com.fulihui.duoduoke.demo.web.factory.AppConfigFactory;
 import com.fulihui.duoduoke.demo.web.integration.ExemptionServiceClient;
@@ -79,13 +79,13 @@ public class ExemptionGoodsController {
             vo.setNowTime(System.currentTimeMillis());
             vo.setPayAmount(exemptionGoodsDTO.getPayAmount().toString());
             vo.setBackAmount(exemptionGoodsDTO.getBackAmount().toString());
-            DuoduoGoodsInfoRequest infoRequest = new DuoduoGoodsInfoRequest();
+            GoodsInfoRequest infoRequest = new GoodsInfoRequest();
             infoRequest.setGoodsId(param.getGoodsId());
             infoRequest.setState(GoodsStateEnum.ON.getCode());
-            TSingleResult<DuoduoGoodsInfoDTO> goodsDetailNOResult = goodsInfoService
+            TSingleResult<GoodsInfoDTO> goodsDetailNOResult = goodsInfoService
                 .queryGoodsDetailNO(infoRequest);
             checkResult(goodsDetailNOResult);
-            DuoduoGoodsInfoDTO dto = goodsDetailNOResult.getValue();
+            GoodsInfoDTO dto = goodsDetailNOResult.getValue();
             if (dto != null) {
                 vo.setGoodsThumbnailUrl(dto.getGoodsThumbnailUrl());
                 String goodsGalleryUrls = dto.getGoodsGalleryUrls();

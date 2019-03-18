@@ -1,0 +1,59 @@
+spring:
+  profiles:
+    active: dev
+
+
+
+
+
+userWithdrawalCheckJob:
+  cron: 0 0/30 * * * ?
+  shardingTotalCount: 1
+  shardingItemParameters: 0=Beijing,1=Shanghai,2=Guangzhou
+  disabled: false
+
+
+
+userFormIdJob:
+  cron: 0 * * * * ?
+  shardingTotalCount: 1
+  shardingItemParameters: 0=Beijing,1=Shanghai,2=Guangzhou
+  disabled: false
+
+
+
+taskSendCheckJob:
+  cron: 0 * * * * ?
+  shardingTotalCount: 1
+  shardingItemParameters: 0=Beijing,1=Shanghai,2=Guangzhou
+  disabled: false
+
+
+orderSendJob:
+  cron: 0 0 * * * ?
+  shardingTotalCount: 1
+  shardingItemParameters: 0=Beijing,1=Shanghai,2=Guangzhou
+  disabled: false
+
+
+
+
+signAwardSettlementJob:
+  cron: 0 0 0 * * ?
+  shardingTotalCount: 1
+  shardingItemParameters: 0=Beijing,1=Shanghai,2=Guangzhou
+  disabled: false
+
+
+
+signOrderConfirmReceiptJob:
+  cron: 0 */2 * * * ?
+  shardingTotalCount: 1
+  shardingItemParameters: 0=Beijing,1=Shanghai,2=Guangzhou
+  disabled: false
+
+
+
+job:
+  compensate: false #true false
+  compensateDay: -4

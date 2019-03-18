@@ -5,7 +5,7 @@ import com.fulihui.duoduoke.demo.api.api.GoodsInfoService;
 import com.fulihui.duoduoke.demo.api.api.HomeColumnService;
 import com.fulihui.duoduoke.demo.api.api.UserPosterImgService;
 import com.fulihui.duoduoke.demo.api.api.UserShareRecodeService;
-import com.fulihui.duoduoke.demo.api.dto.DuoduoGoodsInfoDTO;
+import com.fulihui.duoduoke.demo.api.dto.GoodsInfoDTO;
 import com.fulihui.duoduoke.demo.api.dto.HomeColumnDTO;
 import com.fulihui.duoduoke.demo.api.dto.UserShareRecordDTO;
 import com.fulihui.duoduoke.demo.api.enums.GoodsChooseEnum;
@@ -84,22 +84,21 @@ public class GoodsInfoController {
     @ApiOperation("首页商品列表")
     public JsonResult<PageView<GoodsInfo>> goodsListInfo(@RequestBody GoodInfoParam param) {
         LOGGER.info("进入controller查询数据 首页商品列表");
-        DuoduoGoodsInfoRequest infoRequest = new DuoduoGoodsInfoRequest();
+        GoodsInfoRequest infoRequest = new GoodsInfoRequest();
         String isChoose = param.getIsChoose();
         BeanUtils.copyProperties(param, infoRequest);
         infoRequest.setOrderByClause("sort DESC,gmt_modified DESC");
         //优选
-        if (StringUtil.isNotEmpty(isChoose)) {
-            if (StringUtil.equals(isChoose, GoodsChooseEnum.IS.getCode())) {
-                infoRequest.setOrderByClause("choose_sort DESC,sort DESC,gmt_modified DESC");
-            }
+        if (StringUtil.isNotBlank(isChoose) && StringUtil.equals(isChoose, GoodsChooseEnum.IS.getCode())) {
+            infoRequest.setOrderByClause("choose_sort DESC,sort DESC,gmt_modified DESC");
         } else {
             infoRequest.setIsChoose(GoodsChooseEnum.NO.getCode());
         }
+
         infoRequest.setPage(param.getPage());
         infoRequest.setRows(param.getRows());
         infoRequest.setState(GoodsStateEnum.ON.getCode());
-        TPageResult<DuoduoGoodsInfoDTO> result = goodsInfoService.queryGoodsListInfo(infoRequest);
+        TPageResult<GoodsInfoDTO> result = goodsInfoService.queryGoodsListInfo(infoRequest);
         checkResult(result);
 
         List<GoodsInfo> voList = goodsInfoManager.toVOList(result.getValues());
@@ -112,14 +111,14 @@ public class GoodsInfoController {
     @PostMapping("goodsChooseListInfo")
     @ApiOperation("优选商品列表")
     public JsonResult<PageView<GoodsInfo>> goodsChooseListInfo(@RequestBody PageForm param) {
-        DuoduoGoodsInfoRequest infoRequest = new DuoduoGoodsInfoRequest();
+        GoodsInfoRequest infoRequest = new GoodsInfoRequest();
         infoRequest.setIsChoose(GoodsChooseEnum.IS.getCode());
         infoRequest.setOrderByClause("choose_sort DESC,sort DESC,gmt_modified DESC");
 
         infoRequest.setPage(param.getPage());
         infoRequest.setRows(param.getRows());
         infoRequest.setState(GoodsStateEnum.ON.getCode());
-        TPageResult<DuoduoGoodsInfoDTO> result = goodsInfoService.queryGoodsListInfo(infoRequest);
+        TPageResult<GoodsInfoDTO> result = goodsInfoService.queryGoodsListInfo(infoRequest);
         checkResult(result);
 
         List<GoodsInfo> voList = goodsInfoManager.toVOList(result.getValues());
@@ -146,10 +145,10 @@ public class GoodsInfoController {
         infoRequest.setChannelType(column.getChannelType());
         infoRequest.setPage(param.getPage());
         infoRequest.setRows(param.getRows());
-        TPageResult<DuoduoGoodsInfoDTO> result = goodsInfoService.queryChannelGoods(infoRequest);
+        TPageResult<GoodsInfoDTO> result = goodsInfoService.queryChannelGoods(infoRequest);
         checkResult(result);
 
-        List<DuoduoGoodsInfoDTO> list = result.getValues();
+        List<GoodsInfoDTO> list = result.getValues();
 
         List<GoodsInfo> voList = goodsInfoManager.toVOList(list);
 
@@ -184,7 +183,7 @@ public class GoodsInfoController {
 
     private JsonResult<GoodsInfo> v1(@RequestBody GoodInfoParam param) {
         String scene = param.getScene();
-        DuoduoGoodsInfoRequest infoRequest = new DuoduoGoodsInfoRequest();
+        GoodsInfoRequest infoRequest = new GoodsInfoRequest();
         GoodsInfo goodsIfs = new GoodsInfo();
         if (StringUtil.isNotEmpty(scene)) {
             int id = Integer.parseInt(scene);
@@ -210,9 +209,9 @@ public class GoodsInfoController {
             BeanUtils.copyProperties(param, infoRequest);
         }
         infoRequest.setState(GoodsStateEnum.ON.getCode());
-        TSingleResult<DuoduoGoodsInfoDTO> result = goodsInfoService.queryGoodsDetailNO(infoRequest);
+        TSingleResult<GoodsInfoDTO> result = goodsInfoService.queryGoodsDetailNO(infoRequest);
         checkResult(result);
-        DuoduoGoodsInfoDTO dto = result.getValue();
+        GoodsInfoDTO dto = result.getValue();
         //佣金
         if (dto != null) {
             Integer commission = appConfigFactory.getCommission().intValue();

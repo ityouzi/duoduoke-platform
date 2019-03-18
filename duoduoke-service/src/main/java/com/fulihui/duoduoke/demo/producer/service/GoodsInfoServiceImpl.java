@@ -3,22 +3,20 @@ package com.fulihui.duoduoke.demo.producer.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fulihui.duoduoke.demo.api.api.GoodsInfoService;
-import com.fulihui.duoduoke.demo.api.dto.DuoduoGoodsInfoDTO;
+import com.fulihui.duoduoke.demo.api.dto.GoodsInfoDTO;
 import com.fulihui.duoduoke.demo.api.dto.GoodsTabelDTO;
-import com.fulihui.duoduoke.demo.api.enums.GoodsChooseEnum;
 import com.fulihui.duoduoke.demo.api.enums.GoodsStateEnum;
 import com.fulihui.duoduoke.demo.api.request.*;
 import com.fulihui.duoduoke.demo.api.response.GoodsSearchInfoResponse;
 import com.fulihui.duoduoke.demo.api.response.GoodsSearchResponse;
 import com.fulihui.duoduoke.demo.common.config.DuoDuoKeConfig;
-import com.fulihui.duoduoke.demo.common.config.RedisContent;
 import com.fulihui.duoduoke.demo.common.util.RedisUtils;
 import com.fulihui.duoduoke.demo.producer.dal.dao.GoodSearchRecordMapper;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.DuoGoodsInfo;
-import com.fulihui.duoduoke.demo.producer.dal.dataobj.DuoduoGoodsInfoExample;
-import com.fulihui.duoduoke.demo.producer.dal.dataobj.ExtDuoduoGoodsInfoExample;
+import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfo;
+import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfoExample;
 import com.fulihui.duoduoke.demo.producer.manager.DuoduoGoodsManager;
-import com.fulihui.duoduoke.demo.producer.repository.DuoGoodsInfoRepository;
+import com.fulihui.duoduoke.demo.producer.repository.GoodsInfoRepository;
 import com.fulihui.duoduoke.demo.producer.util.ClassFieldsUtil;
 import com.fulihui.duoduoke.demo.producer.util.Consts;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.DuoHttpClient;
@@ -39,7 +37,6 @@ import org.near.servicesupport.result.ResultBuilder;
 import org.near.servicesupport.result.TPageResult;
 import org.near.servicesupport.result.TSingleResult;
 import org.near.servicesupport.util.ServiceAssert;
-import org.near.toolkit.common.DateUtils;
 import org.near.toolkit.common.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +46,10 @@ import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.fulihui.duoduoke.demo.producer.util.SignUtil.genServiceSign;
@@ -62,7 +62,7 @@ import static org.springframework.util.CollectionUtils.isEmpty;
  * @date 2018 -7-9
  */
 @Service(version = "${demo.service.version}")
-
+// TODO: 2019-03-18  商品信息
 public class GoodsInfoServiceImpl implements GoodsInfoService {
 
     private static final Logger LOGGER = LoggerFactory
@@ -92,7 +92,7 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
      * The Duoduo goods info repository.
      */
     @Autowired
-    DuoGoodsInfoRepository duoGoodsInfoRepository;
+    GoodsInfoRepository goodsInfoRepository;
     /**
      * The Duoduo goods manager.
      */
@@ -189,8 +189,6 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
 
             DuoGoodsSearchResult result = JSONObject.parseObject(respStr,
                     DuoGoodsSearchResult.class);
-            boolean bl = (StringUtil.isBlank(result.getError_code())
-                    || StringUtil.isBlank(result.getError_msg()));
             DuoGoodsSearchResult.GoodsSearchResponseBean goodsSearchResponse = result
                     .getGoods_search_response();
             if (goodsSearchResponse != null) {
@@ -226,7 +224,7 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
     }
 
     @Override
-    public TPageResult<DuoduoGoodsInfoDTO> searchCouponGoods(GetDuoduoGoodsListRequest request) {
+    public TPageResult<GoodsInfoDTO> searchCouponGoods(GetDuoduoGoodsListRequest request) {
         GoodsSearchInfoRequest infoRequest = new GoodsSearchInfoRequest();
         infoRequest.setKeyword(request.getKeyword());
         infoRequest.setSort_type(request.getSortType() + "");
@@ -251,7 +249,7 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
         }
         TPageResult<GoodsSearchInfoResponse> search = search(infoRequest);
 
-        List<DuoduoGoodsInfoDTO> list = new ArrayList<>();
+        List<GoodsInfoDTO> list = new ArrayList<>();
 
         if (search == null) {
             return ResultBuilder.failTPage(0, "无数据");
@@ -260,7 +258,7 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
         if (search.getValues() != null && search.getValues().size() > 0) {
             search.getValues().stream().filter((item) -> item.getGoods_id() != null)
                     .forEach((detailInfo) -> {
-                        DuoduoGoodsInfoDTO info = new DuoduoGoodsInfoDTO();
+                        GoodsInfoDTO info = new GoodsInfoDTO();
                         info.setGoodsId(Long.parseLong(detailInfo.getGoods_id()));
                         info.setGoodsName(detailInfo.getGoods_name());
                         info.setGoodsDesc(detailInfo.getGoods_desc());
@@ -318,116 +316,33 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
      * @return
      */
     @Override
-    public TSingleResult<DuoduoGoodsInfoDTO> queryGoodsDetail(DuoduoGoodsInfoRequest request) {
-        DuoduoGoodsInfoDTO response = null;
-        ServiceAssert.notNull(request, Errors.Commons.REQUEST_PARAMETER_ERROR);
-        Long goodsId = request.getGoodsId();
-        ServiceAssert.notNull(goodsId, Errors.Commons.REQUEST_PARAMETER_ERROR);
-        DuoGoodsInfo duoGoodsInfo = duoGoodsInfoRepository.selectByGoodsId(goodsId);
-        if (duoGoodsInfo != null) {
-            Date now = new Date();
-            Date detailUpdate = duoGoodsInfo.getDetailUpdate();
-            //更新时间为空 或者间隔大一天
-            if (detailUpdate == null || DateUtils.getDiffDays(now, detailUpdate) >= 1) {
-                //更新多多商品信息
-                duoduoGoodsManager.updateDuoduoGoodDetail(duoGoodsInfo);
-                //再次查询
-                duoGoodsInfo = duoGoodsInfoRepository.selectByGoodsId(goodsId);
-            }
-        } else {
-            //查询多多详情--调用平多多接口
-            //默认时间数据
-            duoGoodsInfo = duoduoGoodsManager.getDuoduoGoodDetail(goodsId);
-            if (duoGoodsInfo != null) {
-                duoGoodsInfo.setGmtCreate(Calendar.getInstance().getTime());
-                duoGoodsInfo.setGmtModified(Calendar.getInstance().getTime());
-                duoGoodsInfo.setDetailUpdate(Calendar.getInstance().getTime());
-                long insert = duoGoodsInfoRepository.insert(duoGoodsInfo);
-            }
-        }
+    public TSingleResult<GoodsInfoDTO> queryGoodsDetail(GoodsInfoRequest request) {
 
-        if (duoGoodsInfo != null) {
-            response = new DuoduoGoodsInfoDTO();
-            BeanUtils.copyProperties(duoGoodsInfo, response);
-            response.setHasCoupon(Boolean.parseBoolean(duoGoodsInfo.getHasCoupon()));
-            return ResultBuilder.succTSingle(response);
-        } else {
-            return ResultBuilder.succTSingle(null);
-        }
+        return ResultBuilder.succTSingle(null);
+
 
     }
 
     @Override
-    public TSingleResult<DuoduoGoodsInfoDTO> queryGoodsDetailNO(DuoduoGoodsInfoRequest request) {
-        DuoduoGoodsInfoDTO response = null;
-        ServiceAssert.notNull(request, Errors.Commons.REQUEST_PARAMETER_ERROR);
-        Long goodsId = request.getGoodsId();
-        ServiceAssert.notNull(goodsId, Errors.Commons.REQUEST_PARAMETER_ERROR);
-        DuoGoodsInfo duoGoodsInfo = duoGoodsInfoRepository.selectByGoodsId(goodsId);
-        if (duoGoodsInfo != null) {
-            Date now = new Date();
-            Date detailUpdate = duoGoodsInfo.getDetailUpdate();
-            //更新时间为空 或者间隔大一天
-            if (detailUpdate == null || DateUtils.getDiffDays(now, detailUpdate) >= 1) {
-                //更新多多商品信息
-                duoduoGoodsManager.updateDuoduoGoodDetail(duoGoodsInfo);
-                //再次查询
-                duoGoodsInfo = duoGoodsInfoRepository.selectByGoodsId(goodsId);
-            }
+    public TSingleResult<GoodsInfoDTO> queryGoodsDetailNO(GoodsInfoRequest request) {
 
-        } else {
-            duoGoodsInfo = duoduoGoodsManager.getDuoduoGoodDetail(goodsId);
-        }
-        if (duoGoodsInfo != null) {
-            response = new DuoduoGoodsInfoDTO();
-            BeanUtils.copyProperties(duoGoodsInfo, response);
-            response.setHasCoupon(Boolean.parseBoolean(duoGoodsInfo.getHasCoupon()));
-        }
-        return ResultBuilder.succTSingle(response);
+        return ResultBuilder.succTSingle(null);
     }
 
     @Override
-    public TPageResult<DuoduoGoodsInfoDTO> queryGoodsInfo(DuoduoGoodsInfoRequest infoRequest) {
-
-        ExtDuoduoGoodsInfoExample example = createExapmle(infoRequest);
-
-        List<DuoGoodsInfo> duoGoodsInfos = duoGoodsInfoRepository.selectByExample(example);
-        if (CollectionUtils.isEmpty(duoGoodsInfos)) {
-            return ResultBuilder.succTPage(Lists.newArrayList(), infoRequest.getPage(),
-                    infoRequest.getRows(), 0);
-        }
-
-        //查询条数
-        long count = duoGoodsInfoRepository.count(example);
-        List<DuoduoGoodsInfoDTO> collect = convertModel(duoGoodsInfos);
-
-        return ResultBuilder.succTPage(collect, infoRequest.getPage(), infoRequest.getRows(),
-                (int) count);
+    public TPageResult<GoodsInfoDTO> queryGoodsInfo(GoodsInfoRequest infoRequest) {
+        return null;
     }
 
     @Override
-    public TPageResult<DuoduoGoodsInfoDTO> queryGoodsInfoWithMark(DuoduoGoodsInfoRequest infoRequest) {
+    public TPageResult<GoodsInfoDTO> queryGoodsInfoWithMark(GoodsInfoRequest infoRequest) {
 
-        ExtDuoduoGoodsInfoExample example = createExapmle(infoRequest);
-
-        List<DuoGoodsInfo> duoGoodsInfos = duoGoodsInfoRepository
-                .selectByExtExample(example);
-        if (CollectionUtils.isEmpty(duoGoodsInfos)) {
-            return ResultBuilder.succTPage(Lists.newArrayList(), infoRequest.getPage(),
-                    infoRequest.getRows(), 0);
-        }
-
-        //查询条数
-        long count = duoGoodsInfoRepository.countByExtExample(example);
-        List<DuoduoGoodsInfoDTO> collect = convertModel(duoGoodsInfos);
-
-        return ResultBuilder.succTPage(collect, infoRequest.getPage(), infoRequest.getRows(),
-                (int) count);
+        return null;
     }
 
-    private List<DuoduoGoodsInfoDTO> convertModel(List<DuoGoodsInfo> duoGoodsInfos) {
+    private List<GoodsInfoDTO> convertModel(List<DuoGoodsInfo> duoGoodsInfos) {
         return duoGoodsInfos.stream().map(i -> {
-            DuoduoGoodsInfoDTO response = new DuoduoGoodsInfoDTO();
+            GoodsInfoDTO response = new GoodsInfoDTO();
             BeanUtils.copyProperties(i, response);
             response.setHasCoupon(Boolean.parseBoolean(i.getHasCoupon()));
             return response;
@@ -440,10 +355,10 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
      * @param infoRequest
      * @return
      */
-    private ExtDuoduoGoodsInfoExample createExapmle(DuoduoGoodsInfoRequest infoRequest) {
+    private GoodsInfoExample createExapmle(GoodsInfoRequest infoRequest) {
         ServiceAssert.notNull(infoRequest, Errors.Commons.REQUEST_PARAMETER_ERROR);
-        ExtDuoduoGoodsInfoExample example = new ExtDuoduoGoodsInfoExample();
-        DuoduoGoodsInfoExample.Criteria criteria = example.createCriteria();
+        GoodsInfoExample example = new GoodsInfoExample();
+        GoodsInfoExample.Criteria criteria = example.createCriteria();
         if (infoRequest.getGoodsId() != null) {
             criteria.andGoodsIdEqualTo(infoRequest.getGoodsId());
         }
@@ -474,9 +389,7 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
         if (infoRequest.getId() != null) {
             criteria.andIdEqualTo(infoRequest.getId());
         }
-        if (infoRequest.getMarkId() != null) {
-            example.setMarkId(infoRequest.getMarkId());
-        }
+
 
         example.setOffset(infoRequest.start4Mysql());
         example.setLimit(infoRequest.getRows());
@@ -485,82 +398,28 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
     }
 
     @Override
-    public TPageResult<DuoduoGoodsInfoDTO> queryGoodsListInfo(DuoduoGoodsInfoRequest infoRequest) {
+    public TPageResult<GoodsInfoDTO> queryGoodsListInfo(GoodsInfoRequest infoRequest) {
         ServiceAssert.notNull(infoRequest, Errors.Commons.REQUEST_PARAMETER_ERROR);
-        DuoduoGoodsInfoExample example = new DuoduoGoodsInfoExample();
+        GoodsInfoExample example = new GoodsInfoExample();
 
-        DuoduoGoodsInfoExample.Criteria criteria = example.createCriteria();
-
-        if (infoRequest.getLevelOne() != null) {
-            criteria.andLevelOneEqualTo(infoRequest.getLevelOne());
-        }
-        if (infoRequest.getLevelTwo() != null) {
-            criteria.andLevelTwoEqualTo(infoRequest.getLevelTwo());
-        }
-        if (StringUtil.isNotEmpty(infoRequest.getState())) {
-            criteria.andStateEqualTo(infoRequest.getState());
-        }
-        if (StringUtil.isNotEmpty(infoRequest.getOrderByClause())) {
-            example.setOrderByClause(infoRequest.getOrderByClause());
-        }
-
-        if (StringUtil.isNotEmpty(infoRequest.getIsChoose())) {
-            criteria.andIsChooseEqualTo(infoRequest.getIsChoose());
-        }
-
-        example.setOffset(infoRequest.start4Mysql());
-        example.setLimit(infoRequest.getRows());
-
-        List<DuoGoodsInfo> duoGoodsInfos = duoGoodsInfoRepository
-                .selectListByExample(example);
-        long totalCount = duoGoodsInfoRepository.count(example);
-
-        if (CollectionUtils.isEmpty(duoGoodsInfos)) {
-            if (infoRequest.getIsChoose().equals(GoodsChooseEnum.NO.getCode())) {
-                DuoduoGoodsInfoExample infoExample = new DuoduoGoodsInfoExample();
-                long count = duoGoodsInfoRepository.count(infoExample);
-                if (count <= 0) {
-                    redisUtils.incr(RedisContent.DUODUO_GOODS_TABLE, 1);
-                    updateTable();
-                    JOB_GOODS_LOGGER.info("数据修改,原表无数据");
-                }
-            }
-            return ResultBuilder.succTPage(Lists.newArrayList(), infoRequest.getPage(),
-                    infoRequest.getRows(), 0);
-        }
-
-        List<DuoduoGoodsInfoDTO> collect = convertModel(duoGoodsInfos);
-
-        return ResultBuilder.succTPage(collect, infoRequest.getPage(), infoRequest.getRows(), (int) totalCount);
+        return null;
     }
 
     @Override
-    public BaseResult updateGoodsInfo(DuoduoGoodsInfoRequest infoRequest) {
+    public BaseResult updateGoodsInfo(GoodsInfoRequest infoRequest) {
         ServiceAssert.notNull(infoRequest, Errors.Commons.REQUEST_PARAMETER_ERROR);
-        DuoGoodsInfo duoGoodsInfo = new DuoGoodsInfo();
-        BeanUtils.copyProperties(infoRequest, duoGoodsInfo);
-        int i = duoGoodsInfoRepository.updateByPrimaryKeySelective(duoGoodsInfo);
+        GoodsInfo goodsInfo = new GoodsInfo();
+        BeanUtils.copyProperties(infoRequest, goodsInfo);
+        int i = goodsInfoRepository.updateByPrimaryKeySelective(goodsInfo);
         return i > 0 ? ResultBuilder.succ() : ResultBuilder.fail(1001, "商品更新失败");
     }
 
     @Override
-    public BaseResult insertGoodsInfo(DuoduoGoodsInfoRequest infoRequest) {
+    public BaseResult insertGoodsInfo(GoodsInfoRequest infoRequest) {
         ServiceAssert.notNull(infoRequest, Errors.Commons.REQUEST_PARAMETER_ERROR);
 
-        //拉起多多商品详情
-        DuoGoodsInfo duoGoodsInfo = duoduoGoodsManager
-                .getDuoduoGoodDetail(infoRequest.getGoodsId());
 
-        //赋值
-        convertGoodsInfo(duoGoodsInfo, infoRequest);
-
-        //默认时间数据
-        duoGoodsInfo.setGmtCreate(Calendar.getInstance().getTime());
-        duoGoodsInfo.setGmtModified(Calendar.getInstance().getTime());
-        duoGoodsInfo.setDetailUpdate(Calendar.getInstance().getTime());
-
-        long i = duoGoodsInfoRepository.insert(duoGoodsInfo);
-        return i > 0 ? ResultBuilder.succ() : ResultBuilder.fail(1001, "商品插入失败");
+        return null;
     }
 
 
@@ -573,10 +432,6 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
     @Override
     public TSingleResult<Long> queryIdByGoodsId(Long goodsId) {
 
-        DuoGoodsInfo goodsInfo = duoGoodsInfoRepository.selectByGoodsId(goodsId);
-        if (goodsInfo != null) {
-            return ResultBuilder.succTSingle(goodsInfo.getId().longValue());
-        }
 
         return ResultBuilder.succTSingle(null);
     }
@@ -589,15 +444,13 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
      */
     @Override
     public TSingleResult<Boolean> updateGoodsFromPDD(Long goodsId) {
-        DuoGoodsInfo duoGoodsInfo = duoGoodsInfoRepository
-                .selectByGoodsId(goodsId);
-        duoduoGoodsManager.updateDuoduoGoodDetail(duoGoodsInfo);
+
         return ResultBuilder.succTSingle(true);
     }
 
     @Override
-    public BaseResult updateGoodsState(DuoduoGoodsInfoUpdateRequest infoRequest) {
-        int i = duoGoodsInfoRepository.updateGoodsState(infoRequest);
+    public BaseResult updateGoodsState(GoodsInfoUpdateRequest infoRequest) {
+        int i = goodsInfoRepository.updateGoodsState(infoRequest);
         return i > 0 ? ResultBuilder.succ() : ResultBuilder.fail(1001, "商品状态更新失败");
     }
 
@@ -607,7 +460,7 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
      * @param temInfoVO
      * @param infoVO
      */
-    private void convertGoodsInfo(DuoGoodsInfo temInfoVO, DuoduoGoodsInfoRequest infoVO) {
+    private void convertGoodsInfo(DuoGoodsInfo temInfoVO, GoodsInfoRequest infoVO) {
         //修改的值
         if (infoVO.getGoodsName() != null) {
             temInfoVO.setGoodsName(infoVO.getGoodsName());
@@ -658,7 +511,7 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
 
 
     @Override
-    public TPageResult<DuoduoGoodsInfoDTO> queryChannelGoods(GoodsInfoRecommendRequest infoRequest) {
+    public TPageResult<GoodsInfoDTO> queryChannelGoods(GoodsInfoRecommendRequest infoRequest) {
         ServiceAssert.notNull(infoRequest, Errors.Commons.REQUEST_PARAMETER_ERROR);
         List<DuoGoodsInfo> infoList = duoduoGoodsManager.queryChannelGoods(infoRequest);
         if (CollectionUtils.isEmpty(infoList)) {
@@ -666,13 +519,13 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
                     infoRequest.getRows(), 0);
         }
 
-        List<DuoduoGoodsInfoDTO> collect = infoList.stream().map(i -> {
+        List<GoodsInfoDTO> collect = infoList.stream().map(i -> {
             if (i.getGoodsId() == null) {
-                DuoduoGoodsInfoDTO response = new DuoduoGoodsInfoDTO();
+                GoodsInfoDTO response = new GoodsInfoDTO();
                 BeanUtils.copyProperties(i, response);
                 return response;
             } else {
-                DuoduoGoodsInfoDTO response = new DuoduoGoodsInfoDTO();
+                GoodsInfoDTO response = new GoodsInfoDTO();
                 BeanUtils.copyProperties(i, response);
                 response.setHasCoupon(Boolean.parseBoolean(i.getHasCoupon()));
                 return response;
@@ -697,7 +550,7 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
 
     @Override
     public BaseResult deleteAll() {
-        int i = duoGoodsInfoRepository.deleteAll();
+        int i = goodsInfoRepository.deleteAll();
         return i > 0 ? ResultBuilder.succ() : ResultBuilder.fail(1001, "商品批量更新失败");
     }
 
@@ -710,23 +563,16 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
     }
 
     @Override
-    public List<DuoduoGoodsInfoDTO> getList(GetStoreGoodsRequest getStoreGoodsRequest) {
-        if (getStoreGoodsRequest.getGoodsIds().size() > 0) {
-            DuoduoGoodsInfoExample goodsInfoExample = new DuoduoGoodsInfoExample();
-            goodsInfoExample.createCriteria().andGoodsIdIn(getStoreGoodsRequest.getGoodsIds());
-            List<DuoGoodsInfo> list = duoGoodsInfoRepository
-                    .selectByExample(goodsInfoExample);
-            List<DuoduoGoodsInfoDTO> arrayList = convertModel(list);
-            return arrayList;
-        } else {
-            return new ArrayList<>();
-        }
+    public List<GoodsInfoDTO> getList(GetStoreGoodsRequest getStoreGoodsRequest) {
+
+        return new ArrayList<>();
+
     }
 
     @Override
     public BaseResult deleteOldAutoChoice(Date endUpdate) {
 
-        duoGoodsInfoRepository.deleteOldChoice(endUpdate);
+        goodsInfoRepository.deleteOldChoice(endUpdate);
 
         return ResultBuilder.succ();
     }

@@ -4,7 +4,7 @@ package com.fulihui.duoduoke.demo.web.manager.impl;
 import com.fulihui.duoduoke.demo.api.api.GoodsInfoService;
 import com.fulihui.duoduoke.demo.api.api.StoreGoodsService;
 import com.fulihui.duoduoke.demo.api.api.StoreService;
-import com.fulihui.duoduoke.demo.api.dto.DuoduoGoodsInfoDTO;
+import com.fulihui.duoduoke.demo.api.dto.GoodsInfoDTO;
 import com.fulihui.duoduoke.demo.api.dto.StoreDTO;
 import com.fulihui.duoduoke.demo.api.dto.StoreGoodsDTO;
 import com.fulihui.duoduoke.demo.api.request.GetGoingStoreGoodsRequest;
@@ -68,7 +68,7 @@ public class StoreManagerImpl implements StoreManager {
         GetStoreGoodsRequest getStoreGoodsRequest=new GetStoreGoodsRequest();
 
         getStoreGoodsRequest.setGoodsIds(goodsIds);
-        List<DuoduoGoodsInfoDTO> goodsInfoDTOS=goodsInfoService.getList(getStoreGoodsRequest);
+        List<GoodsInfoDTO> goodsInfoDTOS=goodsInfoService.getList(getStoreGoodsRequest);
         List<GoodsInfo> voList = goodsInfoManager.toVOList(goodsInfoDTOS);
         List<GoodsInfo> list=new ArrayList<>();
         //排序

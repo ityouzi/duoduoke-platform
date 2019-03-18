@@ -1,7 +1,7 @@
 package com.fulihui.duoduoke.demo.web.manager;
 
 
-import com.fulihui.duoduoke.demo.api.dto.DuoduoGoodsInfoDTO;
+import com.fulihui.duoduoke.demo.api.dto.GoodsInfoDTO;
 import com.fulihui.duoduoke.demo.web.vo.GoodsInfo;
 import org.near.webmvcsupport.view.PageForm;
 import org.near.webmvcsupport.view.PageView;
@@ -16,9 +16,9 @@ import java.util.List;
  */
 public interface GoodsInfoManager {
 
-    List<GoodsInfo> toVOList(List<DuoduoGoodsInfoDTO> list);
+    List<GoodsInfo> toVOList(List<GoodsInfoDTO> list);
 
-    GoodsInfo toVO(DuoduoGoodsInfoDTO dto, BigDecimal yuanBig, Integer commission,
+    GoodsInfo toVO(GoodsInfoDTO dto, BigDecimal yuanBig, Integer commission,
                    Integer shareProportion);
 
     /**

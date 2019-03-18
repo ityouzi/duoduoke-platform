@@ -1,7 +1,7 @@
 package com.fulihui.duoduoke.demo.api.api;
 
 
-import com.fulihui.duoduoke.demo.api.dto.DuoduoGoodsInfoDTO;
+import com.fulihui.duoduoke.demo.api.dto.GoodsInfoDTO;
 import com.fulihui.duoduoke.demo.api.dto.GoodsTabelDTO;
 import com.fulihui.duoduoke.demo.api.request.*;
 import com.fulihui.duoduoke.demo.api.response.GoodsSearchInfoResponse;
@@ -35,7 +35,7 @@ public interface GoodsInfoService {
      * @param request
      * @return
      */
-    TPageResult<DuoduoGoodsInfoDTO> searchCouponGoods(GetDuoduoGoodsListRequest request);
+    TPageResult<GoodsInfoDTO> searchCouponGoods(GetDuoduoGoodsListRequest request);
 
     /**
      * 记录
@@ -51,7 +51,7 @@ public interface GoodsInfoService {
      * @param infoRequest
      * @return
      */
-    TPageResult<DuoduoGoodsInfoDTO> queryGoodsInfo(DuoduoGoodsInfoRequest infoRequest);
+    TPageResult<GoodsInfoDTO> queryGoodsInfo(GoodsInfoRequest infoRequest);
 
     /**
      * 查询数据
@@ -59,7 +59,7 @@ public interface GoodsInfoService {
      * @param infoRequest
      * @return
      */
-    TPageResult<DuoduoGoodsInfoDTO> queryGoodsInfoWithMark(DuoduoGoodsInfoRequest infoRequest);
+    TPageResult<GoodsInfoDTO> queryGoodsInfoWithMark(GoodsInfoRequest infoRequest);
 
 
     /**
@@ -68,7 +68,7 @@ public interface GoodsInfoService {
      * @param infoRequest
      * @return
      */
-    TPageResult<DuoduoGoodsInfoDTO> queryGoodsListInfo(DuoduoGoodsInfoRequest infoRequest);
+    TPageResult<GoodsInfoDTO> queryGoodsListInfo(GoodsInfoRequest infoRequest);
 
     /**
      * 前端查询商品详情
@@ -76,7 +76,7 @@ public interface GoodsInfoService {
      * @param request
      * @return
      */
-    TSingleResult<DuoduoGoodsInfoDTO> queryGoodsDetail(DuoduoGoodsInfoRequest request);
+    TSingleResult<GoodsInfoDTO> queryGoodsDetail(GoodsInfoRequest request);
 
     /**
      * 更新商品
@@ -84,7 +84,7 @@ public interface GoodsInfoService {
      * @param infoRequest
      * @return
      */
-    BaseResult updateGoodsInfo(DuoduoGoodsInfoRequest infoRequest);
+    BaseResult updateGoodsInfo(GoodsInfoRequest infoRequest);
 
     /**
      * 插入商品
@@ -92,7 +92,7 @@ public interface GoodsInfoService {
      * @param infoRequest
      * @return
      */
-    BaseResult insertGoodsInfo(DuoduoGoodsInfoRequest infoRequest);
+    BaseResult insertGoodsInfo(GoodsInfoRequest infoRequest);
 
 
     /**
@@ -108,7 +108,7 @@ public interface GoodsInfoService {
      * @param infoRequest
      * @return
      */
-    BaseResult updateGoodsState(DuoduoGoodsInfoUpdateRequest infoRequest);
+    BaseResult updateGoodsState(GoodsInfoUpdateRequest infoRequest);
 
     /**
      * 批量更新商品
@@ -144,7 +144,7 @@ public interface GoodsInfoService {
 
     BaseResult deleteAll();
 
-    TSingleResult<DuoduoGoodsInfoDTO> queryGoodsDetailNO(DuoduoGoodsInfoRequest request);
+    TSingleResult<GoodsInfoDTO> queryGoodsDetailNO(GoodsInfoRequest request);
 
 
     BaseResult updateTable();
@@ -152,12 +152,12 @@ public interface GoodsInfoService {
 
     TSingleResult<GoodsTabelDTO> queryGoodsTable();
 
-    TPageResult<DuoduoGoodsInfoDTO> queryChannelGoods(GoodsInfoRecommendRequest infoRequest);
+    TPageResult<GoodsInfoDTO> queryChannelGoods(GoodsInfoRecommendRequest infoRequest);
 
 
     TSingleResult<GoodsSearchResponse> searchGoods(GoodsSearchRequest request);
 
-    List<DuoduoGoodsInfoDTO> getList(GetStoreGoodsRequest getStoreGoodsRequest);
+    List<GoodsInfoDTO> getList(GetStoreGoodsRequest getStoreGoodsRequest);
 
     BaseResult deleteOldAutoChoice(Date endUpdate);
 
