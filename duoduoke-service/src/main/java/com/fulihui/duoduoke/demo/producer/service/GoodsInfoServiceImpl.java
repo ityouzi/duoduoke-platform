@@ -10,16 +10,17 @@ import com.fulihui.duoduoke.demo.api.enums.GoodsStateEnum;
 import com.fulihui.duoduoke.demo.api.request.*;
 import com.fulihui.duoduoke.demo.api.response.GoodsSearchInfoResponse;
 import com.fulihui.duoduoke.demo.api.response.GoodsSearchResponse;
-import com.fulihui.duoduoke.demo.producer.dal.dataobj.*;
-import com.fulihui.duoduoke.demo.producer.manager.DuoduoGoodsManager;
-import com.fulihui.duoduoke.demo.producer.repository.DuoduoGoodsInfoRepository;
-import com.fulihui.duoduoke.demo.producer.dal.dao.GoodSearchRecordMapper;
-import com.fulihui.duoduoke.demo.producer.dal.dao.GoodsTabelMapper;
-import com.fulihui.duoduoke.demo.producer.util.ClassFieldsUtil;
-import com.fulihui.duoduoke.demo.producer.util.Consts;
 import com.fulihui.duoduoke.demo.common.config.DuoDuoKeConfig;
 import com.fulihui.duoduoke.demo.common.config.RedisContent;
 import com.fulihui.duoduoke.demo.common.util.RedisUtils;
+import com.fulihui.duoduoke.demo.producer.dal.dao.GoodSearchRecordMapper;
+import com.fulihui.duoduoke.demo.producer.dal.dataobj.DuoduoGoodsInfo;
+import com.fulihui.duoduoke.demo.producer.dal.dataobj.DuoduoGoodsInfoExample;
+import com.fulihui.duoduoke.demo.producer.dal.dataobj.ExtDuoduoGoodsInfoExample;
+import com.fulihui.duoduoke.demo.producer.manager.DuoduoGoodsManager;
+import com.fulihui.duoduoke.demo.producer.repository.DuoduoGoodsInfoRepository;
+import com.fulihui.duoduoke.demo.producer.util.ClassFieldsUtil;
+import com.fulihui.duoduoke.demo.producer.util.Consts;
 import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.DuoHttpClient;
 import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.request.DuoGoodsSearchRequest;
 import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.DuoGoodsSearchResult;
@@ -100,8 +101,7 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
     /**
      * The Goods tabel mapper.
      */
-    @Autowired
-    GoodsTabelMapper goodsTabelMapper;
+
     /**
      * The Redis utils.
      */
@@ -213,6 +213,16 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
         LOGGER.info("search.empty:{}", empty ? "Y" : "N");
         return ResultBuilder.succTPage(collect, infoRequest.getPage(), infoRequest.getRows(),
                 count);
+    }
+
+    @Override
+    public BaseResult updateTable() {
+        return null;
+    }
+
+    @Override
+    public TSingleResult<GoodsTabelDTO> queryGoodsTable() {
+        return null;
     }
 
     @Override
@@ -554,7 +564,6 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
     }
 
 
-
     /**
      * 查询商品id
      *
@@ -647,33 +656,6 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
         return b ? ResultBuilder.succ() : ResultBuilder.fail(1001, "商品批量更新失败");
     }
 
-    @Override
-    public BaseResult updateTable() {
-        GoodsTabelExample example = new GoodsTabelExample();
-        List<GoodsTabel> goodsTabels = goodsTabelMapper.selectByExample(example);
-        int i = 0;
-        if (!CollectionUtils.isEmpty(goodsTabels)) {
-            GoodsTabel goodsTabel = goodsTabels.get(0);
-            goodsTabel.setTableId(goodsTabel.getTableId() + 1);
-            goodsTabel.setGmtModified(new Date());
-            i = goodsTabelMapper.updateByPrimaryKey(goodsTabel);
-        }
-        return i > 0 ? ResultBuilder.succ() : ResultBuilder.fail(1001, "表名更新失败");
-    }
-
-    @Override
-    public TSingleResult<GoodsTabelDTO> queryGoodsTable() {
-        GoodsTabelExample example = new GoodsTabelExample();
-        List<GoodsTabel> goodsTabels = goodsTabelMapper.selectByExample(example);
-        if (!CollectionUtils.isEmpty(goodsTabels)) {
-            GoodsTabelDTO dto = new GoodsTabelDTO();
-            BeanUtils.copyProperties(goodsTabels.get(0), dto);
-            return ResultBuilder.succTSingle(dto);
-        } else {
-            return ResultBuilder.succTSingle(null);
-        }
-
-    }
 
     @Override
     public TPageResult<DuoduoGoodsInfoDTO> queryChannelGoods(GoodsInfoRecommendRequest infoRequest) {
