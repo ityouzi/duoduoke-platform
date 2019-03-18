@@ -5,9 +5,9 @@ import com.fulihui.duoduoke.demo.api.request.GetDuoduoGoodsListRequest;
 import com.fulihui.duoduoke.demo.api.request.GoodsInfoRecommendRequest;
 import com.fulihui.duoduoke.demo.api.request.GoodsSearchRequest;
 import com.fulihui.duoduoke.demo.api.response.GoodsSearchResponse;
-import com.fulihui.duoduoke.demo.producer.dal.dataobj.DuoduoGoodsInfo;
-import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.request.DuoGoodsRequest;
-import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.DuoGoodsResult;
+import com.fulihui.duoduoke.demo.producer.dal.dataobj.DuoGoodsInfo;
+import com.fulihui.duoduoke.demo.web.weixin.duoapi.request.DuoGoodsRequest;
+import com.fulihui.duoduoke.demo.web.weixin.duoapi.result.DuoGoodsResult;
 import org.near.servicesupport.result.TPageResult;
 
 import java.util.Date;
@@ -40,7 +40,7 @@ public interface DuoduoGoodsManager {
      * @param info
      * @return
      */
-    DuoduoGoodsInfo updateDuoduoGoodDetail(DuoduoGoodsInfo info);
+    DuoGoodsInfo updateDuoduoGoodDetail(DuoGoodsInfo info);
 
     /**
      * 查询多多商品详情
@@ -48,10 +48,10 @@ public interface DuoduoGoodsManager {
      * @param goodsId
      * @return
      */
-    DuoduoGoodsInfo getDuoduoGoodDetail(Long goodsId);
+    DuoGoodsInfo getDuoduoGoodDetail(Long goodsId);
 
 
-    void updateGoods(List<DuoduoGoodsInfo> result, Date saveDate, Integer saveDay);
+    void updateGoods(List<DuoGoodsInfo> result, Date saveDate, Integer saveDay);
 
     /**
      * check商品
@@ -61,10 +61,10 @@ public interface DuoduoGoodsManager {
     boolean checkDuoduoGoods(DuoduoGoodsCheckRequest request);
 
 
-    void checkGoods(List<DuoduoGoodsInfo> duoduoGoodsInfos);
+    void checkGoods(List<DuoGoodsInfo> duoGoodsInfos);
 
 
-    List<DuoduoGoodsInfo> queryChannelGoods(GoodsInfoRecommendRequest infoRequest);
+    List<DuoGoodsInfo> queryChannelGoods(GoodsInfoRecommendRequest infoRequest);
 
     /**
      * 查询多多客商品
@@ -72,7 +72,7 @@ public interface DuoduoGoodsManager {
      * @param getDuoduoGoodsListRequest
      * @return
      */
-    TPageResult<DuoduoGoodsInfo> queryGoods(GetDuoduoGoodsListRequest getDuoduoGoodsListRequest);
+    TPageResult<DuoGoodsInfo> queryGoods(GetDuoduoGoodsListRequest getDuoduoGoodsListRequest);
 
     DuoGoodsResult duoduoGoodsRequest(Integer page, Integer pageSize, DuoGoodsRequest request);
 

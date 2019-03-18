@@ -10,21 +10,21 @@ import com.fulihui.duoduoke.demo.api.request.*;
 import com.fulihui.duoduoke.demo.api.response.DuoduoGoodsCheckResponse;
 import com.fulihui.duoduoke.demo.api.response.GoodsSearchResponse;
 import com.fulihui.duoduoke.demo.producer.manager.DuoduoGoodsManager;
-import com.fulihui.duoduoke.demo.producer.dal.dataobj.DuoduoGoodsInfo;
+import com.fulihui.duoduoke.demo.producer.dal.dataobj.DuoGoodsInfo;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.DuoduoGoodsInfoExample;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsCatInfo;
-import com.fulihui.duoduoke.demo.producer.repository.DuoduoGoodsInfoRepository;
+import com.fulihui.duoduoke.demo.producer.repository.DuoGoodsInfoRepository;
 import com.fulihui.duoduoke.demo.producer.repository.GoodsCatInfoRepository;
 import com.fulihui.duoduoke.demo.producer.util.ClassFieldsUtil;
 import com.fulihui.duoduoke.demo.producer.util.SignUtil;
 import com.fulihui.duoduoke.demo.common.config.DuoDuoKeConfig;
 import com.fulihui.duoduoke.demo.common.config.RedisContent;
 import com.fulihui.duoduoke.demo.common.util.RedisUtils;
-import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.DuoHttpClient;
-import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.request.DuoGoodsDetailRequest;
-import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.request.DuoGoodsRecommendRequest;
-import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.request.DuoGoodsRequest;
-import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.*;
+import com.fulihui.duoduoke.demo.web.weixin.duoapi.DuoHttpClient;
+import com.fulihui.duoduoke.demo.web.weixin.duoapi.request.DuoGoodsDetailRequest;
+import com.fulihui.duoduoke.demo.web.weixin.duoapi.request.DuoGoodsRecommendRequest;
+import com.fulihui.duoduoke.demo.web.weixin.duoapi.request.DuoGoodsRequest;
+import com.fulihui.duoduoke.demo.web.weixin.duoapi.result.*;
 import org.near.servicesupport.result.ResultBuilder;
 import org.near.servicesupport.result.TPageResult;
 import org.near.toolkit.common.DateUtils;
@@ -56,7 +56,7 @@ public class DuoduoGoodsManagerImpl implements DuoduoGoodsManager {
     @Autowired
     private GoodsCatInfoRepository goodsCatInfoRepository;
     @Autowired
-    private DuoduoGoodsInfoRepository duoduoGoodsIfoRepository;
+    private DuoGoodsInfoRepository duoduoGoodsIfoRepository;
     private int row = 100;
 
     /**
@@ -102,9 +102,9 @@ public class DuoduoGoodsManagerImpl implements DuoduoGoodsManager {
             int offset = i > 1 ? (i - 1) * 100 : 0;
             example.setOffset(offset);
             exampleIS.setLimit(100);
-            List<DuoduoGoodsInfo> duoduoGoodsInfos = duoduoGoodsIfoRepository.selectByExample(example);
-            if (!CollectionUtils.isEmpty(duoduoGoodsInfos)) {
-                updateGoods(duoduoGoodsInfos, newDate, saveDay);
+            List<DuoGoodsInfo> duoGoodsInfos = duoduoGoodsIfoRepository.selectByExample(example);
+            if (!CollectionUtils.isEmpty(duoGoodsInfos)) {
+                updateGoods(duoGoodsInfos, newDate, saveDay);
 
             }
         }
@@ -118,9 +118,9 @@ public class DuoduoGoodsManagerImpl implements DuoduoGoodsManager {
      */
     @Override
     public boolean saveDuoduoGoods() {
-        List<GoodsCatInfo> goodsCatInfos = goodsCatInfoRepository.selectBylevel(
+        List<GoodsCatInfo> goodsCatInfos = goodsCatInfoRepository.selectByLevel(
                 DuoDuoGoodsLevelEnum.ONE.getCode());
-        List<GoodsCatInfo> twogoodsCatInfos = goodsCatInfoRepository.selectBylevel(
+        List<GoodsCatInfo> twogoodsCatInfos = goodsCatInfoRepository.selectByLevel(
                 DuoDuoGoodsLevelEnum.TWO.getCode());
 
         List<Integer> twoCatIds = twogoodsCatInfos.stream().map(i -> {
@@ -146,21 +146,21 @@ public class DuoduoGoodsManagerImpl implements DuoduoGoodsManager {
                             List<DuoGoodsApiResult> goods_list = result.getGoods_list();
                             if (!CollectionUtils.isEmpty(goods_list)) {
                                 try {
-                                    Map<String, DuoduoGoodsInfo> goodsinfo = new HashMap<>();
+                                    Map<String, DuoGoodsInfo> goodsinfo = new HashMap<>();
                                     for (DuoGoodsApiResult apiResult : goods_list) {
-                                        DuoduoGoodsInfo duoduoGoodsInfo = convertGoods(apiResult);
-                                        if (duoduoGoodsInfo != null) {
-                                            if (twoCatIds.contains(duoduoGoodsInfo.getLevelTwo())) {
-                                                duoduoGoodsInfo.setGmtCreate(new Date());
-                                                duoduoGoodsInfo.setGmtModified(new Date());
+                                        DuoGoodsInfo duoGoodsInfo = convertGoods(apiResult);
+                                        if (duoGoodsInfo != null) {
+                                            if (twoCatIds.contains(duoGoodsInfo.getLevelTwo())) {
+                                                duoGoodsInfo.setGmtCreate(new Date());
+                                                duoGoodsInfo.setGmtModified(new Date());
                                             }
-                                            goodsinfo.put(apiResult.getGoods_id(), duoduoGoodsInfo);
+                                            goodsinfo.put(apiResult.getGoods_id(), duoGoodsInfo);
                                         }
 
                                     }
                                     if (!CollectionUtils.isEmpty(goodsinfo)) {
-                                        Collection<DuoduoGoodsInfo> values = goodsinfo.values();
-                                        List<DuoduoGoodsInfo> list = new ArrayList<>();
+                                        Collection<DuoGoodsInfo> values = goodsinfo.values();
+                                        List<DuoGoodsInfo> list = new ArrayList<>();
                                         list.addAll(values);
                                         duoduoGoodsIfoRepository.batchInsert(list, 1);
 
@@ -183,12 +183,12 @@ public class DuoduoGoodsManagerImpl implements DuoduoGoodsManager {
 
 
     @Override
-    public void updateGoods(List<DuoduoGoodsInfo> result, Date saveDate, Integer saveDay) {
-        Map<String, DuoduoGoodsInfo> goodsinfo = new HashMap<>();
-        for (DuoduoGoodsInfo info : result) {
-            DuoduoGoodsInfo duoduoGoodsInfo = duoduoGoodsIfoRepository.selectByGoodsIdTable(info.getGoodsId(), 1);
+    public void updateGoods(List<DuoGoodsInfo> result, Date saveDate, Integer saveDay) {
+        Map<String, DuoGoodsInfo> goodsinfo = new HashMap<>();
+        for (DuoGoodsInfo info : result) {
+            DuoGoodsInfo duoGoodsInfo = duoduoGoodsIfoRepository.selectByGoodsIdTable(info.getGoodsId(), 1);
             try {
-                if (duoduoGoodsInfo == null) {
+                if (duoGoodsInfo == null) {
                     if (info.getCouponStartTime() != null && info.getCouponEndTime() != null) {
                         Date couponStartTime = info.getCouponStartTime();
                         Date couponEndTime = info.getCouponEndTime();
@@ -208,18 +208,18 @@ public class DuoduoGoodsManagerImpl implements DuoduoGoodsManager {
                     }
                     goodsinfo.put(info.getGoodsId() + "", info);
                 } else {
-                    DuoduoGoodsInfo updateInfo = new DuoduoGoodsInfo();
-                    updateInfo.setId(duoduoGoodsInfo.getId());
+                    DuoGoodsInfo updateInfo = new DuoGoodsInfo();
+                    updateInfo.setId(duoGoodsInfo.getId());
                     updateInfo.setIsChoose(GoodsChooseEnum.IS.getCode());
                     updateInfo.setChooseSort(info.getChooseSort());
-                    if (duoduoGoodsInfo.getState().equals(GoodsStateEnum.INIT.getCode())) {
+                    if (duoGoodsInfo.getState().equals(GoodsStateEnum.INIT.getCode())) {
                         updateInfo.setState(GoodsStateEnum.ON.getCode());
                     }
                     duoduoGoodsIfoRepository.updateByPrimaryKeySelective(updateInfo, 1);
                 }
                 if (!CollectionUtils.isEmpty(goodsinfo)) {
-                    Collection<DuoduoGoodsInfo> values = goodsinfo.values();
-                    List<DuoduoGoodsInfo> list = new ArrayList<>();
+                    Collection<DuoGoodsInfo> values = goodsinfo.values();
+                    List<DuoGoodsInfo> list = new ArrayList<>();
                     list.addAll(values);
                     duoduoGoodsIfoRepository.batchInsert(list, 1);
                 }
@@ -249,7 +249,7 @@ public class DuoduoGoodsManagerImpl implements DuoduoGoodsManager {
             int offset = i > 1 ? (i - 1) * 100 : 0;
             example.setOffset(offset);
             exampleIS.setLimit(100);
-            List<DuoduoGoodsInfo> list = duoduoGoodsIfoRepository.selectByExample(example);
+            List<DuoGoodsInfo> list = duoduoGoodsIfoRepository.selectByExample(example);
             if (!CollectionUtils.isEmpty(list)) {
                 DuoduoGoodsCheckResponse response = new DuoduoGoodsCheckResponse();
 
@@ -268,8 +268,8 @@ public class DuoduoGoodsManagerImpl implements DuoduoGoodsManager {
     }
 
     @Override
-    public void checkGoods(List<DuoduoGoodsInfo> duoduoGoodsInfos) {
-        for (DuoduoGoodsInfo info : duoduoGoodsInfos) {
+    public void checkGoods(List<DuoGoodsInfo> duoGoodsInfos) {
+        for (DuoGoodsInfo info : duoGoodsInfos) {
             try {
                 List<String> goods = new ArrayList<>();
                 DuoGoodsDetailResult duoduoGoodsDetailResult = queryDuoduoGoodDetail(info.getGoodsId());
@@ -291,9 +291,9 @@ public class DuoduoGoodsManagerImpl implements DuoduoGoodsManager {
     }
 
     @Override
-    public List<DuoduoGoodsInfo> queryChannelGoods(GoodsInfoRecommendRequest infoRequest) {
+    public List<DuoGoodsInfo> queryChannelGoods(GoodsInfoRecommendRequest infoRequest) {
         String millis = String.valueOf(System.currentTimeMillis());
-        List<DuoduoGoodsInfo> infoList = new ArrayList<>();
+        List<DuoGoodsInfo> infoList = new ArrayList<>();
         DuoGoodsRecommendRequest request = new DuoGoodsRecommendRequest();
         int channelType = infoRequest.getChannelType();
         int rows = infoRequest.getRows();
@@ -312,11 +312,11 @@ public class DuoduoGoodsManagerImpl implements DuoduoGoodsManager {
         if (duoduoGoodsRecommendResult.isSuccess()) {
             List<DuoGoodsApiResult> list = duoduoGoodsRecommendResult.getList();
             for (DuoGoodsApiResult apiResult : list) {
-                DuoduoGoodsInfo duoduoGoodsInfo = convertGoods(apiResult);
-                if (duoduoGoodsInfo != null) {
-                    infoList.add(duoduoGoodsInfo);
+                DuoGoodsInfo duoGoodsInfo = convertGoods(apiResult);
+                if (duoGoodsInfo != null) {
+                    infoList.add(duoGoodsInfo);
                 } else {
-                    infoList.add(new DuoduoGoodsInfo());
+                    infoList.add(new DuoGoodsInfo());
                 }
             }
         }
@@ -324,7 +324,7 @@ public class DuoduoGoodsManagerImpl implements DuoduoGoodsManager {
     }
 
     @Override
-    public TPageResult<DuoduoGoodsInfo> queryGoods(GetDuoduoGoodsListRequest getDuoduoGoodsListRequest) {
+    public TPageResult<DuoGoodsInfo> queryGoods(GetDuoduoGoodsListRequest getDuoduoGoodsListRequest) {
         Date date = new Date();
         long l = date.getTime() / 1000;
 
@@ -349,17 +349,17 @@ public class DuoduoGoodsManagerImpl implements DuoduoGoodsManager {
         request.setSign(sign);
         DuoGoodsResult duoduoGoodsResult = duoHttpClient.invokeService(request);
 
-        List<DuoduoGoodsInfo> infoList = null;
+        List<DuoGoodsInfo> infoList = null;
         int count = 0;
         if (duoduoGoodsResult.isSuccess()) {
             List<DuoGoodsApiResult> list = duoduoGoodsResult.getGoods_list();
             infoList = new ArrayList<>(list.size());
             for (DuoGoodsApiResult apiResult : list) {
-                DuoduoGoodsInfo duoduoGoodsInfo = convertGoods(apiResult);
-                if (duoduoGoodsInfo != null) {
-                    infoList.add(duoduoGoodsInfo);
+                DuoGoodsInfo duoGoodsInfo = convertGoods(apiResult);
+                if (duoGoodsInfo != null) {
+                    infoList.add(duoGoodsInfo);
                 } else {
-                    infoList.add(new DuoduoGoodsInfo());
+                    infoList.add(new DuoGoodsInfo());
                 }
             }
             count = Integer.parseInt(duoduoGoodsResult.getTotal_count());
@@ -391,9 +391,9 @@ public class DuoduoGoodsManagerImpl implements DuoduoGoodsManager {
         return duoduoGoodsResult;
     }
 
-    public DuoduoGoodsInfo convertGoods(DuoGoodsApiResult result) {
+    public DuoGoodsInfo convertGoods(DuoGoodsApiResult result) {
         String goods_image_url = result.getGoods_image_url();
-        DuoduoGoodsInfo info = new DuoduoGoodsInfo();
+        DuoGoodsInfo info = new DuoGoodsInfo();
         if (StringUtil.isNotEmpty(goods_image_url)) {
             String cat_ids = result.getCat_ids();
             if (StringUtil.isNotEmpty(cat_ids)) {
@@ -466,15 +466,15 @@ public class DuoduoGoodsManagerImpl implements DuoduoGoodsManager {
      * @return
      */
     @Override
-    public DuoduoGoodsInfo updateDuoduoGoodDetail(DuoduoGoodsInfo info) {
+    public DuoGoodsInfo updateDuoduoGoodDetail(DuoGoodsInfo info) {
         try {
             Long goodsId = info.getGoodsId();
             DuoGoodsDetailResult duoduoGoodsDetailResult = queryDuoduoGoodDetail(goodsId);
-            DuoduoGoodsInfo duoduoGoodsInfo = updateGoods(duoduoGoodsDetailResult, info);
-            if (duoduoGoodsInfo == null) {
+            DuoGoodsInfo duoGoodsInfo = updateGoods(duoduoGoodsDetailResult, info);
+            if (duoGoodsInfo == null) {
                 return info;
             } else {
-                return duoduoGoodsInfo;
+                return duoGoodsInfo;
             }
         } catch (Exception e) {
             LOGGER.error("更新商品错误", e, info.getGoodsId());
@@ -489,12 +489,12 @@ public class DuoduoGoodsManagerImpl implements DuoduoGoodsManager {
      * @return
      */
     @Override
-    public DuoduoGoodsInfo getDuoduoGoodDetail(Long goodsId) {
+    public DuoGoodsInfo getDuoduoGoodDetail(Long goodsId) {
         //调用多多接口
         DuoGoodsDetailResult duoduoGoodsDetailResult = queryDuoduoGoodDetail(goodsId);
 
         //数据转换
-        DuoduoGoodsInfo goodsInfos = convertGoodsInfo(duoduoGoodsDetailResult);
+        DuoGoodsInfo goodsInfos = convertGoodsInfo(duoduoGoodsDetailResult);
         return goodsInfos;
     }
 
@@ -521,12 +521,12 @@ public class DuoduoGoodsManagerImpl implements DuoduoGoodsManager {
      * @param goodsInfo
      * @return
      */
-    public DuoduoGoodsInfo updateGoods(DuoGoodsDetailResult result, DuoduoGoodsInfo goodsInfo) {
+    public DuoGoodsInfo updateGoods(DuoGoodsDetailResult result, DuoGoodsInfo goodsInfo) {
 
         List<DuoGoodsDetailApiResult> goodsDetailList = result.getGoods_details();
         if (!CollectionUtils.isEmpty(goodsDetailList)) {
             DuoGoodsDetailApiResult detailResult = goodsDetailList.get(0);
-            DuoduoGoodsInfo info = new DuoduoGoodsInfo();
+            DuoGoodsInfo info = new DuoGoodsInfo();
             info.setId(goodsInfo.getId());
             if (StringUtil.isEmpty(goodsInfo.getGoodsDesc())) {
                 info.setGoodsDesc(detailResult.getGoods_desc());
@@ -570,9 +570,9 @@ public class DuoduoGoodsManagerImpl implements DuoduoGoodsManager {
     }
 
 
-    public DuoduoGoodsInfo updateGoodInfos(DuoGoodsApiResult result, DuoduoGoodsInfo goodsInfo) {
+    public DuoGoodsInfo updateGoodInfos(DuoGoodsApiResult result, DuoGoodsInfo goodsInfo) {
 
-        DuoduoGoodsInfo info = new DuoduoGoodsInfo();
+        DuoGoodsInfo info = new DuoGoodsInfo();
         info.setId(goodsInfo.getId());
         if (!StringUtil.isEmpty(goodsInfo.getGoodsDesc())) {
             info.setGoodsDesc(result.getGoods_desc());
@@ -613,8 +613,8 @@ public class DuoduoGoodsManagerImpl implements DuoduoGoodsManager {
      * @param result
      * @return
      */
-    private DuoduoGoodsInfo convertGoodsInfo(DuoGoodsDetailResult result) {
-        DuoduoGoodsInfo info = new DuoduoGoodsInfo();
+    private DuoGoodsInfo convertGoodsInfo(DuoGoodsDetailResult result) {
+        DuoGoodsInfo info = new DuoGoodsInfo();
         if (result.isSuccess()) {
             List<DuoGoodsDetailApiResult> goodsDetails = result.getGoods_details();
             if (!CollectionUtils.isEmpty(goodsDetails)) {
@@ -723,12 +723,12 @@ public class DuoduoGoodsManagerImpl implements DuoduoGoodsManager {
             if (result.isSuccess()) {
                 List<DuoGoodsApiResult> goods_list = result.getGoods_list();
                 if (!CollectionUtils.isEmpty(goods_list)) {
-                    Map<String, DuoduoGoodsInfo> goodsinfo = new HashMap<>();
+                    Map<String, DuoGoodsInfo> goodsinfo = new HashMap<>();
                     for (DuoGoodsApiResult apiResult : goods_list) {
-                        DuoduoGoodsInfo duoduoGoodsInfo = duoduoGoodsIfoRepository.selectByGoodsId(Long.parseLong(apiResult.getGoods_id()));
+                        DuoGoodsInfo duoGoodsInfo = duoduoGoodsIfoRepository.selectByGoodsId(Long.parseLong(apiResult.getGoods_id()));
                         try {
-                            if (duoduoGoodsInfo == null) {
-                                DuoduoGoodsInfo goodsInfo = convertGoods(apiResult);
+                            if (duoGoodsInfo == null) {
+                                DuoGoodsInfo goodsInfo = convertGoods(apiResult);
                                 if (goodsInfo != null) {
                                     goodsInfo.setGmtCreate(new Date());
                                     goodsInfo.setGmtModified(new Date());
@@ -745,9 +745,9 @@ public class DuoduoGoodsManagerImpl implements DuoduoGoodsManager {
                             } else {
                                 repeat++;
                                 if (StringUtil.equals(isChoose, GoodsChooseEnum.IS.getCode())) {
-                                    if (duoduoGoodsInfo.getIsChoose().equals(GoodsChooseEnum.NO.getCode())) {
-                                        DuoduoGoodsInfo goodsInfo = new DuoduoGoodsInfo();
-                                        goodsInfo.setId(duoduoGoodsInfo.getId());
+                                    if (duoGoodsInfo.getIsChoose().equals(GoodsChooseEnum.NO.getCode())) {
+                                        DuoGoodsInfo goodsInfo = new DuoGoodsInfo();
+                                        goodsInfo.setId(duoGoodsInfo.getId());
                                         goodsInfo.setGmtModified(new Date());
                                         goodsInfo.setIsChoose(GoodsChooseEnum.IS.getCode());
                                         goodsInfo.setChooseSort(0);
@@ -762,9 +762,9 @@ public class DuoduoGoodsManagerImpl implements DuoduoGoodsManager {
 
                     }
                     if (!CollectionUtils.isEmpty(goodsinfo)) {
-                        Collection<DuoduoGoodsInfo> values = goodsinfo.values();
+                        Collection<DuoGoodsInfo> values = goodsinfo.values();
                         if (!CollectionUtils.isEmpty(values)) {
-                            List<DuoduoGoodsInfo> list = new ArrayList<>();
+                            List<DuoGoodsInfo> list = new ArrayList<>();
                             list.addAll(values);
                             insert = duoduoGoodsIfoRepository.batchInsert(list, 0) + insert;
                         }

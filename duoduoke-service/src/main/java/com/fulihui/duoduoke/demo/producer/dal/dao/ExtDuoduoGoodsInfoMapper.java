@@ -1,7 +1,7 @@
 package com.fulihui.duoduoke.demo.producer.dal.dao;
 
 
-import com.fulihui.duoduoke.demo.producer.dal.dataobj.DuoduoGoodsInfo;
+import com.fulihui.duoduoke.demo.producer.dal.dataobj.DuoGoodsInfo;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.DuoduoGoodsInfoExample;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.ExtDuoduoGoodsInfoExample;
 import org.apache.ibatis.annotations.Param;
@@ -12,16 +12,16 @@ import java.util.List;
 
 public interface ExtDuoduoGoodsInfoMapper {
 
-    int batchInsert(List<DuoduoGoodsInfo> record);
+    int batchInsert(List<DuoGoodsInfo> record);
 
-    int updateDetailByGoodsId(DuoduoGoodsInfo record);
+    int updateDetailByGoodsId(DuoGoodsInfo record);
 
-    List<DuoduoGoodsInfo> selectByGoodsId(Long goodsId);
+    List<DuoGoodsInfo> selectByGoodsId(Long goodsId);
 
     int updateState(@Param("state") String state, @Param("couponStartTime") Date couponStartTime,
                     @Param("couponEndTime") Date couponEndTime, @Param("oldState") String oldState);
 
-    List<DuoduoGoodsInfo> selectByExample(DuoduoGoodsInfoExample example);
+    List<DuoGoodsInfo> selectByExample(DuoduoGoodsInfoExample example);
 
     int batchDelete(List<String> goodIds);
 
@@ -34,7 +34,7 @@ public interface ExtDuoduoGoodsInfoMapper {
      * @param example
      * @return
      */
-    List<DuoduoGoodsInfo> selectByExtExample(ExtDuoduoGoodsInfoExample example);
+    List<DuoGoodsInfo> selectByExtExample(ExtDuoduoGoodsInfoExample example);
 
     long countByExtExample(ExtDuoduoGoodsInfoExample example);
 

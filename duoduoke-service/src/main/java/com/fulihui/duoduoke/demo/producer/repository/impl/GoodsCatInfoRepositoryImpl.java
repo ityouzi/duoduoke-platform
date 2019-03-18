@@ -54,7 +54,7 @@ public class GoodsCatInfoRepositoryImpl implements GoodsCatInfoRepository {
     }
 
     @Override
-    public List<GoodsCatInfo> selectBylevel(Integer level) {
+    public List<GoodsCatInfo> selectByLevel(Integer level) {
         GoodsCatInfoExample example = new GoodsCatInfoExample();
         GoodsCatInfoExample.Criteria criteria = example.createCriteria();
         criteria.andLevelEqualTo(level + "");

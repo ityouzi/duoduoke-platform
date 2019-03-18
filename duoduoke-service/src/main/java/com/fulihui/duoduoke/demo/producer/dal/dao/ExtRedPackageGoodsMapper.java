@@ -1,7 +1,7 @@
 package com.fulihui.duoduoke.demo.producer.dal.dao;
 
 import com.fulihui.duoduoke.demo.api.dto.RedPackageGoodsDTO;
-import com.fulihui.duoduoke.demo.producer.dal.dataobj.DuoduoGoodsInfo;
+import com.fulihui.duoduoke.demo.producer.dal.dataobj.DuoGoodsInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -30,5 +30,5 @@ public interface ExtRedPackageGoodsMapper {
      *
      * @return
      */
-    List<DuoduoGoodsInfo> queryUsingGoods(Map<String, Object> params);
+    List<DuoGoodsInfo> queryUsingGoods(Map<String, Object> params);
 }

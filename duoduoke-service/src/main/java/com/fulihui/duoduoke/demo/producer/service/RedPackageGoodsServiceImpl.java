@@ -10,11 +10,11 @@ import com.fulihui.duoduoke.demo.producer.dal.dataobj.RedPackageField;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.RedPackageGoods;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.RedPackageGoodsExample;
 import com.fulihui.duoduoke.demo.producer.manager.DuoduoGoodsManager;
-import com.fulihui.duoduoke.demo.producer.repository.DuoduoGoodsInfoRepository;
+import com.fulihui.duoduoke.demo.producer.repository.DuoGoodsInfoRepository;
 import com.fulihui.duoduoke.demo.producer.dal.dao.ExtRedPackageGoodsMapper;
 import com.fulihui.duoduoke.demo.producer.dal.dao.RedPackageFieldMapper;
 import com.fulihui.duoduoke.demo.producer.dal.dao.RedPackageGoodsMapper;
-import com.fulihui.duoduoke.demo.producer.dal.dataobj.DuoduoGoodsInfo;
+import com.fulihui.duoduoke.demo.producer.dal.dataobj.DuoGoodsInfo;
 import com.fulihui.duoduoke.demo.common.util.BeanConvUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -46,7 +46,7 @@ public class RedPackageGoodsServiceImpl implements RedPackageGoodsService {
     @Autowired
     RedPackageFieldMapper redPackageFieldMapper;
     @Autowired
-    DuoduoGoodsInfoRepository duoduoGoodsInfoRepository;
+    DuoGoodsInfoRepository duoGoodsInfoRepository;
     @Autowired
     DuoduoGoodsManager duoduoGoodsManager;
     @Autowired
@@ -98,7 +98,7 @@ public class RedPackageGoodsServiceImpl implements RedPackageGoodsService {
         params.put("goodsId", request.getGoodsId());
         params.put("state", request.getState());
         params.put("orderByClause", request.getOrderByClause());
-        params.put("goodsTable", duoduoGoodsInfoRepository.getUseTableName());
+        params.put("goodsTable", duoGoodsInfoRepository.getUseTableName());
 
         //查询总条数
         long count = extRedPackageGoodsMapper.queryFieldGoodsCount(params);
@@ -209,9 +209,9 @@ public class RedPackageGoodsServiceImpl implements RedPackageGoodsService {
             Map<String, Object> params = Maps.newHashMap();
             params.put("skip", skip);
             params.put("rows", rows);
-            params.put("goodsTable", duoduoGoodsInfoRepository.getUseTableName());
+            params.put("goodsTable", duoGoodsInfoRepository.getUseTableName());
 
-            List<DuoduoGoodsInfo> goodsInfos = extRedPackageGoodsMapper.queryUsingGoods(params);
+            List<DuoGoodsInfo> goodsInfos = extRedPackageGoodsMapper.queryUsingGoods(params);
 
             if (goodsInfos != null && goodsInfos.size() > 0) {
                 try {

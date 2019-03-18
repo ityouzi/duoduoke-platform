@@ -35,12 +35,12 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://192.168.1.45:3306/duoduoke_dev"
-                        userId="duoduoke_dev"
-                        password="123456"/>
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/duoduoke"
+                        userId="root"
+                        password="root"/>
 
 
-        <javaModelGenerator targetPackage="com.fulihui.duoduoke.dal.dataobj"
+        <javaModelGenerator targetPackage="com.fulihui.duoduoke.demo.producer.dal.dataobj"
                             targetProject="src/main/java">
             <property name="trimStrings" value="true"/>
 
@@ -62,7 +62,7 @@
 
         <sqlMapGenerator targetPackage="sqlmap" targetProject="src/main/resources"/>
 
-        <javaClientGenerator targetPackage="com.fulihui.duoduoke.dal.dao"
+        <javaClientGenerator targetPackage="com.fulihui.duoduoke.demo.producer.dal.dao"
                              targetProject="src/main/java" type="XMLMAPPER">
 
             <property name="enableSubPackages" value=""/>
@@ -76,7 +76,7 @@
         </javaClientGenerator>
 
 
-        <table tableName="promotion_channels_order" mapperName="">
+        <table tableName="goods_info" mapperName="">
             <generatedKey column="id" sqlStatement="JDBC"/>
         </table>
 

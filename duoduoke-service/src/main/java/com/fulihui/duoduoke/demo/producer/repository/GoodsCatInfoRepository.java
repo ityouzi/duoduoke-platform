@@ -22,7 +22,7 @@ public interface GoodsCatInfoRepository {
 
     List<GoodsCatInfoTreeNodeDTO> tree(Integer parentCatId, List levelList, String status);
 
-    List<GoodsCatInfo> selectBylevel(Integer level);
+    List<GoodsCatInfo> selectByLevel(Integer level);
 
     List<GoodsCatInfoTreeNodeDTO> queryTree(GoodsCatInfo dataModel, int page, int rows);
 

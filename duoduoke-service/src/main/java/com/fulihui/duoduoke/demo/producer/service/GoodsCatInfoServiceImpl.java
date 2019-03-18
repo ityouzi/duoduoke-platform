@@ -107,7 +107,7 @@ public class GoodsCatInfoServiceImpl implements GoodsCatInfoService {
     public TMultiResult<GoodsCatInfoDTO> selectBylevel(GoodsCatInfoRequest request) {
         ServiceAssert.notNull(request, Errors.Commons.REQUEST_PARAMETER_ERROR);
         List<GoodsCatInfo> goodsCatInfos = goodsCatInfoRepository
-                .selectBylevel(Integer.parseInt(request.getLevel()));
+                .selectByLevel(Integer.parseInt(request.getLevel()));
         List<GoodsCatInfoDTO> list = new ArrayList<>();
 
         if (goodsCatInfos != null) {

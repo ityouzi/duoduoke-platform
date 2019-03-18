@@ -47,7 +47,7 @@
     <result column="state" jdbcType="VARCHAR" property="state" />
   </resultMap>
 
-  <resultMap id="goodsInfoMap" type="com.fulihui.duoduoke.demo.producer.dal.dataobj.DuoduoGoodsInfo">
+  <resultMap id="goodsInfoMap" type="com.fulihui.duoduoke.demo.producer.dal.dataobj.DuoGoodsInfo">
     <result column="goods_id" property="goodsId" />
     <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
     <result column="goods_desc" jdbcType="VARCHAR" property="goodsDesc" />

@@ -1,0 +1,13 @@
+
+spring:
+  profiles:
+    active: dev
+
+
+
+prizecore:
+  service:
+    version: 1.0.0
+
+
+
