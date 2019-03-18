@@ -66,8 +66,6 @@ mutex:
 
 
 
-
-
 ###################  web配置  ###################
 web:
   swagger-open: true #是否开启swagger (true/false)
