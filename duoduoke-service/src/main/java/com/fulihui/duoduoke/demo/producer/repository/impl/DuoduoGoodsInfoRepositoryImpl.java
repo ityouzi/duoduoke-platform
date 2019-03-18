@@ -172,7 +172,7 @@ public class DuoduoGoodsInfoRepositoryImpl implements DuoduoGoodsInfoRepository 
 
     @Override
     public DuoduoGoodsInfo selectByGoodsId(Long goodsId) {
-        List<DuoduoGoodsInfo> list = new ArrayList<>();
+        List<DuoduoGoodsInfo> list;
         int i = queryRedis() % 2;
         if (i == DuoDuoGoodsTableEnum.ZERO.getCode()) {
             list = extDuoduoGoodsInfoZEROMapper.selectByGoodsId(goodsId);
@@ -188,7 +188,7 @@ public class DuoduoGoodsInfoRepositoryImpl implements DuoduoGoodsInfoRepository 
 
     @Override
     public DuoduoGoodsInfo selectByGoodsIdTable(Long goodsId, int table) {
-        List<DuoduoGoodsInfo> list = new ArrayList<>();
+        List<DuoduoGoodsInfo> list;
         int i = queryRedis() + table;
         if (i % 2 == DuoDuoGoodsTableEnum.ZERO.getCode()) {
             list = extDuoduoGoodsInfoZEROMapper.selectByGoodsId(goodsId);
@@ -229,11 +229,11 @@ public class DuoduoGoodsInfoRepositoryImpl implements DuoduoGoodsInfoRepository 
         Object object = this.redisUtils.get(RedisContent.DUODUO_GOODS_TABLE);
         if (object == null) {
             GoodsTabelExample example = new GoodsTabelExample();
-            List<GoodsTabel> goodsTabels = goodsTabelMapper.selectByExample(example);
-            if (CollectionUtils.isEmpty(goodsTabels)) {
+            List<GoodsTabel> goodsTables = goodsTabelMapper.selectByExample(example);
+            if (CollectionUtils.isEmpty(goodsTables)) {
                 this.redisUtils.set(RedisContent.DUODUO_GOODS_TABLE, DuoDuoGoodsTableEnum.ONE.getCode());
             } else {
-                GoodsTabel goodsTabel = goodsTabels.get(0);
+                GoodsTabel goodsTabel = goodsTables.get(0);
                 if (goodsTabel.getTableId() != null) {
                     this.redisUtils.set(RedisContent.DUODUO_GOODS_TABLE, goodsTabel.getTableId());
                 }
