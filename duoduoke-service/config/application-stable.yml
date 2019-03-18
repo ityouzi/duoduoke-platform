@@ -27,6 +27,21 @@ dubbo:
     time-out: 10000
 
 
+duoduoke:
+  clientId: c897842201e74d47a0668b8efd0dd38e
+  clientSecret: 2672db6f66cfa0d90688210f3caacad6a38de29f
+  miniAppid: wxf7d16733ba8b3d65
+  miniAppSecret: 2f61d1c90eebaeb8d88684a163cf0023
+  mchid: 1358533402
+  certFile: /home/admin/cert/apiclient_cert.p12
+  authUrl: https://api.weixin.qq.com/sns/jscode2session
+  templateUrl: https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send
+  tokenUrl: https://api.weixin.qq.com/cgi-bin/token
+  zkAddress: 127.0.0.1:2181
+  minipage: pages/home/home
+  miniProductPage: pages/product/product
+
+
 
 spring:
   application:

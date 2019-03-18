@@ -130,9 +130,6 @@ public class GoodsInfoController {
     }
 
 
-    /**
-     * zpf 增加缓存 2018-8-27
-     */
     @PostMapping("goodsChannelTypeList")
     @ApiOperation("栏目商品列表")
     public JsonResult<PageView<GoodsInfo>> goodsChannelTypeList(@RequestBody GoodChannelParam param) {
