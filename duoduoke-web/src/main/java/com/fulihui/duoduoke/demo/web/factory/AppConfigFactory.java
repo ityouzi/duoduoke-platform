@@ -2,9 +2,9 @@ package com.fulihui.duoduoke.demo.web.factory;
 
 
 import com.fulihui.duoduoke.demo.api.api.AppConfigService;
-import com.fulihui.duoduoke.demo.api.api.GoodsInfoService;
 import com.fulihui.duoduoke.demo.api.dto.AppConfigDTO;
 import com.fulihui.duoduoke.demo.api.enums.AppConfigEnum;
+import lombok.Data;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.near.servicesupport.result.TSingleResult;
 import org.slf4j.Logger;
@@ -19,10 +19,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-
 import static com.fulihui.duoduoke.demo.api.enums.AppConfigEnum.AMOUNT_CHECK;
 import static com.fulihui.duoduoke.demo.api.enums.AppConfigEnum.SHARE_PERCENTAGE;
-import static org.near.servicesupport.util.ServiceResultUtil.checkResult;
 
 /**
  * @author lizhi
@@ -30,13 +28,11 @@ import static org.near.servicesupport.util.ServiceResultUtil.checkResult;
  */
 
 @Component
+@Data
 public class AppConfigFactory {
 
-    private static final Logger      LOGGER         = LoggerFactory
-        .getLogger(AppConfigFactory.class);
-
-    @org.apache.dubbo.config.annotation.Reference
-    GoodsInfoService goodsInfoService;
+    private static final Logger LOGGER = LoggerFactory
+            .getLogger(AppConfigFactory.class);
 
     @org.apache.dubbo.config.annotation.Reference
     AppConfigService appConfigService;
@@ -44,58 +40,57 @@ public class AppConfigFactory {
     /**
      * 返利佣金配置百分比
      */
-    private Long                     commission;
+    private Long commission;
 
     /**
      * 分享配置百分比
      */
-    private Long                     shareProportion;
+    private Long shareProportion;
 
     /**
      * 提现金额配置余额限制
      */
 
-    private Long                     amountCheck    = 100L;
+    private Long amountCheck = 100L;
 
     @Autowired
-    ThreadPoolTaskExecutor           threadPoolTaskExecutor;
+    ThreadPoolTaskExecutor threadPoolTaskExecutor;
     /**
      * 翻牌活动总开关
      */
 
-    private Boolean                  isFlopOpen;
+    private Boolean isFlopOpen;
 
-    private String                   withdrawalType = "3";
+    private String withdrawalType = "3";
 
     private ScheduledExecutorService executorService;
 
     @PostConstruct
     void commission() {
         executorService = new ScheduledThreadPoolExecutor(1, new BasicThreadFactory.Builder()
-            .namingPattern("AppConfigFactory-schedule-pool-%d").daemon(true).build());
+                .namingPattern("AppConfigFactory-schedule-pool-%d").daemon(true).build());
         executorService.scheduleAtFixedRate(() -> {
             try {
-                TSingleResult<Long> result = goodsInfoService.queryCommisionConfig();
-                checkResult(result);
-                commission = result.getValue() != null ? result.getValue() : 37L;
+
+                commission = 37L;
                 LOGGER.debug("返佣比例:{}", commission);
                 String configVal = appConfigService.getModel(AMOUNT_CHECK).getValue()
-                    .getConfigVal();
+                        .getConfigVal();
                 amountCheck = Long.valueOf(configVal);
                 LOGGER.debug("提现限制金额,单位分:{}", amountCheck);
                 TSingleResult<AppConfigDTO> singleResult = appConfigService
-                    .getModel(SHARE_PERCENTAGE);
+                        .getModel(SHARE_PERCENTAGE);
                 AppConfigDTO model = singleResult.getValue();
                 shareProportion = Long
-                    .valueOf(model.getConfigVal() != null ? model.getConfigVal() : "30");
+                        .valueOf(model.getConfigVal() != null ? model.getConfigVal() : "30");
                 LOGGER.debug("分享比例:{}", shareProportion);
 
                 TSingleResult<AppConfigDTO> serviceModel = appConfigService
-                    .getModel(AppConfigEnum.FLOP_ACTIVITY_USING);
+                        .getModel(AppConfigEnum.FLOP_ACTIVITY_USING);
                 String configVal1 = serviceModel.getValue().getConfigVal();
                 isFlopOpen = Boolean.parseBoolean(configVal1);
                 AppConfigDTO withdrawalConfig = appConfigService
-                    .getModel(AppConfigEnum.WITHDRAWAL_CONFIG).getValue();
+                        .getModel(AppConfigEnum.WITHDRAWAL_CONFIG).getValue();
                 withdrawalType = withdrawalConfig.getConfigVal();
 
             } catch (Exception e) {
@@ -112,53 +107,4 @@ public class AppConfigFactory {
         }
     }
 
-    public Long getAmountCheck() {
-        return amountCheck;
-    }
-
-    public Long getCommission() {
-        return commission;
-    }
-
-    public Long getShareProportion() {
-        return shareProportion;
-    }
-
-    public void setCommission(Long commission) {
-        this.commission = commission;
-    }
-
-    public void setShareProportion(Long shareProportion) {
-        this.shareProportion = shareProportion;
-    }
-
-    public void setAmountCheck(Long amountCheck) {
-        this.amountCheck = amountCheck;
-    }
-
-    public Boolean getFlopOpen() {
-        return isFlopOpen;
-    }
-
-    public void setFlopOpen(Boolean flopOpen) {
-        isFlopOpen = flopOpen;
-    }
-
-    /**
-     * Getter method for property <tt>withdrawalType</tt>
-     *
-     * @return property value of withdrawalType
-     */
-    public String getWithdrawalType() {
-        return withdrawalType;
-    }
-
-    /**
-     * Setter method for property <tt>withdrawalType</tt>.
-     *
-     * @param withdrawalType value to be assigned to property withdrawalType
-     */
-    public void setWithdrawalType(String withdrawalType) {
-        this.withdrawalType = withdrawalType;
-    }
 }

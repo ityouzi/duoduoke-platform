@@ -12,8 +12,9 @@ import com.fulihui.duoduoke.demo.api.enums.*;
 import com.fulihui.duoduoke.demo.api.request.sign.SignAwardRequest;
 import com.fulihui.duoduoke.demo.api.request.sign.SignUserRecordRequest;
 import com.fulihui.duoduoke.demo.api.response.ProbabilityDrawResponse;
+import com.fulihui.duoduoke.demo.common.except.BizException;
+import com.fulihui.duoduoke.demo.common.except.CommonErrors;
 import com.fulihui.duoduoke.demo.web.factory.AppConfigFactory;
-import com.fulihui.duoduoke.demo.web.vo.sign.*;
 import com.fulihui.duoduoke.demo.web.integration.SignAwardServiceClient;
 import com.fulihui.duoduoke.demo.web.integration.SignUserConfigServiceClient;
 import com.fulihui.duoduoke.demo.web.integration.SignUserRecordServiceClient;
@@ -23,9 +24,7 @@ import com.fulihui.duoduoke.demo.web.param.sgin.SignShareParam;
 import com.fulihui.duoduoke.demo.web.param.sgin.SignUserParam;
 import com.fulihui.duoduoke.demo.web.util.Principal;
 import com.fulihui.duoduoke.demo.web.util.PrincipalUtil;
-
-import com.fulihui.duoduoke.demo.common.except.BizException;
-import com.fulihui.duoduoke.demo.common.except.CommonErrors;
+import com.fulihui.duoduoke.demo.web.vo.sign.*;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
@@ -84,7 +83,7 @@ public class SignInfoController {
     AppConfigService appConfigService;
 
     @Autowired
-    ThreadPoolTaskExecutor      threadPoolTaskExecutor;
+    ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SignInfoController.class);
 
@@ -102,7 +101,7 @@ public class SignInfoController {
         request.setUserId(principal.getUserId());
         request.setId(param.getSignId());
         TSingleResult<SignUserRecordDTO> takeShareCount = signUserRecordServiceClient
-            .takeShareCount(request);
+                .takeShareCount(request);
         return JsonResultBuilder.succ(takeShareCount.getValue() != null);
     }
 
@@ -111,7 +110,7 @@ public class SignInfoController {
     public JsonResult<SignUserConfigVO> querySignConfig() {
         Principal principal = PrincipalUtil.getPrincipal();
         TSingleResult<SignUserConfigDTO> result = signUserConfigServiceClient
-            .takeUserConfig(principal.getUserId());
+                .takeUserConfig(principal.getUserId());
         SignUserConfigDTO value = result.getValue();
         SignUserConfigVO configVO = new SignUserConfigVO();
         if (value != null) {
@@ -137,7 +136,7 @@ public class SignInfoController {
         //异步执行
         threadPoolTaskExecutor.execute(() -> {
             TSingleResult<SignUserConfigDTO> result = signUserConfigServiceClient
-                .updateUserConfig(principal.getUserId(), param.getState());
+                    .updateUserConfig(principal.getUserId(), param.getState());
             LOGGER.info("result:{}", result);
         });
         SignUserConfigVO configVO = new SignUserConfigVO();
@@ -168,7 +167,7 @@ public class SignInfoController {
 
         Principal principal = PrincipalUtil.getPrincipal();
         LOGGER.info("补签周期:{},被补签者的用户id:{},补签者:{}", param.getCycleTime(), param.getSignHelpUserId(),
-            principal.getUserId());
+                principal.getUserId());
         SupplementSignVO vo = new SupplementSignVO();
         if (StringUtil.equals(principal.getUserId(), param.getSignHelpUserId())) {
             vo.setSupplementStatus("1");
@@ -216,7 +215,7 @@ public class SignInfoController {
         request.setId(id);
         request.setSignType(SignTypeEnum.SUPPLEMENT.getCode());
         TSingleResult<SignUserRecordDTO> result = signUserRecordServiceClient
-            .supplementSign(request);
+                .supplementSign(request);
         if (result.getValue() != null) {
             vo.setSupplementStatus("5");
             return JsonResultBuilder.succ(vo);
@@ -236,7 +235,7 @@ public class SignInfoController {
         request.setId(param.getSignId());
         request.setUserId(principal.getUserId());
         TSingleResult<SignUserRecordDTO> tSingleResult = signUserRecordServiceClient
-            .queryByPk(request);
+                .queryByPk(request);
         if (tSingleResult.getValue() == null) {
             throw new BizException(CommonErrors.ILLIGEAL_REQUEST_ERROR);
         }
@@ -249,7 +248,7 @@ public class SignInfoController {
             //分享翻牌机会 消耗了
             if (shareFlopCount == null || shareFlopCount == 0) {
                 LOGGER.error("抽奖机会没有,userId:{},value:{}", principal.getUserId(),
-                    tSingleResult.getValue());
+                        tSingleResult.getValue());
                 throw new BizException(CommonErrors.ILLIGEAL_REQUEST_ERROR);
             } else {
                 request.setShareFlopCount(-1);
@@ -265,11 +264,11 @@ public class SignInfoController {
         vo.setShareAgain(bl);
         //抽奖
         TSingleResult<ProbabilityDrawResponse> result = signUserRecordServiceClient
-            .probabilityDraw(request);
+                .probabilityDraw(request);
         //自己
         List<ActivitySignPrizeDTO> self = result.getValue().getActivityPrize().stream()
-            .filter(item -> item.getId().equals(result.getValue().getPrizeId()))
-            .collect(Collectors.toList());
+                .filter(item -> item.getId().equals(result.getValue().getPrizeId()))
+                .collect(Collectors.toList());
         if (CollectionUtils.isEmpty(self)) {
             LOGGER.error("抽奖配置信息原数据不存在:{},{}", principal.getUserId(), self);
             throw new BizException(CommonErrors.ILLIGEAL_REQUEST_ERROR);
@@ -279,12 +278,12 @@ public class SignInfoController {
         itemList.add(self.get(0));
         //非自己
         List<ActivitySignPrizeDTO> collect = result.getValue().getActivityPrize().stream()
-            .filter(item -> !item.getId().equals(result.getValue().getPrizeId()))
-            .collect(Collectors.toList());
+                .filter(item -> !item.getId().equals(result.getValue().getPrizeId()))
+                .collect(Collectors.toList());
         if (!CollectionUtils.isEmpty(collect)) {
             collect.sort(
-                (t, t1) -> ComparisonChain.start().compare(t1.getPrizeType(), t.getPrizeType())
-                    .compare(t1.getPrizeMoney(), t.getPrizeMoney()).result());
+                    (t, t1) -> ComparisonChain.start().compare(t1.getPrizeType(), t.getPrizeType())
+                            .compare(t1.getPrizeMoney(), t.getPrizeMoney()).result());
             try {
                 Stream<ActivitySignPrizeDTO> limit = collect.stream().limit(2);
                 limit.forEach(itemList::add);
@@ -317,7 +316,7 @@ public class SignInfoController {
             }
             if (StringUtil.equals(param.getSignHelpUserId(), principal.getUserId())) {
                 LOGGER.error("用户签到补签,自己不能跟自己补签,userId:{},signHelpUserId:{}", principal.getUserId(),
-                    param.getSignHelpUserId());
+                        param.getSignHelpUserId());
                 throw new BizException(CommonErrors.USER_SUPPLEMENT_SELF_ERROR);
             }
             request.setSignHelpUserId(param.getSignHelpUserId());
@@ -344,7 +343,7 @@ public class SignInfoController {
                     vo.setShareVO(shareVO);
                 }
                 TSingleResult<ActivityConfigPrizeDTO> singleResult = activityConfigService
-                    .getUsingActivity(ActivityTypeEnum.Flop);
+                        .getUsingActivity(ActivityTypeEnum.Flop);
                 ServiceResultUtil.checkResult(singleResult);
                 ActivityConfigPrizeDTO prizeDTO = singleResult.getValue();
                 if (prizeDTO != null) {
@@ -452,7 +451,7 @@ public class SignInfoController {
                 }
                 //补签逻辑
                 if (j < indexDay
-                    && values.get(j).getSignStatus().equals(SignStatusEnum.N.getCode())) {
+                        && values.get(j).getSignStatus().equals(SignStatusEnum.N.getCode())) {
                     isSupplement = true;
                 }
 
@@ -461,14 +460,14 @@ public class SignInfoController {
                 recordVO.setIsSupplement(isSupplement);
                 list.add(vo);
                 if (StringUtil.equals(item.getSignStatus(), SignStatusEnum.Y.getCode())
-                    || StringUtil.equals(item.getSignStatus(), SignStatusEnum.S.getCode())) {
+                        || StringUtil.equals(item.getSignStatus(), SignStatusEnum.S.getCode())) {
                     cycleSignNum++;
                 }
             }
 
             String signInPrize = values.get(0).getSignInPrize();
             List<ActivitySignPrizeDTO> prizeList = JSONArray.parseArray(signInPrize,
-                ActivitySignPrizeDTO.class);
+                    ActivitySignPrizeDTO.class);
             if (!CollectionUtils.isEmpty(prizeList)) {
                 List<SignInPrizeVO> collect = prizeList.stream().map(it -> {
                     SignInPrizeVO prizeVO = new SignInPrizeVO();
@@ -527,7 +526,7 @@ public class SignInfoController {
     }
 
     private Boolean queryFlop() {
-        Boolean flopOpen = appConfigFactory.getFlopOpen();
+        Boolean flopOpen = appConfigFactory.getIsFlopOpen();
         //如果翻牌总开关 关着
         if (!flopOpen) {
             return false;
@@ -535,7 +534,7 @@ public class SignInfoController {
 
         //翻牌活动
         TSingleResult<ActivityConfigPrizeDTO> result = activityConfigService
-            .getUsingActivity(ActivityTypeEnum.Flop);
+                .getUsingActivity(ActivityTypeEnum.Flop);
         ServiceResultUtil.checkResult(result);
         return result.getValue() != null;
     }
@@ -568,7 +567,7 @@ public class SignInfoController {
         vo.setCycleTime(DateUtils.formatWebFormat(values.get(0).getCycleTime()));
         try {
             TSingleResult<AppConfigDTO> result = appConfigService
-                .getModel(AppConfigEnum.SIGN_WITH_SHARE);
+                    .getModel(AppConfigEnum.SIGN_WITH_SHARE);
             ServiceResultUtil.checkResult(result);
             AppConfigDTO value = result.getValue();
             vo.setImgUrl(value.getConfigExtendVal());
@@ -588,7 +587,7 @@ public class SignInfoController {
         request.setPage(1);
         request.setRows(15);
         request.setSignStatus(
-            Lists.newArrayList(SignStatusEnum.Y.getCode(), SignStatusEnum.S.getCode()));
+                Lists.newArrayList(SignStatusEnum.Y.getCode(), SignStatusEnum.S.getCode()));
         request.setSortInfo(" sign_time_ext desc");
         TPageResult<SignUserRecordDTO> result = signUserRecordServiceClient.queryPage(request);
         if (CollectionUtils.isEmpty(result.getValues())) {

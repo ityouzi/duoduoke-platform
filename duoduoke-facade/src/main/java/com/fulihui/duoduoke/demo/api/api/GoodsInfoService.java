@@ -1,12 +1,11 @@
 package com.fulihui.duoduoke.demo.api.api;
 
 
-import com.fulihui.duoduoke.demo.api.request.*;
-import com.fulihui.duoduoke.demo.api.response.GoodsSearchInfoResponse;
-import com.fulihui.duoduoke.demo.api.response.GoodsSearchResponse;
 import com.fulihui.duoduoke.demo.api.dto.DuoduoGoodsInfoDTO;
 import com.fulihui.duoduoke.demo.api.dto.GoodsTabelDTO;
 import com.fulihui.duoduoke.demo.api.request.*;
+import com.fulihui.duoduoke.demo.api.response.GoodsSearchInfoResponse;
+import com.fulihui.duoduoke.demo.api.response.GoodsSearchResponse;
 import org.near.servicesupport.result.BaseResult;
 import org.near.servicesupport.result.TPageResult;
 import org.near.servicesupport.result.TSingleResult;
@@ -95,12 +94,6 @@ public interface GoodsInfoService {
      */
     BaseResult insertGoodsInfo(DuoduoGoodsInfoRequest infoRequest);
 
-    /**
-     * 用户佣金比
-     *
-     * @return
-     */
-    TSingleResult<Long> queryCommisionConfig();
 
     /**
      * 更新平多多商品

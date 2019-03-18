@@ -37,7 +37,7 @@ public interface DuoduoGoodsInfoRepository {
 
     long count(DuoduoGoodsInfoExample example);
 
-    Long queryCommisionConfig();
+
 
     int updateGoodsState(DuoduoGoodsInfoUpdateRequest request);
 

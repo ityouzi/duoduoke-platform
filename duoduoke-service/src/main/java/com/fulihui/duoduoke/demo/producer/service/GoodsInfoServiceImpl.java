@@ -553,10 +553,7 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
         return i > 0 ? ResultBuilder.succ() : ResultBuilder.fail(1001, "商品插入失败");
     }
 
-    @Override
-    public TSingleResult<Long> queryCommisionConfig() {
-        return ResultBuilder.succTSingle(duoduoGoodsInfoRepository.queryCommisionConfig());
-    }
+
 
     /**
      * 查询商品id
