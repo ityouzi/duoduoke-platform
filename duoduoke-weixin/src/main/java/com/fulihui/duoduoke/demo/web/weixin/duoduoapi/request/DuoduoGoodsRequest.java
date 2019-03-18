@@ -6,7 +6,7 @@ import com.fulihui.duoduoke.demo.web.weixin.duoduoapi.result.DuoduoGoodsResult;
 import com.fulihui.duoduoke.demo.web.weixin.weixin.http.HttpMethodEnum;
 
 /**
- * @Description: pdd.ddk.goods.search（多多进宝商品查询）
+     * @Description: pdd.ddk.goods.search（多多进宝商品查询）
  * @Author: xiaoming
  * @version: v 0.1 2018/7/7 0007 13:54
  */
