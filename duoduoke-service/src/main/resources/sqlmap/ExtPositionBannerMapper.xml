@@ -2,73 +2,74 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fulihui.duoduoke.demo.producer.dal.dao.ExtPositionBannerMapper">
 
-  <resultMap id="BaseResultMap" type="com.fulihui.duoduoke.demo.producer.dal.dataobj.PositionBanner">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="position_code" jdbcType="VARCHAR" property="positionCode" />
-    <result column="position_id" jdbcType="BIGINT" property="positionId" />
-    <result column="banner_id" jdbcType="BIGINT" property="bannerId" />
-    <result column="param_json" jdbcType="VARCHAR" property="paramJson" />
-    <result column="status" jdbcType="VARCHAR" property="status" />
-    <result column="order_by" jdbcType="INTEGER" property="orderBy" />
-    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
-    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
-    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
-    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
-  </resultMap>
-  <resultMap id="BaseResult" type="com.fulihui.banner.facade.dto.BannerDto">
-    <id column="id" jdbcType="BIGINT" property="positionBannerId" />
-    <result column="position_code" jdbcType="VARCHAR" property="positionCode" />
-    <result column="module_code" jdbcType="VARCHAR" property="moduleCode" />
-    <result column="position_name" jdbcType="VARCHAR" property="positionName" />
-    <result column="module_name" jdbcType="VARCHAR" property="moduleName" />
-    <result column="param_json" jdbcType="VARCHAR" property="paramJson" />
-    <result column="status" jdbcType="VARCHAR" property="status" />
-    <result column="order_by" jdbcType="INTEGER" property="orderBy" />
-    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
-    <result column="action_url" jdbcType="VARCHAR" property="actionUrl" />
-    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
-    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
-    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
-    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.fulihui.duoduoke.demo.producer.dal.dataobj.PositionBanner">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="position_code" jdbcType="VARCHAR" property="positionCode"/>
+        <result column="position_id" jdbcType="BIGINT" property="positionId"/>
+        <result column="banner_id" jdbcType="BIGINT" property="bannerId"/>
+        <result column="param_json" jdbcType="VARCHAR" property="paramJson"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="order_by" jdbcType="INTEGER" property="orderBy"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+    </resultMap>
+    <resultMap id="BaseResult" type="com.fulihui.duoduoke.demo.api.dto.BannerDto">
+        <id column="id" jdbcType="BIGINT" property="positionBannerId"/>
+        <result column="position_code" jdbcType="VARCHAR" property="positionCode"/>
+        <result column="module_code" jdbcType="VARCHAR" property="moduleCode"/>
+        <result column="position_name" jdbcType="VARCHAR" property="positionName"/>
+        <result column="module_name" jdbcType="VARCHAR" property="moduleName"/>
+        <result column="param_json" jdbcType="VARCHAR" property="paramJson"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="order_by" jdbcType="INTEGER" property="orderBy"/>
+        <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
+        <result column="action_url" jdbcType="VARCHAR" property="actionUrl"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+    </resultMap>
 
-  <sql id="Base_Column_List">
+    <sql id="Base_Column_List">
     id, position_code, position_id, banner_id, param_json, status, order_by, gmt_create, 
     gmt_modified, start_time, end_time
   </sql>
 
-  <select id="selectPositionBannerIds" parameterType="java.lang.Long" resultType="java.lang.Long">
+    <select id="selectPositionBannerIds" parameterType="java.lang.Long" resultType="java.lang.Long">
     select
       id
     from position_banner
     where position_id = #{positionId,jdbcType=BIGINT}
   </select>
 
-  <select id="selectPositionBanner" parameterType="com.fulihui.duoduoke.demo.producer.model.PositionBannerSelectParam" resultMap="BaseResult">
-    select
-    pb.id id  , pb.position_code, pb.param_json, pb.status, pb.order_by, pb.gmt_create,
-    pb.gmt_modified ,b.action_url,b.image_url,p.position_name,p.module_name,p.module_code,pb.start_time,pb.end_time
-    from position_banner pb LEFT JOIN position p on pb.position_id=p.id
-    LEFT JOIN banner b on pb.banner_id=b.id
-    where 1=1
-    <if test="positionCode!=null and positionCode!='' ">
-     AND  pb.position_code=#{positionCode}
-    </if>
+    <select id="selectPositionBanner" parameterType="com.fulihui.duoduoke.demo.producer.model.PositionBannerSelectParam"
+            resultMap="BaseResult">
+        select
+        pb.id id , pb.position_code, pb.param_json, pb.status, pb.order_by, pb.gmt_create,
+        pb.gmt_modified ,b.action_url,b.image_url,p.position_name,p.module_name,p.module_code,pb.start_time,pb.end_time
+        from position_banner pb LEFT JOIN position p on pb.position_id=p.id
+        LEFT JOIN banner b on pb.banner_id=b.id
+        where 1=1
+        <if test="positionCode!=null and positionCode!='' ">
+            AND pb.position_code=#{positionCode}
+        </if>
 
-    <if test="moduleCode!=null and moduleCode!='' ">
-    AND  p.module_code=#{moduleCode}
-    </if>
+        <if test="moduleCode!=null and moduleCode!='' ">
+            AND p.module_code=#{moduleCode}
+        </if>
 
-    <if test="status!=null and status!='' ">
-      AND  pb.status=#{status}
-    </if>
+        <if test="status!=null and status!='' ">
+            AND pb.status=#{status}
+        </if>
 
-    <if test="hasTimeCondition!=null and hasTimeCondition!='' ">
-      AND  pb.start_time  <![CDATA[ <= ]]> now()   AND  pb.end_time <![CDATA[ >= ]]>  now()
-    </if>
+        <if test="hasTimeCondition!=null and hasTimeCondition!='' ">
+            AND pb.start_time  <![CDATA[ <= ]]> now() AND pb.end_time <![CDATA[ >= ]]>  now()
+        </if>
 
-    ORDER BY pb.order_by DESC
+        ORDER BY pb.order_by DESC
 
-  </select>
+    </select>
 
 </mapper>

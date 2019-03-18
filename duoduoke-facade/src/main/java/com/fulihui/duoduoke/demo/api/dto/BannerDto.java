@@ -2,12 +2,13 @@ package com.fulihui.duoduoke.demo.api.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.near.toolkit.model.ToString;
 
 import java.util.Date;
 
 @Getter
 @Setter
-public class BannerDto {
+public class BannerDto extends ToString {
     //位置的Banner Id
     private Long positionBannerId;
     //位置编码
