@@ -1,6 +1,7 @@
 package com.fulihui.duoduoke.demo.api.dto;
 
 import lombok.Data;
+import org.near.toolkit.model.ToString;
 
 import java.util.Date;
 
@@ -9,7 +10,7 @@ import java.util.Date;
  * @date: 2018/9/3 15:28
  */
 @Data
-public class RedPackageFieldDTO {
+public class RedPackageFieldDTO extends ToString {
 
     /**
      * 主键
@@ -27,7 +28,7 @@ public class RedPackageFieldDTO {
     private Short state;
 
     /**
-     *专场类型[1:红包专场][2:无助力红包专场]
+     * 专场类型[1:红包专场][2:无助力红包专场]
      */
     private Integer type;
 
