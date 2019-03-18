@@ -3,12 +3,13 @@ package com.fulihui.duoduoke.demo.api.request;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.near.toolkit.model.ToString;
 
 import java.util.Date;
 
 @Getter
 @Setter
-public class BannerAddRequest {
+public class BannerAddRequest  extends ToString {
 
     //模块名称
     private String moduleName;
