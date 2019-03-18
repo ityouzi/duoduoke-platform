@@ -2,11 +2,10 @@ package com.fulihui.duoduoke.demo.producer.manager.impl;
 
 import com.fulihui.duoduoke.demo.api.dto.UserFormRecordDTO;
 import com.fulihui.duoduoke.demo.api.enums.OrderTypeEnum;
+import com.fulihui.duoduoke.demo.producer.dal.dataobj.OrderInfo;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.UserFormRecord;
 import com.fulihui.duoduoke.demo.producer.manager.AppSendMessageManager;
 import com.fulihui.duoduoke.demo.producer.manager.OrderManager;
-import com.fulihui.duoduoke.demo.producer.config.AppServiceConfig;
-import com.fulihui.duoduoke.demo.producer.dal.dataobj.OrderInfo;
 import com.fulihui.duoduoke.demo.producer.repository.UserFormRepository;
 import com.fulihui.duoduoke.demo.producer.util.Consts;
 import com.google.common.collect.Maps;
@@ -42,8 +41,6 @@ public class OrderManagerImpl implements OrderManager {
     @Autowired
     AppSendMessageManager appSendMessageManager;
 
-    @Autowired
-    AppServiceConfig appServiceConfig;
 
     @Override
     public void send(OrderInfo info, Long promoAmount) {
@@ -137,17 +134,8 @@ public class OrderManagerImpl implements OrderManager {
             long d = (long) v;
             doubleMoney.setCent(d);
             Money total = money.add(doubleMoney);
-            boolean b = StringUtil.equals(appServiceConfig.getFreePid(), info.getPId());
-
-            if (b) {
-                Integer exemptionAmount = info.getExemptionAmount();
-                Money amount = new Money();
-                amount.setCent(exemptionAmount);
-                propertyMap.put("keyword5", "恭喜，抢到免单！免单金额：" + amount.toString() + "元");
-            } else {
-                propertyMap.put("keyword5", "预计奖励" + total.getAmount().toString() + "元（含加倍奖励"
-                        + doubleMoney.getAmount().toString() + "元），奖励将在结算后发放)");
-            }
+            propertyMap.put("keyword5", "预计奖励" + total.getAmount().toString() + "元（含加倍奖励"
+                    + doubleMoney.getAmount().toString() + "元），奖励将在结算后发放)");
             ORDER_FANS_BIZ_LOGGER.info("返利金额:{},加倍金额:{},总金额:{},加倍比率:{}",
                     money.getAmount().toString(), doubleMoney.getAmount().toString(),
                     total.getAmount().toString(), v);

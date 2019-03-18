@@ -10,14 +10,13 @@ import com.fulihui.duoduoke.demo.api.dto.OrderFansDetailDTO;
 import com.fulihui.duoduoke.demo.api.enums.ActivityTypeEnum;
 import com.fulihui.duoduoke.demo.api.enums.DuoDuoOrderStatusEnum;
 import com.fulihui.duoduoke.demo.api.enums.OrderPromotionSourceEnum;
+import com.fulihui.duoduoke.demo.producer.biz.processor.sign.DuoDuoOrderStatusProcessor;
+import com.fulihui.duoduoke.demo.producer.biz.processor.sign.DuoDuoOrderStatusProcessorBizRegister;
+import com.fulihui.duoduoke.demo.producer.config.H5ServiceConfig;
+import com.fulihui.duoduoke.demo.producer.dal.dataobj.OrderInfo;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.UserExemptionGoods;
 import com.fulihui.duoduoke.demo.producer.manager.OrderFansDetailManager;
 import com.fulihui.duoduoke.demo.producer.repository.UserExemptionGoodsRepository;
-import com.fulihui.duoduoke.demo.producer.biz.processor.sign.DuoDuoOrderStatusProcessor;
-import com.fulihui.duoduoke.demo.producer.biz.processor.sign.DuoDuoOrderStatusProcessorBizRegister;
-import com.fulihui.duoduoke.demo.producer.config.AppServiceConfig;
-import com.fulihui.duoduoke.demo.producer.config.H5ServiceConfig;
-import com.fulihui.duoduoke.demo.producer.dal.dataobj.OrderInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.near.servicesupport.result.TSingleResult;
 import org.near.toolkit.common.EnumUtil;
@@ -47,8 +46,6 @@ public abstract class AbstractOrderStatusProcessor implements UserOrderStatusPro
     @Autowired
     DuoDuoOrderStatusProcessorBizRegister duoDuoOrderStatusProcessorBizRegister;
 
-    @Autowired
-    AppServiceConfig appServiceConfig;
 
     @Autowired
     UserExemptionGoodsRepository userExemptionGoodsRepository;
@@ -89,10 +86,9 @@ public abstract class AbstractOrderStatusProcessor implements UserOrderStatusPro
         if (StringUtils.isBlank(pId)) {
             return null;
         }
-        LOGGER.info("pid:{},freePid:{}", orderInfo.getPId(), appServiceConfig.getFreePid());
+
         //如果拉取 订单的 pid 不是  免单pid
-        if (!StringUtils.equals(pId, appServiceConfig.getFreePid())
-                || !StringUtils.equals(pId, h5ServiceConfig.getFreePid())) {
+        if (!StringUtils.equals(pId, h5ServiceConfig.getFreePid())) {
             return null;
         }
         //活动

@@ -3,10 +3,9 @@ package com.fulihui.duoduoke.demo.producer.biz.processor.impl;
 import com.fulihui.duoduoke.demo.api.dto.OrderFansDetailDTO;
 import com.fulihui.duoduoke.demo.api.enums.UserOrderStatusEnum;
 import com.fulihui.duoduoke.demo.producer.biz.processor.AbstractOrderStatusProcessor;
-import com.fulihui.duoduoke.demo.producer.manager.ExemptionOrderManager;
-import com.fulihui.duoduoke.demo.producer.config.AppServiceConfig;
 import com.fulihui.duoduoke.demo.producer.config.H5ServiceConfig;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.OrderInfo;
+import com.fulihui.duoduoke.demo.producer.manager.ExemptionOrderManager;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,8 +21,7 @@ import java.util.List;
  */
 @Component
 public class OrderInvalidProcessor extends AbstractOrderStatusProcessor {
-    @Autowired
-    AppServiceConfig appServiceConfig;
+
     @Autowired
     H5ServiceConfig h5ServiceConfig;
 
@@ -50,8 +48,7 @@ public class OrderInvalidProcessor extends AbstractOrderStatusProcessor {
     public Long execute(OrderInfo orderInfo) {
         Long aLong = get(orderInfo);
         //失效逻辑处理
-        if (StringUtils.equals(orderInfo.getPId(), appServiceConfig.getFreePid())
-                || StringUtils.equals(orderInfo.getPId(), h5ServiceConfig.getFreePid())) {
+        if (StringUtils.equals(orderInfo.getPId(), h5ServiceConfig.getFreePid())) {
             exemptionOrderManager.invalid(orderInfo.getCustomParameters(), orderInfo.getOrderSn(),
                     orderInfo.getGoodsId(), orderInfo.getOrderStatus());
         }

@@ -8,6 +8,10 @@ import com.fulihui.duoduoke.demo.api.dto.UserFormRecordDTO;
 import com.fulihui.duoduoke.demo.api.enums.*;
 import com.fulihui.duoduoke.demo.api.request.UserAccountOperatorRequest;
 import com.fulihui.duoduoke.demo.api.request.UserRewardRecordRequest;
+import com.fulihui.duoduoke.demo.producer.biz.processor.AbstractOrderStatusProcessor;
+import com.fulihui.duoduoke.demo.producer.config.H5ServiceConfig;
+import com.fulihui.duoduoke.demo.producer.dal.dao.UserAccountDetailMapper;
+import com.fulihui.duoduoke.demo.producer.dal.dataobj.OrderInfo;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.UserAccountDetail;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.UserAccountDetailExample;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.UserFormRecord;
@@ -16,11 +20,6 @@ import com.fulihui.duoduoke.demo.producer.manager.TakeAccountAmountManager;
 import com.fulihui.duoduoke.demo.producer.repository.PromotionChannelsRepository;
 import com.fulihui.duoduoke.demo.producer.repository.UserFormRepository;
 import com.fulihui.duoduoke.demo.producer.util.Consts;
-import com.fulihui.duoduoke.demo.producer.biz.processor.AbstractOrderStatusProcessor;
-import com.fulihui.duoduoke.demo.producer.config.AppServiceConfig;
-import com.fulihui.duoduoke.demo.producer.config.H5ServiceConfig;
-import com.fulihui.duoduoke.demo.producer.dal.dao.UserAccountDetailMapper;
-import com.fulihui.duoduoke.demo.producer.dal.dataobj.OrderInfo;
 import com.google.common.collect.Maps;
 import org.near.servicesupport.result.TSingleResult;
 import org.near.servicesupport.util.ServiceResultUtil;
@@ -62,11 +61,6 @@ public class OrderAlreadyToAccountProcessor extends AbstractOrderStatusProcessor
     @Autowired
     UserAccountService userAccountService;
 
-    /**
-     * The App config service.
-     */
-    @Autowired
-    AppConfigService appConfigService;
 
     /**
      * The Take account amount manager.
@@ -97,11 +91,7 @@ public class OrderAlreadyToAccountProcessor extends AbstractOrderStatusProcessor
     @Autowired
     UserFormRepository userFormRepository;
 
-    /**
-     * The App service config.
-     */
-    @Autowired
-    AppServiceConfig appServiceConfig;
+
     @Autowired
     H5ServiceConfig h5ServiceConfig;
 
@@ -250,8 +240,7 @@ public class OrderAlreadyToAccountProcessor extends AbstractOrderStatusProcessor
         //拼多多订单返利金额 自购金额
         Long rebateAmount = get(orderInfo);
         //订单返利 ,如果是免单返现逻辑 不返利
-        if (StringUtil.equals(orderInfo.getPId(), appServiceConfig.getFreePid())
-                || StringUtil.equals(orderInfo.getPId(), h5ServiceConfig.getFreePid())) {
+        if (StringUtil.equals(orderInfo.getPId(), h5ServiceConfig.getFreePid())) {
             LOGGER.info("订单返利,如果是免单返现逻辑,不返利,订单号:{}", orderInfo.getOrderSn());
             return rebateAmount;
         }

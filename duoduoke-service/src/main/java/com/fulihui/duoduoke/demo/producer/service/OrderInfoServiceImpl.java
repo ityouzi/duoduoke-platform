@@ -6,13 +6,18 @@ import com.fulihui.duoduoke.demo.api.api.AppConfigService;
 import com.fulihui.duoduoke.demo.api.api.OrderInfoService;
 import com.fulihui.duoduoke.demo.api.api.RedPackageDBLConfigService;
 import com.fulihui.duoduoke.demo.api.dto.*;
-import com.fulihui.duoduoke.demo.api.enums.*;
 import com.fulihui.duoduoke.demo.api.dto.promotion.GroupChannelsOrderDTO;
 import com.fulihui.duoduoke.demo.api.dto.promotion.PromotionChannelsDTO;
+import com.fulihui.duoduoke.demo.api.enums.*;
 import com.fulihui.duoduoke.demo.api.request.GoodsDoublesRewardRequest;
 import com.fulihui.duoduoke.demo.api.request.OrderInfoTakeAmountRequest;
 import com.fulihui.duoduoke.demo.api.request.OrderInfoUpdateRequest;
 import com.fulihui.duoduoke.demo.api.request.OrderQueryInfoRequest;
+import com.fulihui.duoduoke.demo.producer.biz.processor.OrderStatusDispatcher;
+import com.fulihui.duoduoke.demo.producer.biz.processor.UserOrderStatusProcessor;
+import com.fulihui.duoduoke.demo.producer.config.H5ServiceConfig;
+import com.fulihui.duoduoke.demo.producer.dal.dataobj.OrderInfo;
+import com.fulihui.duoduoke.demo.producer.dal.dataobj.OrderInfoExample;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.UserExemptionGoods;
 import com.fulihui.duoduoke.demo.producer.lock.DistributedLock;
 import com.fulihui.duoduoke.demo.producer.model.OrderSendPushModel;
@@ -20,12 +25,6 @@ import com.fulihui.duoduoke.demo.producer.repository.OrderInfoRepository;
 import com.fulihui.duoduoke.demo.producer.repository.PromotionChannelsOrderRepository;
 import com.fulihui.duoduoke.demo.producer.repository.PromotionChannelsRepository;
 import com.fulihui.duoduoke.demo.producer.repository.UserExemptionGoodsRepository;
-import com.fulihui.duoduoke.demo.producer.biz.processor.OrderStatusDispatcher;
-import com.fulihui.duoduoke.demo.producer.biz.processor.UserOrderStatusProcessor;
-import com.fulihui.duoduoke.demo.producer.config.AppServiceConfig;
-import com.fulihui.duoduoke.demo.producer.config.H5ServiceConfig;
-import com.fulihui.duoduoke.demo.producer.dal.dataobj.OrderInfo;
-import com.fulihui.duoduoke.demo.producer.dal.dataobj.OrderInfoExample;
 import com.fulihui.duoduoke.demo.producer.util.Consts;
 import com.fulihui.duoduoke.demo.producer.zubs.Const;
 import com.google.common.collect.Lists;
@@ -52,7 +51,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-
 
 import static com.fulihui.duoduoke.demo.api.enums.ActivityTypeEnum.H5Exemption;
 import static com.fulihui.duoduoke.demo.api.enums.OrderPromotionSourceEnum.H5;
@@ -101,8 +99,6 @@ public class OrderInfoServiceImpl implements OrderInfoService {
 
     ScheduledExecutorService executorService;
 
-    @Autowired
-    AppServiceConfig appServiceConfig;
 
     @Autowired
     H5ServiceConfig h5ServiceConfig;
@@ -454,9 +450,8 @@ public class OrderInfoServiceImpl implements OrderInfoService {
                         request.getCustomParameters());
                 if (isEmpty(list)) {
                     info.setOrderCommissionSnapshot(configVal());
-                    boolean bl = false;
-                    if (!StringUtils.equals(info.getPId(), appServiceConfig.getFreePid())) {
-                        bl = isBl(info);
+                    boolean bl = isBl(info);
+                    if (bl) {
                     } else {
                         //活动
                         String userId = info.getCustomParameters();
