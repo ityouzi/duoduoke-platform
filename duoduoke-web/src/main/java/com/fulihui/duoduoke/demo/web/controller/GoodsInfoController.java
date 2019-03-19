@@ -77,9 +77,6 @@ public class GoodsInfoController {
     @org.apache.dubbo.config.annotation.Reference
     UserShareRecodeService userShareRecodeService;
 
-    /**
-     * zpf 增加缓存 2018-8-27
-     */
     @PostMapping("goodsListInfo")
     @ApiOperation("首页商品列表")
     public JsonResult<PageView<GoodsInfo>> goodsListInfo(@RequestBody GoodInfoParam param) {

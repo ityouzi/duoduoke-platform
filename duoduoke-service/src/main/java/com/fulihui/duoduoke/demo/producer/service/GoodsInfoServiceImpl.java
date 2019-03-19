@@ -402,6 +402,7 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
         ServiceAssert.notNull(infoRequest, Errors.Commons.REQUEST_PARAMETER_ERROR);
         GoodsInfoExample example = new GoodsInfoExample();
 
+
         return null;
     }
 

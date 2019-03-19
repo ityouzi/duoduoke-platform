@@ -50,7 +50,7 @@ public interface GoodsCatInfoService {
     TSingleResult<List<GoodsCatInfoDTO>> queryByCatIdArrays(List<Integer> list);
 
 
-    TMultiResult<GoodsCatInfoDTO> selectBylevel(GoodsCatInfoRequest request);
+    TMultiResult<GoodsCatInfoDTO> selectByLevel(GoodsCatInfoRequest request);
 
 
 }

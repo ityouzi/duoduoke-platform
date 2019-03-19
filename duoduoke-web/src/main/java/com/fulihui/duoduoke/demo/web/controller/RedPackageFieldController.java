@@ -90,7 +90,6 @@ public class RedPackageFieldController {
     }
 
     @PostMapping("queryRedProduct")
-    @Cacheable(value = "queryRedProduct", keyGenerator = "cacheKeyGenerator")
     @ApiOperation("查询红包专场商品")
     public JsonResult<PageView<GoodsInfo>> queryRedProduct(@RequestBody RedPackageGoodsParam param) {
 
