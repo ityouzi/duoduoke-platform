@@ -118,6 +118,15 @@ server:
 
 
 
+
+
+catGoodsJob:
+  cron: 0 /1  * * * ?
+  shardingTotalCount: 1
+  shardingItemParameters: 0=Beijing,1=Shanghai,2=Guangzhou
+  disabled: false #false  true
+
+
 orderIncrementJob:
   cron: 0 /1  * * * ?
   shardingTotalCount: 1
@@ -135,3 +144,12 @@ orderColorIncrementJob:
   shardingTotalCount: 1
   shardingItemParameters: 0=Beijing,1=Shanghai,2=Guangzhou
   disabled: true
+
+
+
+
+
+
+
+
+

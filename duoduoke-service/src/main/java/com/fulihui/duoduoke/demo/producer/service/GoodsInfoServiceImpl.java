@@ -15,7 +15,6 @@ import com.fulihui.duoduoke.demo.producer.dal.dao.GoodSearchRecordMapper;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.DuoGoodsInfo;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfo;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfoExample;
-import com.fulihui.duoduoke.demo.producer.manager.DuoduoGoodsManager;
 import com.fulihui.duoduoke.demo.producer.repository.GoodsInfoRepository;
 import com.fulihui.duoduoke.demo.producer.util.ClassFieldsUtil;
 import com.fulihui.duoduoke.demo.producer.util.Consts;
@@ -96,8 +95,7 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
     /**
      * The Duoduo goods manager.
      */
-    @Autowired
-    DuoduoGoodsManager duoduoGoodsManager;
+
     /**
      * The Goods tabel mapper.
      */
@@ -505,48 +503,28 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
      * @return
      */
     @Override
-    public BaseResult updateGoods() {
-        boolean b = duoduoGoodsManager.saveOrUpdateDuoduoGoods();
-        return b ? ResultBuilder.succ() : ResultBuilder.fail(1001, "商品批量更新失败");
+    public BaseResult updateGoods() {return null;
     }
 
 
     @Override
     public TPageResult<GoodsInfoDTO> queryChannelGoods(GoodsInfoRecommendRequest infoRequest) {
-        ServiceAssert.notNull(infoRequest, Errors.Commons.REQUEST_PARAMETER_ERROR);
-        List<DuoGoodsInfo> infoList = duoduoGoodsManager.queryChannelGoods(infoRequest);
-        if (CollectionUtils.isEmpty(infoList)) {
-            return ResultBuilder.succTPage(Lists.newArrayList(), infoRequest.getPage(),
-                    infoRequest.getRows(), 0);
-        }
 
-        List<GoodsInfoDTO> collect = infoList.stream().map(i -> {
-            if (i.getGoodsId() == null) {
-                GoodsInfoDTO response = new GoodsInfoDTO();
-                BeanUtils.copyProperties(i, response);
-                return response;
-            } else {
-                GoodsInfoDTO response = new GoodsInfoDTO();
-                BeanUtils.copyProperties(i, response);
-                response.setHasCoupon(Boolean.parseBoolean(i.getHasCoupon()));
-                return response;
-            }
-        }).collect(Collectors.toList());
 
-        return ResultBuilder.succTPage(collect, infoRequest.getPage(), infoRequest.getRows(), 0);
+        return null;
 
     }
 
     @Override
     public BaseResult saveGoods() {
-        boolean b = duoduoGoodsManager.saveDuoduoGoods();
+        boolean b = true;
         return b ? ResultBuilder.succ() : ResultBuilder.fail(1001, "商品批量更新失败");
     }
 
     @Override
     public BaseResult checkGoods(DuoduoGoodsCheckRequest request) {
-        boolean b = duoduoGoodsManager.checkDuoduoGoods(request);
-        return b ? ResultBuilder.succ() : ResultBuilder.fail(1001, "商品check失败");
+
+              return null;
     }
 
     @Override
@@ -558,9 +536,7 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
     @Override
     public TSingleResult<GoodsSearchResponse> searchGoods(GoodsSearchRequest request) {
 
-        GoodsSearchResponse response = duoduoGoodsManager.duoduoGoodsSearch(request.getPage(),
-                request.getRows(), request.getTotalPage(), request, request.getIsChoose());
-        return ResultBuilder.succTSingle(response);
+        return null;
     }
 
     @Override

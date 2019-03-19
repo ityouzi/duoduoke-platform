@@ -9,7 +9,7 @@ import com.fulihui.duoduoke.demo.api.request.RedPackageGoodsRequest;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.RedPackageField;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.RedPackageGoods;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.RedPackageGoodsExample;
-import com.fulihui.duoduoke.demo.producer.manager.DuoduoGoodsManager;
+import com.fulihui.duoduoke.demo.producer.manager.GoodsManager;
 import com.fulihui.duoduoke.demo.producer.repository.GoodsInfoRepository;
 import com.fulihui.duoduoke.demo.producer.dal.dao.ExtRedPackageGoodsMapper;
 import com.fulihui.duoduoke.demo.producer.dal.dao.RedPackageFieldMapper;
@@ -48,7 +48,7 @@ public class RedPackageGoodsServiceImpl implements RedPackageGoodsService {
     @Autowired
     GoodsInfoRepository goodsInfoRepository;
     @Autowired
-    DuoduoGoodsManager duoduoGoodsManager;
+    GoodsManager goodsManager;
     @Autowired
     GoodsInfoService goodsInfoService;
 
@@ -217,7 +217,7 @@ public class RedPackageGoodsServiceImpl implements RedPackageGoodsService {
                 try {
                     //最大的商品id
                     skip += goodsInfos.size();
-                    duoduoGoodsManager.updateGoods(goodsInfos, null, 0);
+                    goodsManager.updateGoods(goodsInfos, null, 0);
                     if (goodsInfos.size() < rows) {
                         break;
                     }

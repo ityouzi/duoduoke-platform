@@ -8,6 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.ComponentScan;
 
+/**
+ * @author wahaha
+ */
 @MapperScan(basePackages = {"com.fulihui.duoduoke.demo.producer.dal.dao"})
 @ComponentScan("com.fulihui.duoduoke.demo")
 @SpringBootApplication

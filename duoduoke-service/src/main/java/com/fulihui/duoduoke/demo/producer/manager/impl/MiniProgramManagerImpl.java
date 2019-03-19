@@ -7,7 +7,6 @@ import com.fulihui.duoduoke.demo.producer.model.WxTemplateModel;
 import com.fulihui.duoduoke.demo.producer.model.WxTemplateSendModel;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -104,13 +103,8 @@ public class MiniProgramManagerImpl implements MiniProgramManager {
             post.setHeader("Content-Type", "application/json;encoding=utf-8");
             HttpResponse response = httpClient.execute(post);
             HttpEntity entity = response.getEntity();
-            String string = EntityUtils.toString(entity, "utf-8");
-            return string;
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-            LOGGER.info("调用接口失败：{}", e);
+            return EntityUtils.toString(entity, "utf-8");
         } catch (IOException e) {
-            e.printStackTrace();
             LOGGER.info("调用接口失败：{}", e);
         }
 

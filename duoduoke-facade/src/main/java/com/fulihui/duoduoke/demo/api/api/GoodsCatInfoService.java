@@ -1,9 +1,9 @@
 package com.fulihui.duoduoke.demo.api.api;
 
 
-import com.fulihui.duoduoke.demo.api.request.GoodsCatInfoRequest;
 import com.fulihui.duoduoke.demo.api.dto.GoodsCatInfoDTO;
 import com.fulihui.duoduoke.demo.api.dto.GoodsCatInfoTreeNodeDTO;
+import com.fulihui.duoduoke.demo.api.request.GoodsCatInfoRequest;
 import org.near.servicesupport.result.TMultiResult;
 import org.near.servicesupport.result.TPageResult;
 import org.near.servicesupport.result.TSingleResult;
@@ -52,5 +52,7 @@ public interface GoodsCatInfoService {
 
     TMultiResult<GoodsCatInfoDTO> selectByLevel(GoodsCatInfoRequest request);
 
+
+    void doCatSyc();
 
 }

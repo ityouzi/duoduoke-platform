@@ -25,7 +25,6 @@ import com.dangdang.ddframe.job.lite.config.LiteJobConfiguration;
 import com.dangdang.ddframe.job.lite.spring.api.SpringJobScheduler;
 import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperRegistryCenter;
 import com.fulihui.duoduoke.demo.producer.job.schedule.*;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -202,4 +201,21 @@ public class JobConfig {
                 getLiteJobConfiguration(orderColorIncrementJob.getClass(), cron, shardingTotalCount,
                         shardingItemParameters, disabled));
     }
+
+    @Bean
+    public CatGoodsJob catGoodsJob() {
+        return new CatGoodsJob();
+    }
+
+    @Bean(initMethod = "init")
+    public JobScheduler catGoodsJobScheduler(final CatGoodsJob catGoodsJob,
+                                             @Value("${catGoodsJob.cron}") final String cron,
+                                             @Value("${catGoodsJob.shardingTotalCount}") final int shardingTotalCount,
+                                             @Value("${catGoodsJob.shardingItemParameters}") final String shardingItemParameters,
+                                             @Value("${catGoodsJob.disabled}") final boolean disabled) {
+        return new SpringJobScheduler(catGoodsJob, regCenter,
+                getLiteJobConfiguration(catGoodsJob.getClass(), cron, shardingTotalCount,
+                        shardingItemParameters, disabled));
+    }
+
 }

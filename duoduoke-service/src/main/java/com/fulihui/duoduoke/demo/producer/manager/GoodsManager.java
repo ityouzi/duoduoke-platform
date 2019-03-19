@@ -17,14 +17,14 @@ import java.util.List;
 /**
  * Created by lizhi on 2018/7/7 0007.
  */
-public interface DuoduoGoodsManager {
+public interface GoodsManager {
 
     /**
      * 保存更新拼的多多接口商品
      *
      * @return
      */
-    boolean saveOrUpdateDuoduoGoods();
+    boolean saveOrUpdateGoods();
 
 
     /**
@@ -32,7 +32,7 @@ public interface DuoduoGoodsManager {
      *
      * @return
      */
-    boolean saveDuoduoGoods();
+    boolean saveGoods();
 
     /**
      * 更新拼多多商品详情
@@ -40,7 +40,7 @@ public interface DuoduoGoodsManager {
      * @param info
      * @return
      */
-    DuoGoodsInfo updateDuoduoGoodDetail(DuoGoodsInfo info);
+    DuoGoodsInfo updateGoodDetail(DuoGoodsInfo info);
 
     /**
      * 查询多多商品详情
@@ -48,7 +48,7 @@ public interface DuoduoGoodsManager {
      * @param goodsId
      * @return
      */
-    DuoGoodsInfo getDuoduoGoodDetail(Long goodsId);
+    DuoGoodsInfo getGoodDetail(Long goodsId);
 
 
     void updateGoods(List<DuoGoodsInfo> result, Date saveDate, Integer saveDay);

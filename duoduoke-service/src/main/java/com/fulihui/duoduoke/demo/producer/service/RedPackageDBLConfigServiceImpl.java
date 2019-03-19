@@ -6,7 +6,7 @@ import com.fulihui.duoduoke.demo.api.dto.RedPackageDBLConfigDTO;
 import com.fulihui.duoduoke.demo.api.enums.RedPackageConfigStatusEnum;
 import com.fulihui.duoduoke.demo.api.request.RedPackageDBLConfigRequest;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.RedPackageDoublingConfig;
-import com.fulihui.duoduoke.demo.producer.manager.DuoduoGoodsManager;
+import com.fulihui.duoduoke.demo.producer.manager.GoodsManager;
 import com.fulihui.duoduoke.demo.producer.dal.dao.RedPackageDoublingConfigMapper;
 import com.fulihui.duoduoke.demo.common.config.DuoDuoKeConfig;
 import com.fulihui.duoduoke.demo.common.util.BeanConvUtil;
@@ -27,7 +27,7 @@ public class RedPackageDBLConfigServiceImpl implements RedPackageDBLConfigServic
     @Autowired
     RedPackageDoublingConfigMapper redPackageDoublingConfigMapper;
     @Autowired
-    DuoduoGoodsManager duoduoGoodsManager;
+    GoodsManager goodsManager;
     //配置的值
     private int CONFIG_ID = 1;
 
