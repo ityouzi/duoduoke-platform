@@ -19,7 +19,7 @@ public class ExemptionGoodInfoParam extends ToString {
      * 商品id
      */
     @ApiModelProperty("商品id")
-    private Long goodsId;
+    private String goodsId;
     /**
      * id
      */

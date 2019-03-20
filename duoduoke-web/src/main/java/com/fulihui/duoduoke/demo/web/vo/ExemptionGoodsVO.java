@@ -20,7 +20,7 @@ public class ExemptionGoodsVO extends ToString {
     private Integer           id;
 
     @ApiModelProperty(value = "商品id")
-    private Long              goodsId;
+    private String              goodsId;
 
     @ApiModelProperty(value = "活动id")
     private Integer           activityId;

@@ -59,7 +59,7 @@ public class ExemptionGoodsManagerImpl implements ExemptionGoodsManager {
         Principal principal = PrincipalUtil.getPrincipal();
         String userId = principal.getUserId();
         Integer activityId = param.getActivityId();
-        Long goodsId = param.getGoodsId();
+        String goodsId = param.getGoodsId();
         Date now = new Date();
         //查询活动，判断活动状态
         String key = "/duoduoke.demo.producerLock/robbingOrder" + userId + goodsId;
