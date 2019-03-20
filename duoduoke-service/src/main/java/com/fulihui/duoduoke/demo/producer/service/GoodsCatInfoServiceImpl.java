@@ -3,6 +3,7 @@ package com.fulihui.duoduoke.demo.producer.service;
 import com.fulihui.duoduoke.demo.api.api.GoodsCatInfoService;
 import com.fulihui.duoduoke.demo.api.dto.GoodsCatInfoDTO;
 import com.fulihui.duoduoke.demo.api.dto.GoodsCatInfoTreeNodeDTO;
+import com.fulihui.duoduoke.demo.api.enums.GoodsStateEnum;
 import com.fulihui.duoduoke.demo.api.request.GoodsCatInfoRequest;
 import com.fulihui.duoduoke.demo.common.config.DuoDuoKeConfig;
 import com.fulihui.duoduoke.demo.common.util.BeanConvUtil;
@@ -196,7 +197,7 @@ public class GoodsCatInfoServiceImpl implements GoodsCatInfoService {
                         info.setMallName(item.getMallName());
 
                         info.setMinNormalPrice(item.getMinNormalPrice());
-
+                        info.setState(GoodsStateEnum.ON.getCode());
 
                         info.setMinGroupPrice(item.getMinGroupPrice());
                         info.setCatIds(item.getCategory_id().toString());
