@@ -139,7 +139,7 @@ public interface GoodsInfoService {
      *
      * @return
      */
-    BaseResult checkGoods(DuoduoGoodsCheckRequest request);
+    BaseResult checkGoods(GoodsCheckRequest request);
 
 
     BaseResult deleteAll();

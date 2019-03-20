@@ -1,6 +1,5 @@
 package com.fulihui.duoduoke.demo.producer.service;
 
-
 import com.fulihui.duoduoke.demo.api.api.GoodsCatInfoService;
 import com.fulihui.duoduoke.demo.api.dto.GoodsCatInfoDTO;
 import com.fulihui.duoduoke.demo.api.dto.GoodsCatInfoTreeNodeDTO;
@@ -10,12 +9,17 @@ import com.fulihui.duoduoke.demo.common.util.BeanConvUtil;
 import com.fulihui.duoduoke.demo.producer.dal.dao.ExtGoodsCatInfoMapper;
 import com.fulihui.duoduoke.demo.producer.dal.dao.GoodsCatInfoMapper;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsCatInfo;
+import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfo;
+import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfoWithBLOBs;
 import com.fulihui.duoduoke.demo.producer.repository.GoodsCatInfoRepository;
+import com.fulihui.duoduoke.demo.producer.repository.GoodsInfoRepository;
 import com.fulihui.duoduoke.demo.producer.util.ClassFieldsUtil;
-import com.fulihui.duoduoke.demo.producer.util.SignUtil;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.DuoHttpClient;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.request.DuoCatRequest;
+import com.fulihui.duoduoke.demo.web.weixin.duoapi.request.DuoGoodsSearchRequest;
+import com.fulihui.duoduoke.demo.web.weixin.duoapi.result.DuoCatApiResult;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.result.DuoCatResult;
+import com.fulihui.duoduoke.demo.web.weixin.duoapi.result.DuoGoodsSearchResult;
 import com.google.common.collect.Lists;
 import org.apache.dubbo.config.annotation.Service;
 import org.near.servicesupport.error.Errors;
@@ -31,9 +35,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static com.fulihui.duoduoke.demo.producer.util.SignUtil.genServiceSign;
 
 /**
  * @author lizhi
@@ -132,10 +139,14 @@ public class GoodsCatInfoServiceImpl implements GoodsCatInfoService {
     DuoDuoKeConfig duoDuoKeConfig;
     @Autowired
     DuoHttpClient duoHttpClient;
+    @Autowired
+    GoodsInfoRepository goodsInfoRepository;
 
     @Override
     public void doCatSyc() {
         List<GoodsCatInfo> catInfoList = goodsCatInfoRepository.selectByLevel(2);
+
+        List<DuoCatApiResult> goodsCatsList = Lists.newArrayList();
         for (GoodsCatInfo info : catInfoList) {
             DuoCatRequest request = new DuoCatRequest();
             request.setType("pdd.goods.cats.get");
@@ -143,13 +154,67 @@ public class GoodsCatInfoServiceImpl implements GoodsCatInfoService {
             request.setTimestamp(String.valueOf(System.currentTimeMillis()));
             request.setParent_cat_id(info.getCatId() + "");
             Map<String, Object> map = ClassFieldsUtil.obj2StrValMap(request);
-            String sign = SignUtil.genServiceSign(ClassFieldsUtil.obj2StrVal(request), map, duoDuoKeConfig.getClientSecret());
+            String sign = genServiceSign(ClassFieldsUtil.obj2StrVal(request), map, duoDuoKeConfig.getClientSecret());
             request.setSign(sign);
-            System.out.println(request.toString());
             DuoCatResult result = duoHttpClient.invokeService(request);
-            LOGGER.info("result:{}",result);
+            goodsCatsList.addAll(result.getGoodsCatsList());
         }
 
+        for (DuoCatApiResult result : goodsCatsList) {
+            DuoGoodsSearchRequest request = new DuoGoodsSearchRequest();
+            request.setType("pdd.ddk.goods.search");
+            request.setClient_id(duoDuoKeConfig.getClientId());
+            request.setTimestamp(String.valueOf(System.currentTimeMillis()));
+            request.setSort_type("0");
+            request.setWith_coupon("true");
+            request.setCat_id(result.getCatId());
+            Map<String, Object> strValMap = ClassFieldsUtil.obj2StrValMap(request);
+            List<String> strings = ClassFieldsUtil.obj2StrVal(request);
+            String sign = genServiceSign(strings, strValMap, duoDuoKeConfig.getClientSecret());
+            request.setSign(sign);
+            DuoGoodsSearchResult goodsSearchResult = duoHttpClient.invokeService(request);
+            LOGGER.debug("result:{}", goodsSearchResult);
+            DuoGoodsSearchResult.GoodsSearchResponseBean goodsSearchResponse = goodsSearchResult.getGoodsSearchResponse();
+            List<DuoGoodsSearchResult.GoodsSearchResponseBean.GoodsListBean> goodsList = goodsSearchResponse.getGoodsList();
+            if (goodsList != null) {
+                for (DuoGoodsSearchResult.GoodsSearchResponseBean.GoodsListBean item : goodsList) {
+                    GoodsInfo goodsInfo = goodsInfoRepository.selectByGoodsId(item.getGoodsId());
+                    if (goodsInfo == null) {
+
+
+                        GoodsInfoWithBLOBs info = new GoodsInfoWithBLOBs();
+
+
+                        info.setGoodsDesc(item.getGoodsDesc());
+                        info.setGoodsGalleryUrls(item.getGoodsGalleryUrls());
+                        info.setGoodsId(item.getGoodsId());
+                        info.setGoodsName(item.getGoodsName());
+                        info.setGoodsThumbnailUrl(item.getGoodsThumbnailUrl());
+
+                        info.setGoodsImageUrl(item.getGoodsImageUrl());
+                        info.setSoldQuantity(item.getSoldQuantity());
+                        info.setMallName(item.getMallName());
+
+                        info.setMinNormalPrice(item.getMinNormalPrice());
+
+
+                        info.setMinGroupPrice(item.getMinGroupPrice());
+                        info.setCatIds(item.getCategory_id().toString());
+                        info.setHasCoupon(String.valueOf(item.isHasCoupon()));
+
+                        info.setAvgServ(item.getAvgServ());
+                        info.setAvgLgst(item.getAvgLgst());
+                        info.setAvgDesc(item.getAvgDesc());
+                        info.setDetailUpdate(new Date());
+                        info.setIsChoose("1");
+                        info.setChooseSort(0);
+                        info.setSort(0);
+                        goodsInfoRepository.insert(info);
+                    }
+                }
+
+            }
+        }
 
     }
 }

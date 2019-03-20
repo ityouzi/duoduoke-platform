@@ -188,11 +188,11 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
             DuoGoodsSearchResult result = JSONObject.parseObject(respStr,
                     DuoGoodsSearchResult.class);
             DuoGoodsSearchResult.GoodsSearchResponseBean goodsSearchResponse = result
-                    .getGoods_search_response();
+                    .getGoodsSearchResponse();
             if (goodsSearchResponse != null) {
                 count = goodsSearchResponse.getTotal_count();
                 List<DuoGoodsSearchResult.GoodsSearchResponseBean.GoodsListBean> goodsList = goodsSearchResponse
-                        .getGoods_list();
+                        .getGoodsList();
                 if (!isEmpty(goodsList)) {
                     collect = goodsList.stream().map(i -> {
                         GoodsSearchInfoResponse infoResponse = new GoodsSearchInfoResponse();
@@ -522,7 +522,7 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
     }
 
     @Override
-    public BaseResult checkGoods(DuoduoGoodsCheckRequest request) {
+    public BaseResult checkGoods(GoodsCheckRequest request) {
 
               return null;
     }

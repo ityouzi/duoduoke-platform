@@ -3,18 +3,21 @@ package com.fulihui.duoduoke.demo.producer.repository;
 import com.fulihui.duoduoke.demo.api.request.GoodsInfoUpdateRequest;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfo;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfoExample;
+import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfoWithBLOBs;
 
 import java.util.Date;
 import java.util.List;
 
 
 /**
- * Created by lizhi on 2018/7/7 0007.
+ *
+ * @author lizhi
+ * @date 2018/7/7 0007
  */
 public interface GoodsInfoRepository {
 
 
-    long insert(GoodsInfo goodsInfo);
+    long insert(GoodsInfoWithBLOBs goodsInfo);
 
 
     int batchInsert(List<GoodsInfo> list, int table);
@@ -29,7 +32,7 @@ public interface GoodsInfoRepository {
 
     GoodsInfo selectByPrimaryKey(Integer id);
 
-    GoodsInfo selectByGoodsId(Long goodsId);
+    GoodsInfo selectByGoodsId(String goodsId);
 
 
     List<GoodsInfo> selectByExample(GoodsInfoExample example);

@@ -3,7 +3,7 @@
 <mapper namespace="com.fulihui.duoduoke.demo.producer.dal.dao.GoodsInfoMapper">
   <resultMap id="BaseResultMap" type="com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfo">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="goods_id" jdbcType="BIGINT" property="goodsId" />
+    <result column="goods_id" jdbcType="VARCHAR" property="goodsId" />
     <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
     <result column="goods_thumbnail_url" jdbcType="VARCHAR" property="goodsThumbnailUrl" />
     <result column="goods_image_url" jdbcType="VARCHAR" property="goodsImageUrl" />
@@ -191,7 +191,7 @@
       goods_type, detail_update, is_choose, 
       choose_sort, sort, state, 
       goods_desc, goods_gallery_urls)
-    values (#{goodsId,jdbcType=BIGINT}, #{goodsName,jdbcType=VARCHAR}, #{goodsThumbnailUrl,jdbcType=VARCHAR}, 
+    values (#{goodsId,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, #{goodsThumbnailUrl,jdbcType=VARCHAR}, 
       #{goodsImageUrl,jdbcType=VARCHAR}, #{soldQuantity,jdbcType=INTEGER}, #{mallName,jdbcType=VARCHAR}, 
       #{minNormalPrice,jdbcType=INTEGER}, #{minGroupPrice,jdbcType=INTEGER}, #{optName,jdbcType=VARCHAR}, 
       #{optId,jdbcType=INTEGER}, #{catIds,jdbcType=VARCHAR}, #{levelOne,jdbcType=INTEGER}, 
@@ -325,7 +325,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="goodsId != null">
-        #{goodsId,jdbcType=BIGINT},
+        #{goodsId,jdbcType=VARCHAR},
       </if>
       <if test="goodsName != null">
         #{goodsName,jdbcType=VARCHAR},
@@ -453,7 +453,7 @@
         id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.goodsId != null">
-        goods_id = #{record.goodsId,jdbcType=BIGINT},
+        goods_id = #{record.goodsId,jdbcType=VARCHAR},
       </if>
       <if test="record.goodsName != null">
         goods_name = #{record.goodsName,jdbcType=VARCHAR},
@@ -574,7 +574,7 @@
   <update id="updateByExampleWithBLOBs" parameterType="map">
     update goods_info
     set id = #{record.id,jdbcType=INTEGER},
-      goods_id = #{record.goodsId,jdbcType=BIGINT},
+      goods_id = #{record.goodsId,jdbcType=VARCHAR},
       goods_name = #{record.goodsName,jdbcType=VARCHAR},
       goods_thumbnail_url = #{record.goodsThumbnailUrl,jdbcType=VARCHAR},
       goods_image_url = #{record.goodsImageUrl,jdbcType=VARCHAR},
@@ -619,7 +619,7 @@
   <update id="updateByExample" parameterType="map">
     update goods_info
     set id = #{record.id,jdbcType=INTEGER},
-      goods_id = #{record.goodsId,jdbcType=BIGINT},
+      goods_id = #{record.goodsId,jdbcType=VARCHAR},
       goods_name = #{record.goodsName,jdbcType=VARCHAR},
       goods_thumbnail_url = #{record.goodsThumbnailUrl,jdbcType=VARCHAR},
       goods_image_url = #{record.goodsImageUrl,jdbcType=VARCHAR},
@@ -663,7 +663,7 @@
     update goods_info
     <set>
       <if test="goodsId != null">
-        goods_id = #{goodsId,jdbcType=BIGINT},
+        goods_id = #{goodsId,jdbcType=VARCHAR},
       </if>
       <if test="goodsName != null">
         goods_name = #{goodsName,jdbcType=VARCHAR},
@@ -781,7 +781,7 @@
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfoWithBLOBs">
     update goods_info
-    set goods_id = #{goodsId,jdbcType=BIGINT},
+    set goods_id = #{goodsId,jdbcType=VARCHAR},
       goods_name = #{goodsName,jdbcType=VARCHAR},
       goods_thumbnail_url = #{goodsThumbnailUrl,jdbcType=VARCHAR},
       goods_image_url = #{goodsImageUrl,jdbcType=VARCHAR},
@@ -823,7 +823,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfo">
     update goods_info
-    set goods_id = #{goodsId,jdbcType=BIGINT},
+    set goods_id = #{goodsId,jdbcType=VARCHAR},
       goods_name = #{goodsName,jdbcType=VARCHAR},
       goods_thumbnail_url = #{goodsThumbnailUrl,jdbcType=VARCHAR},
       goods_image_url = #{goodsImageUrl,jdbcType=VARCHAR},

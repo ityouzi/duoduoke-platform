@@ -21,6 +21,7 @@ import com.fulihui.duoduoke.demo.web.util.PrincipalUtil;
 import com.fulihui.duoduoke.demo.web.vo.GoodsCatInfoVO;
 import com.fulihui.duoduoke.demo.web.vo.GoodsCatTreeVO;
 import com.fulihui.duoduoke.demo.web.vo.GoodsSearchInfoVO;
+import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.near.servicesupport.result.TMultiResult;
@@ -145,15 +146,15 @@ public class GoodsCatInfoController {
         //一级类目
         GoodsCatInfoRequest infoRequest = new GoodsCatInfoRequest();
         infoRequest.setLevel(DuoDuoGoodsLevelEnum.ONE.getCode() + "");
-        TMultiResult<GoodsCatInfoDTO> result = goodsCatInfoService.selectBylevel(infoRequest);
+        TMultiResult<GoodsCatInfoDTO> result = goodsCatInfoService.selectByLevel(infoRequest);
         //二级类目
         GoodsCatInfoRequest twoRequest = new GoodsCatInfoRequest();
         twoRequest.setLevel(DuoDuoGoodsLevelEnum.TWO.getCode() + "");
-        TMultiResult<GoodsCatInfoDTO> twoResult = goodsCatInfoService.selectBylevel(twoRequest);
+        TMultiResult<GoodsCatInfoDTO> twoResult = goodsCatInfoService.selectByLevel(twoRequest);
         checkResult(twoResult);
         List<GoodsCatInfoDTO> twoCats = twoResult.getValues();
         List<GoodsCatTreeVO> newArrayList = newArrayList();
-        Map<Integer, List<GoodsCatTreeVO>> childrenMap = new HashMap<>();
+        Map<Integer, List<GoodsCatTreeVO>> childrenMap = Maps.newHashMap();
         if (!CollectionUtils.isEmpty(twoCats)) {
             for (GoodsCatInfoDTO dto : twoCats) {
                 GoodsCatTreeVO myTree = toVO(dto);

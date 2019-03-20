@@ -194,7 +194,7 @@ public class GoodsInfoController {
                 String goodsId = dto.getGoodId();
                 String userId = dto.getUserId();
                 if (StringUtil.isNotEmpty(goodsId)) {
-                    infoRequest.setGoodsId(Long.parseLong(goodsId));
+                    infoRequest.setGoodsId(goodsId);
                     goodsIfs.setShareUserId(userId);
                     goodsIfs.setPid(dto.getPid());
                 }
@@ -225,8 +225,7 @@ public class GoodsInfoController {
 
     @PostMapping("goodsShareImg")
     @ApiOperation("商品分享图片")
-    public JsonResult<String> goodsDetail(HttpServletRequest servletRequest,
-                                          @RequestBody GoodShareParam param) {
+    public JsonResult<String> goodsDetail(@RequestBody GoodShareParam param) {
         UserQrcodeImgRequest request = new UserQrcodeImgRequest();
         if (param != null) {
             Long goodsId = param.getGoodsId();

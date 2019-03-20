@@ -29,6 +29,8 @@ dubbo:
 duoduoke:
   clientId: c897842201e74d47a0668b8efd0dd38e
   clientSecret: 2672db6f66cfa0d90688210f3caacad6a38de29f
+#  clientId: 04077b8a720947c9a33c68bbb06bae8e
+#  clientSecret: dc5f0dcfec0127530ee24a07c25ef8ceb129a9c1
   miniAppid: wxf7d16733ba8b3d65
   miniAppSecret: 2f61d1c90eebaeb8d88684a163cf0023
   mchid: 1358533402

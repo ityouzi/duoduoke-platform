@@ -11,7 +11,7 @@ public class GoodsInfoWithBLOBs extends GoodsInfo implements Serializable {
     * goods_info.goods_desc
      * 商品描述
      *
-     * @mbg.generated 2019-03-18 16:19:42
+     * @mbg.generated 2019-03-20 12:58:25
      */
     private String goodsDesc;
 
@@ -21,7 +21,7 @@ public class GoodsInfoWithBLOBs extends GoodsInfo implements Serializable {
     * goods_info.goods_gallery_urls
      * 商品轮播列表
      *
-     * @mbg.generated 2019-03-18 16:19:42
+     * @mbg.generated 2019-03-20 12:58:25
      */
     private String goodsGalleryUrls;
 

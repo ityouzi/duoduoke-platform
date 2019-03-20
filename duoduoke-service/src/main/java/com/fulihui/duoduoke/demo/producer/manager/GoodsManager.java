@@ -1,6 +1,6 @@
 package com.fulihui.duoduoke.demo.producer.manager;
 
-import com.fulihui.duoduoke.demo.api.request.DuoduoGoodsCheckRequest;
+import com.fulihui.duoduoke.demo.api.request.GoodsCheckRequest;
 import com.fulihui.duoduoke.demo.api.request.GetDuoduoGoodsListRequest;
 import com.fulihui.duoduoke.demo.api.request.GoodsInfoRecommendRequest;
 import com.fulihui.duoduoke.demo.api.request.GoodsSearchRequest;
@@ -15,7 +15,9 @@ import java.util.List;
 
 
 /**
- * Created by lizhi on 2018/7/7 0007.
+ *
+ * @author lizhi
+ * @date 2018/7/7 0007
  */
 public interface GoodsManager {
 
@@ -58,7 +60,7 @@ public interface GoodsManager {
      *
      * @return
      */
-    boolean checkDuoduoGoods(DuoduoGoodsCheckRequest request);
+    boolean checkGoods(GoodsCheckRequest request);
 
 
     void checkGoods(List<DuoGoodsInfo> duoGoodsInfos);

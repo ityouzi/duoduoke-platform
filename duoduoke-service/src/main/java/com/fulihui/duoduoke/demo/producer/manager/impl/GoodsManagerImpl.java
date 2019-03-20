@@ -1,6 +1,6 @@
 package com.fulihui.duoduoke.demo.producer.manager.impl;
 
-import com.fulihui.duoduoke.demo.api.request.DuoduoGoodsCheckRequest;
+import com.fulihui.duoduoke.demo.api.request.GoodsCheckRequest;
 import com.fulihui.duoduoke.demo.api.request.GetDuoduoGoodsListRequest;
 import com.fulihui.duoduoke.demo.api.request.GoodsInfoRecommendRequest;
 import com.fulihui.duoduoke.demo.api.request.GoodsSearchRequest;
@@ -71,7 +71,7 @@ public class GoodsManagerImpl implements GoodsManager {
      * @return
      */
     @Override
-    public boolean checkDuoduoGoods(DuoduoGoodsCheckRequest request) {
+    public boolean checkGoods(GoodsCheckRequest request) {
         return false;
     }
 

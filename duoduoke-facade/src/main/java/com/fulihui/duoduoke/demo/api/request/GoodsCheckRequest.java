@@ -7,7 +7,7 @@ import org.near.toolkit.model.ToString;
 import java.util.Date;
 
 @Setter @Getter
-public class DuoduoGoodsCheckRequest extends ToString {
+public class GoodsCheckRequest extends ToString {
     private static final long serialVersionUID = -4254698836990658501L;
 
 

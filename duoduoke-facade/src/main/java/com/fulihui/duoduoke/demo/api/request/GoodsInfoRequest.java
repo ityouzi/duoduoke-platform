@@ -27,7 +27,7 @@ public class GoodsInfoRequest extends PageRequest {
      *
      *
      */
-    private Long goodsId;
+    private String goodsId;
 
     /**
     *

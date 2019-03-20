@@ -20,10 +20,25 @@ public class CatGoodsJob implements SimpleJob {
 
     @Reference
     GoodsCatInfoService goodsCatInfoService;
+    private volatile boolean running = false;
 
     @Override
     public void execute(ShardingContext shardingContext) {
-        goodsCatInfoService.doCatSyc();
+
+        LOGGER.info("running:{}", running);
+        if (running) {
+            LOGGER.warn("running值没改掉");
+            return;
+        }
+        running = true;
+        try {
+            goodsCatInfoService.doCatSyc();
+        } catch (Exception e) {
+        }
+
+
+        running = false;
+        LOGGER.info("running改值成功");
     }
 
 }

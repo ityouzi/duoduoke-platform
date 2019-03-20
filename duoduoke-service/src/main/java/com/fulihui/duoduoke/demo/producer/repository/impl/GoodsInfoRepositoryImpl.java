@@ -2,10 +2,14 @@ package com.fulihui.duoduoke.demo.producer.repository.impl;
 
 
 import com.fulihui.duoduoke.demo.api.request.GoodsInfoUpdateRequest;
+import com.fulihui.duoduoke.demo.producer.dal.dao.GoodsInfoMapper;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfo;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfoExample;
+import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfoWithBLOBs;
 import com.fulihui.duoduoke.demo.producer.repository.GoodsInfoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -14,15 +18,18 @@ import java.util.List;
  * @Description:
  * @Author: xiaoming
  * @version: v 0.1 2018/8/3 0003 10:57
- * 两张表,不要在其他层级调用mapper
  */
 @Repository
 public class GoodsInfoRepositoryImpl implements GoodsInfoRepository {
-
+    @Autowired
+    GoodsInfoMapper goodsInfoMapper;
 
     @Override
-    public long insert(GoodsInfo goodsInfo) {
-        return 0;
+    public long insert(GoodsInfoWithBLOBs goodsInfo) {
+        goodsInfo.setGmtCreate(new Date());
+        goodsInfo.setGmtModified(new Date());
+        goodsInfoMapper.insertSelective(goodsInfo);
+        return goodsInfo.getId();
     }
 
     @Override
@@ -51,8 +58,14 @@ public class GoodsInfoRepositoryImpl implements GoodsInfoRepository {
     }
 
     @Override
-    public GoodsInfo selectByGoodsId(Long goodsId) {
-        return null;
+    public GoodsInfo selectByGoodsId(String goodsId) {
+        GoodsInfoExample example = new GoodsInfoExample();
+        example.createCriteria().andGoodsIdEqualTo(goodsId);
+        List<GoodsInfo> goods = goodsInfoMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(goods)) {
+            return null;
+        }
+        return goods.get(0);
     }
 
     @Override

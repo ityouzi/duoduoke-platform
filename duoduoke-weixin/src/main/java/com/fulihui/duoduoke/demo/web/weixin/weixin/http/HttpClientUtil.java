@@ -1,7 +1,6 @@
 package com.fulihui.duoduoke.demo.web.weixin.weixin.http;
 
 
-import com.fulihui.duoduoke.demo.web.weixin.weixin.util.LoggerUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -123,8 +122,7 @@ public class HttpClientUtil {
             logger.error(e.getMessage(), e);
         } finally {
             // status, resp, {used}ms
-            logger.info("{}, {}, {}ms", status,
-                    logger.isDebugEnabled() ? resp : LoggerUtils.cutString(resp, 50, 20),
+            logger.info("{}, {}, {}ms", status, resp,
                     System.currentTimeMillis() - start);
             if (!httpGet.isAborted()) {
                 httpGet.abort();
@@ -241,8 +239,7 @@ public class HttpClientUtil {
             logger.error(e.getMessage(), e);
         } finally {
             // status, resp, {used}ms
-            logger.info("{}, {}, {}ms", status,
-                    logger.isDebugEnabled() ? resp : LoggerUtils.cutString(resp, 50, 20),
+            logger.info("{}, {}, {}ms", status, resp,
                     System.currentTimeMillis() - start);
             if (httpPost != null && !httpPost.isAborted()) {
                 httpPost.abort();
@@ -295,17 +292,17 @@ public class HttpClientUtil {
             throw new IllegalArgumentException("certFile can not be blank");
         }
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
-        try (FileInputStream instream = new FileInputStream(new File(certFile))) {
-            keyStore.load(instream, certPwd.toCharArray());
+        try (FileInputStream inputStream = new FileInputStream(new File(certFile))) {
+            keyStore.load(inputStream, certPwd.toCharArray());
         }
         // Trust own CA and all self-signed certs
         SSLContext sslcontext = SSLContexts.custom()
                 .loadKeyMaterial(keyStore, certPwd.toCharArray()).build();
         // Allow TLSv1 protocol only
-        SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext,
+        SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(sslcontext,
                 new String[]{"TLSv1"}, null,
                 SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
-        return HttpClients.custom().setSSLSocketFactory(sslsf).build();
+        return HttpClients.custom().setSSLSocketFactory(socketFactory).build();
     }
 
     /**
@@ -346,19 +343,20 @@ public class HttpClientUtil {
      * @return map集合
      */
     public static Map<String, String> paramsStringToMap(String params) {
-        String[] kvary = StringUtil.split(params, '&');
-        if (kvary == null || kvary.length == 0) {
+        String[] keary = StringUtil.split(params, '&');
+        if (keary == null || keary.length == 0) {
             return Collections.emptyMap();
         }
         Map<String, String> mapParm = new HashMap<>();
-        for (String kv : kvary) {
+        for (String kv : keary) {
             if (!StringUtil.contains(kv, '=')) {
                 throw new IllegalArgumentException("url params:" + params);
             }
-            String[] k_v = StringUtil.split(kv, "=");
-            mapParm.put(k_v[0], k_v[1]);
+            String[] kV = StringUtil.split(kv, "=");
+            mapParm.put(kV[0], kV[1]);
         }
         return mapParm;
+
     }
 
 }
