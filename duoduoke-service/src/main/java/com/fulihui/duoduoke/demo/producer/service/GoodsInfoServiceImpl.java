@@ -257,7 +257,7 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
             search.getValues().stream().filter((item) -> item.getGoods_id() != null)
                     .forEach((detailInfo) -> {
                         GoodsInfoDTO info = new GoodsInfoDTO();
-                        info.setGoodsId(Long.parseLong(detailInfo.getGoods_id()));
+                        info.setGoodsId(detailInfo.getGoods_id());
                         info.setGoodsName(detailInfo.getGoods_name());
                         info.setGoodsDesc(detailInfo.getGoods_desc());
                         info.setGoodsThumbnailUrl(detailInfo.getGoods_thumbnail_url());
@@ -275,7 +275,7 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
                         info.setGoodsDesc(detailInfo.getGoods_desc());
                         info.setLevelOne(detailInfo.getCat_id());
                         info.setCouponDiscount(detailInfo.getCoupon_discount());
-                        info.setHasCoupon(detailInfo.isHas_coupon());
+                        info.setHasCoupon(String.valueOf(detailInfo.isHas_coupon()));
                         if (detailInfo.isHas_coupon()) {
                             //优惠券
                             String coupon_end_time = detailInfo.getCoupon_end_time();
@@ -342,7 +342,7 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
         return list.stream().map(i -> {
             GoodsInfoDTO response = new GoodsInfoDTO();
             BeanUtils.copyProperties(i, response);
-            response.setHasCoupon(Boolean.parseBoolean(i.getHasCoupon()));
+            response.setHasCoupon(i.getHasCoupon());
             return response;
         }).collect(Collectors.toList());
     }

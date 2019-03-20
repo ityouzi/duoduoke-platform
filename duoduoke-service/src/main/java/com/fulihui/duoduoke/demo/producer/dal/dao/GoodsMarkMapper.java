@@ -2,9 +2,8 @@ package com.fulihui.duoduoke.demo.producer.dal.dao;
 
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsMark;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsMarkExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface GoodsMarkMapper {
     long countByExample(GoodsMarkExample example);

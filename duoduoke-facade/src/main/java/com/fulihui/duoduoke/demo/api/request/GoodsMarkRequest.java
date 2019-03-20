@@ -18,7 +18,7 @@ public class GoodsMarkRequest extends AbstractServiceRequest {
 
     private Integer id;
 
-    private Long goodsId;
+    private String goodsId;
 
 
     private Date startTimeLessThanOrEqualTo;

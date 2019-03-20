@@ -24,7 +24,7 @@ public class RedPackageGoodsDTO extends GoodsInfoDTO {
     /**
      * 商品id
      */
-    private Long goodsId;
+    private String goodsId;
 
     /**
      * 排序

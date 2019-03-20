@@ -113,7 +113,7 @@ public class GoodsInfoManagerImpl implements GoodsInfoManager {
         Integer minGroupPrice = dto.getMinGroupPrice();
         //佣金比例
         Integer promotionRate = dto.getPromotionRate();
-        if (dto.isHasCoupon()) {
+        if (Boolean.parseBoolean(dto.getHasCoupon())) {
             //优惠券价格
             Integer couponDiscount = dto.getCouponDiscount();
             build(couponDiscount, minGroupPrice, promotionRate, info, commission, dto.getGoodsId());
@@ -148,7 +148,7 @@ public class GoodsInfoManagerImpl implements GoodsInfoManager {
      * @param goodsId
      */
     private void build(Integer couponDiscount, Integer minGroupPrice, Integer promotionRate,
-                       GoodsInfo vo, int commission, Long goodsId) {
+                       GoodsInfo vo, int commission, String goodsId) {
         Money couponDiscountMoney = new Money();
         couponDiscountMoney.setCent(couponDiscount);
         vo.setCouponDiscount(couponDiscountMoney.toString());
@@ -203,7 +203,7 @@ public class GoodsInfoManagerImpl implements GoodsInfoManager {
     }
 
 
-    public GoodsMarkDTO queryGoodsMark(Long goodsId) {
+    public GoodsMarkDTO queryGoodsMark(String goodsId) {
         try {
             GoodsMarkRequest request = new GoodsMarkRequest();
             request.setGoodsId(goodsId);
@@ -220,13 +220,13 @@ public class GoodsInfoManagerImpl implements GoodsInfoManager {
 
     }
 
-    public GoodsDoublesRewardDTO queryDoubleReward(Long goodsId) {
+    public GoodsDoublesRewardDTO queryDoubleReward(String goodsId) {
 
         return null;
     }
 
 
-    public Integer queryDoubleRewardList(Long goodsId) {
+    public Integer queryDoubleRewardList(String goodsId) {
 
         return 0;
     }

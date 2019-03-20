@@ -31,7 +31,7 @@ public class GoodsMarkRepositoryImpl implements GoodsMarkRepository {
     }
 
     @Override
-    public GoodsMark selectByGoodsId(Long goodsId) {
+    public GoodsMark selectByGoodsId(String goodsId) {
         GoodsMarkExample example = new GoodsMarkExample();
         GoodsMarkExample.Criteria criteria = example.createCriteria();
         criteria.andGoodsIdEqualTo(goodsId);

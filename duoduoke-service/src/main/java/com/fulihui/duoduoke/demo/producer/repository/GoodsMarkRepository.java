@@ -15,7 +15,7 @@ public interface GoodsMarkRepository {
 
     GoodsMark selectByPrimaryKey(Integer id);
 
-    GoodsMark selectByGoodsId(Long goodsId);
+    GoodsMark selectByGoodsId(String goodsId);
 
     int insert(GoodsMark goodsMark);
 

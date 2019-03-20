@@ -5,6 +5,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="goods_id" jdbcType="VARCHAR" property="goodsId" />
     <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_desc" jdbcType="VARCHAR" property="goodsDesc" />
     <result column="goods_thumbnail_url" jdbcType="VARCHAR" property="goodsThumbnailUrl" />
     <result column="goods_image_url" jdbcType="VARCHAR" property="goodsImageUrl" />
     <result column="sold_quantity" jdbcType="INTEGER" property="soldQuantity" />
@@ -21,6 +22,7 @@
     <result column="avg_serv" jdbcType="INTEGER" property="avgServ" />
     <result column="avg_lgst" jdbcType="INTEGER" property="avgLgst" />
     <result column="avg_desc" jdbcType="INTEGER" property="avgDesc" />
+    <result column="goods_gallery_urls" jdbcType="VARCHAR" property="goodsGalleryUrls" />
     <result column="goods_eval_count" jdbcType="INTEGER" property="goodsEvalCount" />
     <result column="goods_eval_score" jdbcType="VARCHAR" property="goodsEvalScore" />
     <result column="promotion_rate" jdbcType="INTEGER" property="promotionRate" />
@@ -39,10 +41,6 @@
     <result column="choose_sort" jdbcType="INTEGER" property="chooseSort" />
     <result column="sort" jdbcType="INTEGER" property="sort" />
     <result column="state" jdbcType="VARCHAR" property="state" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfoWithBLOBs">
-    <result column="goods_desc" jdbcType="LONGVARCHAR" property="goodsDesc" />
-    <result column="goods_gallery_urls" jdbcType="LONGVARCHAR" property="goodsGalleryUrls" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -103,40 +101,14 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, goods_id, goods_name, goods_thumbnail_url, goods_image_url, sold_quantity, mall_name, 
-    min_normal_price, min_group_price, opt_name, opt_id, cat_ids, level_one, level_two, 
-    level_three, has_coupon, avg_serv, avg_lgst, avg_desc, goods_eval_count, goods_eval_score, 
-    promotion_rate, coupon_end_time, coupon_start_time, coupon_remain_quantity, coupon_total_quantity, 
-    coupon_discount, coupon_min_order_amount, gmt_create, gmt_modified, goods_sn, goods_type, 
-    detail_update, is_choose, choose_sort, sort, state
+    id, goods_id, goods_name, goods_desc, goods_thumbnail_url, goods_image_url, sold_quantity, 
+    mall_name, min_normal_price, min_group_price, opt_name, opt_id, cat_ids, level_one, 
+    level_two, level_three, has_coupon, avg_serv, avg_lgst, avg_desc, goods_gallery_urls, 
+    goods_eval_count, goods_eval_score, promotion_rate, coupon_end_time, coupon_start_time, 
+    coupon_remain_quantity, coupon_total_quantity, coupon_discount, coupon_min_order_amount, 
+    gmt_create, gmt_modified, goods_sn, goods_type, detail_update, is_choose, choose_sort, 
+    sort, state
   </sql>
-  <sql id="Blob_Column_List">
-    goods_desc, goods_gallery_urls
-  </sql>
-  <select id="selectByExampleWithBLOBs" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfoExample" resultMap="ResultMapWithBLOBs">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from goods_info
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-    <if test="limit != null">
-      <if test="offset != null">
-        limit ${offset}, ${limit}
-      </if>
-      <if test="offset == null">
-        limit ${limit}
-      </if>
-    </if>
-  </select>
   <select id="selectByExample" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfoExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -159,11 +131,9 @@
       </if>
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from goods_info
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -177,35 +147,37 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfoWithBLOBs" useGeneratedKeys="true">
-    insert into goods_info (goods_id, goods_name, goods_thumbnail_url, 
-      goods_image_url, sold_quantity, mall_name, 
-      min_normal_price, min_group_price, opt_name, 
-      opt_id, cat_ids, level_one, 
-      level_two, level_three, has_coupon, 
-      avg_serv, avg_lgst, avg_desc, 
-      goods_eval_count, goods_eval_score, promotion_rate, 
-      coupon_end_time, coupon_start_time, coupon_remain_quantity, 
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfo" useGeneratedKeys="true">
+    insert into goods_info (goods_id, goods_name, goods_desc, 
+      goods_thumbnail_url, goods_image_url, sold_quantity, 
+      mall_name, min_normal_price, min_group_price, 
+      opt_name, opt_id, cat_ids, 
+      level_one, level_two, level_three, 
+      has_coupon, avg_serv, avg_lgst, 
+      avg_desc, goods_gallery_urls, goods_eval_count, 
+      goods_eval_score, promotion_rate, coupon_end_time, 
+      coupon_start_time, coupon_remain_quantity, 
       coupon_total_quantity, coupon_discount, coupon_min_order_amount, 
       gmt_create, gmt_modified, goods_sn, 
       goods_type, detail_update, is_choose, 
-      choose_sort, sort, state, 
-      goods_desc, goods_gallery_urls)
-    values (#{goodsId,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, #{goodsThumbnailUrl,jdbcType=VARCHAR}, 
-      #{goodsImageUrl,jdbcType=VARCHAR}, #{soldQuantity,jdbcType=INTEGER}, #{mallName,jdbcType=VARCHAR}, 
-      #{minNormalPrice,jdbcType=INTEGER}, #{minGroupPrice,jdbcType=INTEGER}, #{optName,jdbcType=VARCHAR}, 
-      #{optId,jdbcType=INTEGER}, #{catIds,jdbcType=VARCHAR}, #{levelOne,jdbcType=INTEGER}, 
-      #{levelTwo,jdbcType=INTEGER}, #{levelThree,jdbcType=INTEGER}, #{hasCoupon,jdbcType=VARCHAR}, 
-      #{avgServ,jdbcType=INTEGER}, #{avgLgst,jdbcType=INTEGER}, #{avgDesc,jdbcType=INTEGER}, 
-      #{goodsEvalCount,jdbcType=INTEGER}, #{goodsEvalScore,jdbcType=VARCHAR}, #{promotionRate,jdbcType=INTEGER}, 
-      #{couponEndTime,jdbcType=TIMESTAMP}, #{couponStartTime,jdbcType=TIMESTAMP}, #{couponRemainQuantity,jdbcType=INTEGER}, 
+      choose_sort, sort, state
+      )
+    values (#{goodsId,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, #{goodsDesc,jdbcType=VARCHAR}, 
+      #{goodsThumbnailUrl,jdbcType=VARCHAR}, #{goodsImageUrl,jdbcType=VARCHAR}, #{soldQuantity,jdbcType=INTEGER}, 
+      #{mallName,jdbcType=VARCHAR}, #{minNormalPrice,jdbcType=INTEGER}, #{minGroupPrice,jdbcType=INTEGER}, 
+      #{optName,jdbcType=VARCHAR}, #{optId,jdbcType=INTEGER}, #{catIds,jdbcType=VARCHAR}, 
+      #{levelOne,jdbcType=INTEGER}, #{levelTwo,jdbcType=INTEGER}, #{levelThree,jdbcType=INTEGER}, 
+      #{hasCoupon,jdbcType=VARCHAR}, #{avgServ,jdbcType=INTEGER}, #{avgLgst,jdbcType=INTEGER}, 
+      #{avgDesc,jdbcType=INTEGER}, #{goodsGalleryUrls,jdbcType=VARCHAR}, #{goodsEvalCount,jdbcType=INTEGER}, 
+      #{goodsEvalScore,jdbcType=VARCHAR}, #{promotionRate,jdbcType=INTEGER}, #{couponEndTime,jdbcType=TIMESTAMP}, 
+      #{couponStartTime,jdbcType=TIMESTAMP}, #{couponRemainQuantity,jdbcType=INTEGER}, 
       #{couponTotalQuantity,jdbcType=INTEGER}, #{couponDiscount,jdbcType=INTEGER}, #{couponMinOrderAmount,jdbcType=INTEGER}, 
       #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{goodsSn,jdbcType=VARCHAR}, 
       #{goodsType,jdbcType=VARCHAR}, #{detailUpdate,jdbcType=TIMESTAMP}, #{isChoose,jdbcType=VARCHAR}, 
-      #{chooseSort,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, #{state,jdbcType=VARCHAR}, 
-      #{goodsDesc,jdbcType=LONGVARCHAR}, #{goodsGalleryUrls,jdbcType=LONGVARCHAR})
+      #{chooseSort,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, #{state,jdbcType=VARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfoWithBLOBs" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfo" useGeneratedKeys="true">
     insert into goods_info
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="goodsId != null">
@@ -213,6 +185,9 @@
       </if>
       <if test="goodsName != null">
         goods_name,
+      </if>
+      <if test="goodsDesc != null">
+        goods_desc,
       </if>
       <if test="goodsThumbnailUrl != null">
         goods_thumbnail_url,
@@ -261,6 +236,9 @@
       </if>
       <if test="avgDesc != null">
         avg_desc,
+      </if>
+      <if test="goodsGalleryUrls != null">
+        goods_gallery_urls,
       </if>
       <if test="goodsEvalCount != null">
         goods_eval_count,
@@ -316,12 +294,6 @@
       <if test="state != null">
         state,
       </if>
-      <if test="goodsDesc != null">
-        goods_desc,
-      </if>
-      <if test="goodsGalleryUrls != null">
-        goods_gallery_urls,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="goodsId != null">
@@ -329,6 +301,9 @@
       </if>
       <if test="goodsName != null">
         #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsDesc != null">
+        #{goodsDesc,jdbcType=VARCHAR},
       </if>
       <if test="goodsThumbnailUrl != null">
         #{goodsThumbnailUrl,jdbcType=VARCHAR},
@@ -377,6 +352,9 @@
       </if>
       <if test="avgDesc != null">
         #{avgDesc,jdbcType=INTEGER},
+      </if>
+      <if test="goodsGalleryUrls != null">
+        #{goodsGalleryUrls,jdbcType=VARCHAR},
       </if>
       <if test="goodsEvalCount != null">
         #{goodsEvalCount,jdbcType=INTEGER},
@@ -432,12 +410,6 @@
       <if test="state != null">
         #{state,jdbcType=VARCHAR},
       </if>
-      <if test="goodsDesc != null">
-        #{goodsDesc,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="goodsGalleryUrls != null">
-        #{goodsGalleryUrls,jdbcType=LONGVARCHAR},
-      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfoExample" resultType="java.lang.Long">
@@ -457,6 +429,9 @@
       </if>
       <if test="record.goodsName != null">
         goods_name = #{record.goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsDesc != null">
+        goods_desc = #{record.goodsDesc,jdbcType=VARCHAR},
       </if>
       <if test="record.goodsThumbnailUrl != null">
         goods_thumbnail_url = #{record.goodsThumbnailUrl,jdbcType=VARCHAR},
@@ -505,6 +480,9 @@
       </if>
       <if test="record.avgDesc != null">
         avg_desc = #{record.avgDesc,jdbcType=INTEGER},
+      </if>
+      <if test="record.goodsGalleryUrls != null">
+        goods_gallery_urls = #{record.goodsGalleryUrls,jdbcType=VARCHAR},
       </if>
       <if test="record.goodsEvalCount != null">
         goods_eval_count = #{record.goodsEvalCount,jdbcType=INTEGER},
@@ -560,58 +538,7 @@
       <if test="record.state != null">
         state = #{record.state,jdbcType=VARCHAR},
       </if>
-      <if test="record.goodsDesc != null">
-        goods_desc = #{record.goodsDesc,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.goodsGalleryUrls != null">
-        goods_gallery_urls = #{record.goodsGalleryUrls,jdbcType=LONGVARCHAR},
-      </if>
     </set>
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExampleWithBLOBs" parameterType="map">
-    update goods_info
-    set id = #{record.id,jdbcType=INTEGER},
-      goods_id = #{record.goodsId,jdbcType=VARCHAR},
-      goods_name = #{record.goodsName,jdbcType=VARCHAR},
-      goods_thumbnail_url = #{record.goodsThumbnailUrl,jdbcType=VARCHAR},
-      goods_image_url = #{record.goodsImageUrl,jdbcType=VARCHAR},
-      sold_quantity = #{record.soldQuantity,jdbcType=INTEGER},
-      mall_name = #{record.mallName,jdbcType=VARCHAR},
-      min_normal_price = #{record.minNormalPrice,jdbcType=INTEGER},
-      min_group_price = #{record.minGroupPrice,jdbcType=INTEGER},
-      opt_name = #{record.optName,jdbcType=VARCHAR},
-      opt_id = #{record.optId,jdbcType=INTEGER},
-      cat_ids = #{record.catIds,jdbcType=VARCHAR},
-      level_one = #{record.levelOne,jdbcType=INTEGER},
-      level_two = #{record.levelTwo,jdbcType=INTEGER},
-      level_three = #{record.levelThree,jdbcType=INTEGER},
-      has_coupon = #{record.hasCoupon,jdbcType=VARCHAR},
-      avg_serv = #{record.avgServ,jdbcType=INTEGER},
-      avg_lgst = #{record.avgLgst,jdbcType=INTEGER},
-      avg_desc = #{record.avgDesc,jdbcType=INTEGER},
-      goods_eval_count = #{record.goodsEvalCount,jdbcType=INTEGER},
-      goods_eval_score = #{record.goodsEvalScore,jdbcType=VARCHAR},
-      promotion_rate = #{record.promotionRate,jdbcType=INTEGER},
-      coupon_end_time = #{record.couponEndTime,jdbcType=TIMESTAMP},
-      coupon_start_time = #{record.couponStartTime,jdbcType=TIMESTAMP},
-      coupon_remain_quantity = #{record.couponRemainQuantity,jdbcType=INTEGER},
-      coupon_total_quantity = #{record.couponTotalQuantity,jdbcType=INTEGER},
-      coupon_discount = #{record.couponDiscount,jdbcType=INTEGER},
-      coupon_min_order_amount = #{record.couponMinOrderAmount,jdbcType=INTEGER},
-      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      goods_sn = #{record.goodsSn,jdbcType=VARCHAR},
-      goods_type = #{record.goodsType,jdbcType=VARCHAR},
-      detail_update = #{record.detailUpdate,jdbcType=TIMESTAMP},
-      is_choose = #{record.isChoose,jdbcType=VARCHAR},
-      choose_sort = #{record.chooseSort,jdbcType=INTEGER},
-      sort = #{record.sort,jdbcType=INTEGER},
-      state = #{record.state,jdbcType=VARCHAR},
-      goods_desc = #{record.goodsDesc,jdbcType=LONGVARCHAR},
-      goods_gallery_urls = #{record.goodsGalleryUrls,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -621,6 +548,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       goods_id = #{record.goodsId,jdbcType=VARCHAR},
       goods_name = #{record.goodsName,jdbcType=VARCHAR},
+      goods_desc = #{record.goodsDesc,jdbcType=VARCHAR},
       goods_thumbnail_url = #{record.goodsThumbnailUrl,jdbcType=VARCHAR},
       goods_image_url = #{record.goodsImageUrl,jdbcType=VARCHAR},
       sold_quantity = #{record.soldQuantity,jdbcType=INTEGER},
@@ -637,6 +565,7 @@
       avg_serv = #{record.avgServ,jdbcType=INTEGER},
       avg_lgst = #{record.avgLgst,jdbcType=INTEGER},
       avg_desc = #{record.avgDesc,jdbcType=INTEGER},
+      goods_gallery_urls = #{record.goodsGalleryUrls,jdbcType=VARCHAR},
       goods_eval_count = #{record.goodsEvalCount,jdbcType=INTEGER},
       goods_eval_score = #{record.goodsEvalScore,jdbcType=VARCHAR},
       promotion_rate = #{record.promotionRate,jdbcType=INTEGER},
@@ -659,7 +588,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfoWithBLOBs">
+  <update id="updateByPrimaryKeySelective" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfo">
     update goods_info
     <set>
       <if test="goodsId != null">
@@ -667,6 +596,9 @@
       </if>
       <if test="goodsName != null">
         goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsDesc != null">
+        goods_desc = #{goodsDesc,jdbcType=VARCHAR},
       </if>
       <if test="goodsThumbnailUrl != null">
         goods_thumbnail_url = #{goodsThumbnailUrl,jdbcType=VARCHAR},
@@ -715,6 +647,9 @@
       </if>
       <if test="avgDesc != null">
         avg_desc = #{avgDesc,jdbcType=INTEGER},
+      </if>
+      <if test="goodsGalleryUrls != null">
+        goods_gallery_urls = #{goodsGalleryUrls,jdbcType=VARCHAR},
       </if>
       <if test="goodsEvalCount != null">
         goods_eval_count = #{goodsEvalCount,jdbcType=INTEGER},
@@ -770,61 +705,14 @@
       <if test="state != null">
         state = #{state,jdbcType=VARCHAR},
       </if>
-      <if test="goodsDesc != null">
-        goods_desc = #{goodsDesc,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="goodsGalleryUrls != null">
-        goods_gallery_urls = #{goodsGalleryUrls,jdbcType=LONGVARCHAR},
-      </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfoWithBLOBs">
-    update goods_info
-    set goods_id = #{goodsId,jdbcType=VARCHAR},
-      goods_name = #{goodsName,jdbcType=VARCHAR},
-      goods_thumbnail_url = #{goodsThumbnailUrl,jdbcType=VARCHAR},
-      goods_image_url = #{goodsImageUrl,jdbcType=VARCHAR},
-      sold_quantity = #{soldQuantity,jdbcType=INTEGER},
-      mall_name = #{mallName,jdbcType=VARCHAR},
-      min_normal_price = #{minNormalPrice,jdbcType=INTEGER},
-      min_group_price = #{minGroupPrice,jdbcType=INTEGER},
-      opt_name = #{optName,jdbcType=VARCHAR},
-      opt_id = #{optId,jdbcType=INTEGER},
-      cat_ids = #{catIds,jdbcType=VARCHAR},
-      level_one = #{levelOne,jdbcType=INTEGER},
-      level_two = #{levelTwo,jdbcType=INTEGER},
-      level_three = #{levelThree,jdbcType=INTEGER},
-      has_coupon = #{hasCoupon,jdbcType=VARCHAR},
-      avg_serv = #{avgServ,jdbcType=INTEGER},
-      avg_lgst = #{avgLgst,jdbcType=INTEGER},
-      avg_desc = #{avgDesc,jdbcType=INTEGER},
-      goods_eval_count = #{goodsEvalCount,jdbcType=INTEGER},
-      goods_eval_score = #{goodsEvalScore,jdbcType=VARCHAR},
-      promotion_rate = #{promotionRate,jdbcType=INTEGER},
-      coupon_end_time = #{couponEndTime,jdbcType=TIMESTAMP},
-      coupon_start_time = #{couponStartTime,jdbcType=TIMESTAMP},
-      coupon_remain_quantity = #{couponRemainQuantity,jdbcType=INTEGER},
-      coupon_total_quantity = #{couponTotalQuantity,jdbcType=INTEGER},
-      coupon_discount = #{couponDiscount,jdbcType=INTEGER},
-      coupon_min_order_amount = #{couponMinOrderAmount,jdbcType=INTEGER},
-      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      goods_sn = #{goodsSn,jdbcType=VARCHAR},
-      goods_type = #{goodsType,jdbcType=VARCHAR},
-      detail_update = #{detailUpdate,jdbcType=TIMESTAMP},
-      is_choose = #{isChoose,jdbcType=VARCHAR},
-      choose_sort = #{chooseSort,jdbcType=INTEGER},
-      sort = #{sort,jdbcType=INTEGER},
-      state = #{state,jdbcType=VARCHAR},
-      goods_desc = #{goodsDesc,jdbcType=LONGVARCHAR},
-      goods_gallery_urls = #{goodsGalleryUrls,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfo">
     update goods_info
     set goods_id = #{goodsId,jdbcType=VARCHAR},
       goods_name = #{goodsName,jdbcType=VARCHAR},
+      goods_desc = #{goodsDesc,jdbcType=VARCHAR},
       goods_thumbnail_url = #{goodsThumbnailUrl,jdbcType=VARCHAR},
       goods_image_url = #{goodsImageUrl,jdbcType=VARCHAR},
       sold_quantity = #{soldQuantity,jdbcType=INTEGER},
@@ -841,6 +729,7 @@
       avg_serv = #{avgServ,jdbcType=INTEGER},
       avg_lgst = #{avgLgst,jdbcType=INTEGER},
       avg_desc = #{avgDesc,jdbcType=INTEGER},
+      goods_gallery_urls = #{goodsGalleryUrls,jdbcType=VARCHAR},
       goods_eval_count = #{goodsEvalCount,jdbcType=INTEGER},
       goods_eval_score = #{goodsEvalScore,jdbcType=VARCHAR},
       promotion_rate = #{promotionRate,jdbcType=INTEGER},
