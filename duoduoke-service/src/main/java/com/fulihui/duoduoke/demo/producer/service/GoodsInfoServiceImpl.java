@@ -338,8 +338,8 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
         return null;
     }
 
-    private List<GoodsInfoDTO> convertModel(List<DuoGoodsInfo> duoGoodsInfos) {
-        return duoGoodsInfos.stream().map(i -> {
+    private List<GoodsInfoDTO> convertModel(List<GoodsInfo> list) {
+        return list.stream().map(i -> {
             GoodsInfoDTO response = new GoodsInfoDTO();
             BeanUtils.copyProperties(i, response);
             response.setHasCoupon(Boolean.parseBoolean(i.getHasCoupon()));
@@ -401,7 +401,36 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
         GoodsInfoExample example = new GoodsInfoExample();
 
 
-        return null;
+        GoodsInfoExample.Criteria criteria = example.createCriteria();
+
+        if (infoRequest.getLevelOne() != null) {
+            criteria.andLevelOneEqualTo(infoRequest.getLevelOne());
+        }
+        if (infoRequest.getLevelTwo() != null) {
+            criteria.andLevelTwoEqualTo(infoRequest.getLevelTwo());
+        }
+        if (StringUtil.isNotEmpty(infoRequest.getState())) {
+            criteria.andStateEqualTo(infoRequest.getState());
+        }
+        if (StringUtil.isNotEmpty(infoRequest.getOrderByClause())) {
+            example.setOrderByClause(infoRequest.getOrderByClause());
+        }
+
+        if (StringUtil.isNotEmpty(infoRequest.getIsChoose())) {
+            criteria.andIsChooseEqualTo(infoRequest.getIsChoose());
+        }
+
+        example.setOffset(infoRequest.start4Mysql());
+        example.setLimit(infoRequest.getRows());
+        List<GoodsInfo> list = goodsInfoRepository.selectListByExample(example);
+        long totalCount = 0;
+        if (CollectionUtils.isEmpty(list)) {
+            return ResultBuilder.succTPage(Lists.newArrayList(), infoRequest.getPage(),
+                    infoRequest.getRows(), (int) totalCount);
+        }
+        totalCount = goodsInfoRepository.count(example);
+        List<GoodsInfoDTO> collect = convertModel(list);
+        return ResultBuilder.succTPage(collect, infoRequest.getPage(), infoRequest.getRows(), (int) totalCount);
     }
 
     @Override
@@ -503,7 +532,8 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
      * @return
      */
     @Override
-    public BaseResult updateGoods() {return null;
+    public BaseResult updateGoods() {
+        return null;
     }
 
 
@@ -524,7 +554,7 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
     @Override
     public BaseResult checkGoods(GoodsCheckRequest request) {
 
-              return null;
+        return null;
     }
 
     @Override

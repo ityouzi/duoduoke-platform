@@ -2,6 +2,7 @@ package com.fulihui.duoduoke.demo.producer.repository.impl;
 
 
 import com.fulihui.duoduoke.demo.api.request.GoodsInfoUpdateRequest;
+import com.fulihui.duoduoke.demo.api.util.Collections;
 import com.fulihui.duoduoke.demo.producer.dal.dao.GoodsInfoMapper;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfo;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfoExample;
@@ -75,7 +76,7 @@ public class GoodsInfoRepositoryImpl implements GoodsInfoRepository {
 
     @Override
     public long count(GoodsInfoExample example) {
-        return 0;
+        return goodsInfoMapper.countByExample(example);
     }
 
     @Override
@@ -85,7 +86,11 @@ public class GoodsInfoRepositoryImpl implements GoodsInfoRepository {
 
     @Override
     public List<GoodsInfo> selectListByExample(GoodsInfoExample example) {
-        return null;
+        List<GoodsInfo> goods = goodsInfoMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(goods)) {
+            return Collections.emptyList();
+        }
+        return goods;
     }
 
     @Override
