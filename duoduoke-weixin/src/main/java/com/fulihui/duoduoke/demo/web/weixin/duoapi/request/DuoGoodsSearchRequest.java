@@ -94,8 +94,8 @@ public class DuoGoodsSearchRequest extends DuoJsonRequest<DuoGoodsSearchResult> 
     @Getter
     public static class Range {
 
-        private String range_id;
-        private String range_from;
+        private long range_id;
+        private long range_from;
         private String range_to;
 
 

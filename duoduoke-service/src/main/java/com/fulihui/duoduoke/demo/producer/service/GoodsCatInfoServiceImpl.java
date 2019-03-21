@@ -1,5 +1,6 @@
 package com.fulihui.duoduoke.demo.producer.service;
 
+import com.alibaba.fastjson.JSON;
 import com.fulihui.duoduoke.demo.api.api.GoodsCatInfoService;
 import com.fulihui.duoduoke.demo.api.dto.GoodsCatInfoDTO;
 import com.fulihui.duoduoke.demo.api.dto.GoodsCatInfoTreeNodeDTO;
@@ -11,7 +12,6 @@ import com.fulihui.duoduoke.demo.producer.dal.dao.ExtGoodsCatInfoMapper;
 import com.fulihui.duoduoke.demo.producer.dal.dao.GoodsCatInfoMapper;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsCatInfo;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfo;
-import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfoWithBLOBs;
 import com.fulihui.duoduoke.demo.producer.repository.GoodsCatInfoRepository;
 import com.fulihui.duoduoke.demo.producer.repository.GoodsInfoRepository;
 import com.fulihui.duoduoke.demo.producer.util.ClassFieldsUtil;
@@ -23,6 +23,7 @@ import com.fulihui.duoduoke.demo.web.weixin.duoapi.result.DuoCatApiResult;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.result.DuoCatResult;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.result.DuoGoodsSearchResult;
 import com.google.common.collect.Lists;
+import net.sf.json.JSONArray;
 import org.apache.dubbo.config.annotation.Service;
 import org.near.servicesupport.error.Errors;
 import org.near.servicesupport.result.ResultBuilder;
@@ -163,12 +164,28 @@ public class GoodsCatInfoServiceImpl implements GoodsCatInfoService {
         }
 
         for (DuoCatApiResult result : goodsCatsList) {
+
+
+            ArrayList<DuoGoodsSearchRequest.Range> rangeList = Lists.newArrayList();
+
+            DuoGoodsSearchRequest.Range range = new DuoGoodsSearchRequest.Range();
+            DuoGoodsSearchRequest.Range range1 = new DuoGoodsSearchRequest.Range();
+            range.setRange_id(5);
+            range.setRange_from(100);
+            rangeList.add(range);
+
+            range1.setRange_id(2);
+            range1.setRange_from(1);
+            rangeList.add(range1);
+
+            String array = JSON.toJSONString(rangeList);
             DuoGoodsSearchRequest request = new DuoGoodsSearchRequest();
+            request.setRange_list(array);
+            request.setWith_coupon(Boolean.FALSE.toString());
             request.setType("pdd.ddk.goods.search");
             request.setClient_id(duoDuoKeConfig.getClientId());
             request.setTimestamp(String.valueOf(System.currentTimeMillis()));
             request.setSort_type("0");
-            request.setWith_coupon("true");
             request.setCat_id(result.getCatId());
             Map<String, Object> strValMap = ClassFieldsUtil.obj2StrValMap(request);
             List<String> strings = ClassFieldsUtil.obj2StrVal(request);
