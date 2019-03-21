@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.fulihui.duoduoke.demo.api.api.GoodsCatInfoService;
 import com.fulihui.duoduoke.demo.api.dto.GoodsCatInfoDTO;
 import com.fulihui.duoduoke.demo.api.dto.GoodsCatInfoTreeNodeDTO;
+import com.fulihui.duoduoke.demo.api.enums.GoodsChooseEnum;
 import com.fulihui.duoduoke.demo.api.enums.GoodsStateEnum;
 import com.fulihui.duoduoke.demo.api.request.GoodsCatInfoRequest;
 import com.fulihui.duoduoke.demo.common.config.DuoDuoKeConfig;
@@ -23,7 +24,6 @@ import com.fulihui.duoduoke.demo.web.weixin.duoapi.result.DuoCatApiResult;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.result.DuoCatResult;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.result.DuoGoodsSearchResult;
 import com.google.common.collect.Lists;
-import net.sf.json.JSONArray;
 import org.apache.dubbo.config.annotation.Service;
 import org.near.servicesupport.error.Errors;
 import org.near.servicesupport.result.ResultBuilder;
@@ -31,6 +31,7 @@ import org.near.servicesupport.result.TMultiResult;
 import org.near.servicesupport.result.TPageResult;
 import org.near.servicesupport.result.TSingleResult;
 import org.near.servicesupport.util.ServiceAssert;
+import org.near.toolkit.common.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -181,7 +182,7 @@ public class GoodsCatInfoServiceImpl implements GoodsCatInfoService {
             String array = JSON.toJSONString(rangeList);
             DuoGoodsSearchRequest request = new DuoGoodsSearchRequest();
             request.setRange_list(array);
-            request.setWith_coupon(Boolean.FALSE.toString());
+            request.setWith_coupon(Boolean.TRUE.toString());
             request.setType("pdd.ddk.goods.search");
             request.setClient_id(duoDuoKeConfig.getClientId());
             request.setTimestamp(String.valueOf(System.currentTimeMillis()));
@@ -197,6 +198,12 @@ public class GoodsCatInfoServiceImpl implements GoodsCatInfoService {
             List<DuoGoodsSearchResult.GoodsSearchResponseBean.GoodsListBean> goodsList = goodsSearchResponse.getGoodsList();
             if (goodsList != null) {
                 for (DuoGoodsSearchResult.GoodsSearchResponseBean.GoodsListBean item : goodsList) {
+
+                    if (StringUtil.isBlank(item.getGoodsImageUrl())) {
+                        continue;
+                    }
+
+
                     GoodsInfo goodsInfo = goodsInfoRepository.selectByGoodsId(item.getGoodsId());
                     if (goodsInfo == null) {
 
@@ -235,9 +242,10 @@ public class GoodsCatInfoServiceImpl implements GoodsCatInfoService {
 
 
                         info.setDetailUpdate(new Date());
-                        info.setIsChoose("1");
+                        info.setSort(8);
+                        info.setIsChoose(GoodsChooseEnum.IS.getCode());
                         info.setChooseSort(0);
-                        info.setSort(0);
+
                         info.setState(GoodsStateEnum.ON.getCode());
                         goodsInfoRepository.insert(info);
                     }
