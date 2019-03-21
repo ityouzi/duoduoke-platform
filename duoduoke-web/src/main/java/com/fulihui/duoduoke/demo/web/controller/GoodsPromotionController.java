@@ -4,6 +4,11 @@ import com.fulihui.duoduoke.demo.api.api.WechatTokenService;
 import com.fulihui.duoduoke.demo.api.enums.OrderPromotionSourceEnum;
 import com.fulihui.duoduoke.demo.api.request.WechatTokenQueryRequest;
 import com.fulihui.duoduoke.demo.api.response.GoodsPromotionUrlResponse;
+import com.fulihui.duoduoke.demo.common.config.DuoDuoKeConfig;
+import com.fulihui.duoduoke.demo.common.config.ExternalApiGoodsConfig;
+import com.fulihui.duoduoke.demo.common.crypto.AESCoder;
+import com.fulihui.duoduoke.demo.common.except.BizException;
+import com.fulihui.duoduoke.demo.common.except.CommonErrors;
 import com.fulihui.duoduoke.demo.web.config.AesKeyConfig;
 import com.fulihui.duoduoke.demo.web.integration.GoodsPromotionServiceClient;
 import com.fulihui.duoduoke.demo.web.manager.GoodsPromotionManager;
@@ -12,11 +17,6 @@ import com.fulihui.duoduoke.demo.web.param.GoodsPromotionGenerateParam;
 import com.fulihui.duoduoke.demo.web.util.Principal;
 import com.fulihui.duoduoke.demo.web.util.PrincipalUtil;
 import com.fulihui.duoduoke.demo.web.vo.GoodsPromotionUrlVO;
-import com.fulihui.duoduoke.demo.common.config.DuoDuoKeConfig;
-import com.fulihui.duoduoke.demo.common.config.ExternalApiGoodsConfig;
-import com.fulihui.duoduoke.demo.common.crypto.AESCoder;
-import com.fulihui.duoduoke.demo.common.except.BizException;
-import com.fulihui.duoduoke.demo.common.except.CommonErrors;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -84,15 +84,11 @@ public class GoodsPromotionController {
     @PostMapping("/promotion")
     @ApiOperation("生成多多进宝商品推广链接")
     JsonResult<GoodsPromotionUrlVO> promotion(@RequestBody GoodsPromotionGenerateParam param) {
-
         Principal principal = PrincipalUtil.getPrincipal();
-        String pId = "240009_18781180";
-        if (StringUtil.isNotBlank(param.getPid())) {
-            pId = param.getPid();
-        }
+        String pId = "1808329_56644863";
         LOGGER.info("GoodsPromotionController.param:{},pId:{}", param, pId);
         GoodsPromotionUrlVO vo = goodsPromotionManager.goodsGenerate(principal.getUserId(),
-            param.getGoodsId(), pId, param.getShareId(), Boolean.TRUE);
+                param.getGoodsId(), pId, param.getShareId(), Boolean.TRUE);
         LOGGER.info("GoodsPromotionController.promotion:{}", vo);
         return JsonResultBuilder.succ(vo);
     }
@@ -136,8 +132,8 @@ public class GoodsPromotionController {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(externalApiGoodsConfig.getExternalApi());
         RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(5 * 1000)
-            .setConnectionRequestTimeout(5 * 1000).setSocketTimeout(5 * 1000)
-            .setRedirectsEnabled(true).build();
+                .setConnectionRequestTimeout(5 * 1000).setSocketTimeout(5 * 1000)
+                .setRedirectsEnabled(true).build();
         httpPost.setConfig(requestConfig);
 
         List<NameValuePair> list = new ArrayList<>();
@@ -199,7 +195,7 @@ public class GoodsPromotionController {
 
     private GoodsPromotionUrlVO convert(String contentJson) {
         TMultiResult<GoodsPromotionUrlResponse> result = goodsPromotionServiceClient
-            .convertResponse(contentJson);
+                .convertResponse(contentJson);
         return getGoodsPromotionUrlVO(result);
     }
 }
@@ -208,17 +204,17 @@ public class GoodsPromotionController {
 class GenerateParam extends ToString {
 
     private static final long serialVersionUID = 1373357580883482063L;
-    private String            p_id;
+    private String p_id;
     /**
      * 自定义参数，为链接打上自定义标签。自定义参数最长限制64个字节。
      */
-    private String            custom_parameters;
+    private String custom_parameters;
 
-    private String            goods_id_list;
+    private String goods_id_list;
 
-    private String            multi_group;
-    private String            generate_short_url;
-    private String            generate_we_app;
-    private String            generate_weapp_webview;
+    private String multi_group;
+    private String generate_short_url;
+    private String generate_we_app;
+    private String generate_weapp_webview;
 
 }
