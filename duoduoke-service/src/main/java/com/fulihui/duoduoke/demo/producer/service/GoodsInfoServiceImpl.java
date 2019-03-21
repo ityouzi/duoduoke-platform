@@ -315,10 +315,8 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
      */
     @Override
     public TSingleResult<GoodsInfoDTO> queryGoodsDetail(GoodsInfoRequest request) {
-
-        return ResultBuilder.succTSingle(null);
-
-
+        GoodsInfo goodsInfo = goodsInfoRepository.selectByGoodsId(request.getGoodsId());
+        return ResultBuilder.succTSingle(convert(goodsInfo));
     }
 
     @Override
@@ -339,12 +337,14 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
     }
 
     private List<GoodsInfoDTO> convertModel(List<GoodsInfo> list) {
-        return list.stream().map(i -> {
-            GoodsInfoDTO response = new GoodsInfoDTO();
-            BeanUtils.copyProperties(i, response);
-            response.setHasCoupon(i.getHasCoupon());
-            return response;
-        }).collect(Collectors.toList());
+        return list.stream().map(this::convert).collect(Collectors.toList());
+    }
+
+    private GoodsInfoDTO convert(GoodsInfo i) {
+        GoodsInfoDTO response = new GoodsInfoDTO();
+        BeanUtils.copyProperties(i, response);
+        response.setHasCoupon(i.getHasCoupon());
+        return response;
     }
 
     /**

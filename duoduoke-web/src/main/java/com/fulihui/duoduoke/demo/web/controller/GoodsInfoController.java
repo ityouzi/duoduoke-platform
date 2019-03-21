@@ -33,7 +33,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -172,8 +171,7 @@ public class GoodsInfoController {
      */
     @PostMapping("goodsDetail")
     @ApiOperation("商品详情")
-    public JsonResult<GoodsInfo> goodsDetail(HttpServletRequest servletRequest,
-                                             @RequestBody GoodInfoParam param) {
+    public JsonResult<GoodsInfo> goodsDetail(@RequestBody GoodInfoParam param) {
         LOGGER.info("进入controller查询数据 商品详情");
         return v1(param);
     }
