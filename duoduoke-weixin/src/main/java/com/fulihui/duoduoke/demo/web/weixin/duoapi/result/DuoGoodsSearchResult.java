@@ -100,40 +100,40 @@ public class DuoGoodsSearchResult extends DuoJsonResult {
             private String mallName;
 
             @JsonProperty("category_id")
-            private Integer category_id;
+            private Integer categoryId;
 
             @JsonProperty("category_name")
-            private String category_name;
+            private String categoryName;
 
             @JsonProperty("has_coupon")
             private boolean hasCoupon;
 
             @JsonProperty("coupon_min_order_amount")
-            private Integer coupon_min_order_amount;
+            private Integer couponMinOrderAmount;
 
             @JsonProperty("coupon_discount")
-            private Integer coupon_discount;
+            private Integer couponDiscount;
 
             @JsonProperty("coupon_total_quantity")
-            private Integer coupon_total_quantity;
+            private Integer couponTotalQuantity;
 
             @JsonProperty("coupon_remain_quantity")
-            private Integer coupon_remain_quantity;
+            private Integer couponRemainQuantity;
 
             @JsonProperty("coupon_start_time")
-            private String coupon_start_time;
+            private String couponStartTime;
 
             @JsonProperty("coupon_end_time")
-            private String coupon_end_time;
+            private String couponEndTime;
 
             @JsonProperty("promotion_rate")
-            private Integer promotion_rate;
+            private Integer promotionRate;
 
             @JsonProperty("goods_eval_score")
-            private Integer goods_eval_score;
+            private Integer goodsEvalScore;
 
             @JsonProperty("goods_eval_count")
-            private Integer goods_eval_count;
+            private Integer goodsEvalCount;
 
             @JsonProperty("cat_id")
             private Integer catId;

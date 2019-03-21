@@ -17,7 +17,7 @@ import java.util.List;
 public interface GoodsInfoRepository {
 
 
-    long insert(GoodsInfoWithBLOBs goodsInfo);
+    long insert(GoodsInfo goodsInfo);
 
 
     int batchInsert(List<GoodsInfo> list, int table);

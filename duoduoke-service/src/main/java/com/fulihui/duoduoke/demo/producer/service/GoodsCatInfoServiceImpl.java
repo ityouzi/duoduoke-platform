@@ -15,6 +15,7 @@ import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfoWithBLOBs;
 import com.fulihui.duoduoke.demo.producer.repository.GoodsCatInfoRepository;
 import com.fulihui.duoduoke.demo.producer.repository.GoodsInfoRepository;
 import com.fulihui.duoduoke.demo.producer.util.ClassFieldsUtil;
+import com.fulihui.duoduoke.demo.producer.util.DateTimestampUtil;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.DuoHttpClient;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.request.DuoCatRequest;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.request.DuoGoodsSearchRequest;
@@ -183,33 +184,44 @@ public class GoodsCatInfoServiceImpl implements GoodsCatInfoService {
                     if (goodsInfo == null) {
 
 
-                        GoodsInfoWithBLOBs info = new GoodsInfoWithBLOBs();
-
-
+                        GoodsInfo info = new GoodsInfo();
                         info.setGoodsDesc(item.getGoodsDesc());
                         info.setGoodsGalleryUrls(item.getGoodsGalleryUrls());
+
                         info.setGoodsId(item.getGoodsId());
                         info.setGoodsName(item.getGoodsName());
+                        info.setGoodsDesc(item.getGoodsDesc());
                         info.setGoodsThumbnailUrl(item.getGoodsThumbnailUrl());
-
                         info.setGoodsImageUrl(item.getGoodsImageUrl());
                         info.setSoldQuantity(item.getSoldQuantity());
                         info.setMallName(item.getMallName());
-
                         info.setMinNormalPrice(item.getMinNormalPrice());
-                        info.setState(GoodsStateEnum.ON.getCode());
-
                         info.setMinGroupPrice(item.getMinGroupPrice());
-                        info.setCatIds(item.getCategory_id().toString());
+                        info.setOptName(item.getGoodsName());
+                        info.setOptId(item.getCatId());
+                        info.setCatIds(item.getCategoryId().toString());
+
                         info.setHasCoupon(String.valueOf(item.isHasCoupon()));
 
-                        info.setAvgServ(item.getAvgServ());
-                        info.setAvgLgst(item.getAvgLgst());
-                        info.setAvgDesc(item.getAvgDesc());
+
+                        info.setGoodsEvalCount(item.getGoodsEvalCount());
+                        if (item.getGoodsEvalScore() != null) {
+                            info.setGoodsEvalScore(item.getGoodsEvalScore().toString());
+                        }
+                        info.setPromotionRate(item.getPromotionRate());
+                        info.setCouponEndTime(DateTimestampUtil.unixToDate(item.getCouponEndTime(), ""));
+                        info.setCouponStartTime(DateTimestampUtil.unixToDate(item.getCouponStartTime(), ""));
+                        info.setCouponRemainQuantity(item.getCouponRemainQuantity());
+                        info.setCouponTotalQuantity(item.getCouponTotalQuantity());
+                        info.setCouponDiscount(item.getCouponDiscount());
+                        info.setCouponMinOrderAmount(item.getCouponMinOrderAmount());
+
+
                         info.setDetailUpdate(new Date());
                         info.setIsChoose("1");
                         info.setChooseSort(0);
                         info.setSort(0);
+                        info.setState(GoodsStateEnum.ON.getCode());
                         goodsInfoRepository.insert(info);
                     }
                 }

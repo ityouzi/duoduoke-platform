@@ -26,7 +26,7 @@ public class GoodsInfoRepositoryImpl implements GoodsInfoRepository {
     GoodsInfoMapper goodsInfoMapper;
 
     @Override
-    public long insert(GoodsInfoWithBLOBs goodsInfo) {
+    public long insert(GoodsInfo goodsInfo) {
         goodsInfo.setGmtCreate(new Date());
         goodsInfo.setGmtModified(new Date());
         goodsInfoMapper.insertSelective(goodsInfo);
