@@ -1,22 +1,25 @@
 package com.fulihui.duoduoke.demo.api.api;
 
 
+import com.fulihui.duoduoke.demo.api.dto.StoreDTO;
+import com.fulihui.duoduoke.demo.api.dto.StoreGoodsDTO;
 import com.fulihui.duoduoke.demo.api.request.AddStoreGoodsRequest;
 import com.fulihui.duoduoke.demo.api.request.AddStoreRequest;
 import com.fulihui.duoduoke.demo.api.request.StoreListRequest;
-import com.fulihui.duoduoke.demo.api.dto.StoreDTO;
-import com.fulihui.duoduoke.demo.api.dto.StoreGoodsDTO;
 import org.near.servicesupport.result.BaseResult;
 import org.near.servicesupport.result.TPageResult;
 
 import java.util.List;
 
+/**
+ * @author wahaha
+ */
 public interface StoreService {
-    TPageResult<StoreDTO> list(StoreListRequest storeListRequest);
+    TPageResult<StoreDTO> list(StoreListRequest request);
 
-    BaseResult addStore(AddStoreRequest addStoreRequest);
+    BaseResult addStore(AddStoreRequest request);
 
-    BaseResult editStore(AddStoreRequest addStoreRequest);
+    BaseResult editStore(AddStoreRequest request);
 
     StoreDTO get(String id);
 
@@ -24,7 +27,7 @@ public interface StoreService {
 
     List<StoreGoodsDTO> getStoreGoodsList(String id);
 
-    BaseResult addStoreGoods(AddStoreGoodsRequest addStoreRequest);
+    BaseResult addStoreGoods(AddStoreGoodsRequest request);
 
     StoreGoodsDTO getGoods(String id);
 

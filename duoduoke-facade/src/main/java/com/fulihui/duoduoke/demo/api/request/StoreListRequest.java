@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.near.servicesupport.request.PageRequest;
 
+/**
+ * @author wahaha
+ */
 @Getter
 @Setter
 public class StoreListRequest extends PageRequest {

@@ -1,19 +1,19 @@
 package com.fulihui.duoduoke.demo.producer.dal.dao;
 
 
-import com.fulihui.duoduoke.demo.api.dto.StoreDTO;
-import com.fulihui.duoduoke.demo.api.request.StoreListRequest;
+import com.fulihui.duoduoke.demo.producer.dal.dataobj.Store;
 
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author wahaha
+ */
 public interface ExtStoreMapper {
 
-    List<StoreDTO> list(StoreListRequest storeListRequest);
-
-    Integer listSum(StoreListRequest storeListRequest1);
-
-    StoreDTO get(String id);
-
-    List<StoreDTO> getGoingStoreList(Date now);
+    /**
+     * @param now
+     * @return
+     */
+    List<Store> getGoingStoreList(Date now);
 }

@@ -9,7 +9,8 @@ import org.near.toolkit.model.ToString;
  * @author lizhi
  * @date 2018-7-13
  */
-@Setter @Getter
+@Setter
+@Getter
 public class UserAccountDetailVO extends ToString {
     private static final long serialVersionUID = -1273293440826899406L;
 
@@ -20,8 +21,6 @@ public class UserAccountDetailVO extends ToString {
      * INCOME("0", "收入"),
      * <p>
      * OUTLAY("1", "支出"),;
-     *
-     * @see com.fulihui.duoduoke.demo.producer.facade.enums.UserAccountOptTypeEnum
      */
     @ApiModelProperty(value = "0=收入,1=支出")
     private String optType;
