@@ -7,10 +7,12 @@ import com.fulihui.duoduoke.demo.api.api.UserPosterImgService;
 import com.fulihui.duoduoke.demo.api.api.UserShareRecodeService;
 import com.fulihui.duoduoke.demo.api.dto.GoodsInfoDTO;
 import com.fulihui.duoduoke.demo.api.dto.HomeColumnDTO;
-import com.fulihui.duoduoke.demo.api.dto.UserShareRecordDTO;
 import com.fulihui.duoduoke.demo.api.enums.GoodsChooseEnum;
 import com.fulihui.duoduoke.demo.api.enums.GoodsStateEnum;
-import com.fulihui.duoduoke.demo.api.request.*;
+import com.fulihui.duoduoke.demo.api.request.GoodsInfoRecommendRequest;
+import com.fulihui.duoduoke.demo.api.request.GoodsInfoRequest;
+import com.fulihui.duoduoke.demo.api.request.HomeColumnRequest;
+import com.fulihui.duoduoke.demo.api.request.UserQrcodeImgRequest;
 import com.fulihui.duoduoke.demo.web.factory.AppConfigFactory;
 import com.fulihui.duoduoke.demo.web.manager.GoodsInfoManager;
 import com.fulihui.duoduoke.demo.web.param.GoodChannelParam;
@@ -177,48 +179,22 @@ public class GoodsInfoController {
     }
 
     private JsonResult<GoodsInfo> v1(@RequestBody GoodInfoParam param) {
-        String scene = param.getScene();
+
         GoodsInfoRequest infoRequest = new GoodsInfoRequest();
-        GoodsInfo goodsIfs = new GoodsInfo();
-        if (StringUtil.isNotEmpty(scene)) {
-            int id = Integer.parseInt(scene);
-            UserShareRecordRequest recordRequest = new UserShareRecordRequest();
-            recordRequest.setId(id);
-            TSingleResult<UserShareRecordDTO> result = userShareRecodeService
-                    .queryById(recordRequest);
-            ServiceResultUtil.checkResult(result);
-            UserShareRecordDTO dto = result.getValue();
-            if (dto != null) {
-                String goodsId = dto.getGoodId();
-                String userId = dto.getUserId();
-                if (StringUtil.isNotEmpty(goodsId)) {
-                    infoRequest.setGoodsId(goodsId);
-                    goodsIfs.setShareUserId(userId);
-                    goodsIfs.setPid(dto.getPid());
-                }
-            }
-        } else {
-            if (param.getGoodsId() == null) {
-                return JsonResultBuilder.fail("102", "商品参数错误");
-            }
-            BeanUtils.copyProperties(param, infoRequest);
-        }
         infoRequest.setState(GoodsStateEnum.ON.getCode());
+        infoRequest.setGoodsId(param.getGoodsId().toString());
         TSingleResult<GoodsInfoDTO> result = goodsInfoService.queryGoodsDetailNO(infoRequest);
         checkResult(result);
         GoodsInfoDTO dto = result.getValue();
-        //佣金
-        if (dto != null) {
-            Integer commission = appConfigFactory.getCommission().intValue();
-            Integer shareProportion = appConfigFactory.getShareProportion().intValue();
-            BigDecimal yuanBig = new BigDecimal(100);
-            GoodsInfo goodsInfo = goodsInfoManager.toVO(dto, yuanBig, commission, shareProportion);
-            goodsInfo.setShareUserId(goodsIfs.getShareUserId());
-            goodsInfo.setPid(goodsIfs.getPid());
-            return JsonResultBuilder.succ(goodsInfo);
-        } else {
+        if (dto == null) {
             return JsonResultBuilder.fail("101", "商品已下架");
         }
+        Integer commission = appConfigFactory.getCommission().intValue();
+        Integer shareProportion = appConfigFactory.getShareProportion().intValue();
+        BigDecimal yuanBig = new BigDecimal(100);
+        GoodsInfo goodsInfo = goodsInfoManager.toVO(dto, yuanBig, commission, shareProportion);
+        return JsonResultBuilder.succ(goodsInfo);
+
     }
 
     @PostMapping("goodsShareImg")
