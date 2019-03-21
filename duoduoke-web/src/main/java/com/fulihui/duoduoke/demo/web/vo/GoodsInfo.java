@@ -101,7 +101,7 @@ public class GoodsInfo extends ToString {
      *
      * @mbg.generated 2019-03-20 17:32:25
      */
-    private Integer minGroupPrice;
+    private String minGroupPrice;
 
     /**
      * goods_info.opt_name
@@ -189,7 +189,7 @@ public class GoodsInfo extends ToString {
      *
      * @mbg.generated 2019-03-20 17:32:25
      */
-    private String goodsGalleryUrls;
+    private String[] goodsGalleryUrls;
 
     /**
      * goods_info.goods_eval_count
@@ -221,7 +221,7 @@ public class GoodsInfo extends ToString {
      *
      * @mbg.generated 2019-03-20 17:32:25
      */
-    private Date couponEndTime;
+    private String couponEndTime;
 
     /**
      * goods_info.coupon_start_time
@@ -229,7 +229,7 @@ public class GoodsInfo extends ToString {
      *
      * @mbg.generated 2019-03-20 17:32:25
      */
-    private Date couponStartTime;
+    private String couponStartTime;
 
     /**
      * goods_info.coupon_remain_quantity
@@ -253,7 +253,7 @@ public class GoodsInfo extends ToString {
      *
      * @mbg.generated 2019-03-20 17:32:25
      */
-    private Integer couponDiscount;
+    private String couponDiscount;
 
     /**
      * goods_info.coupon_min_order_amount
