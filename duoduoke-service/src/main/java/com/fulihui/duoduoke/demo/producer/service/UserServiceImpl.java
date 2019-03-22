@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
     DistributedLock zookeeperDistributedLock;
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public TSingleResult<UserDTO> wechatLogin(UserWechatLoginRequest request) {
         ServiceAssert.notNull(request, Errors.Commons.REQUEST_PARAMETER_ERROR);
         ServiceAssert.notBlank(request.getUserType(), Errors.Commons.REQUEST_PARAMETER_ERROR);

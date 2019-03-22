@@ -6,6 +6,7 @@ import org.apache.dubbo.config.annotation.Service;
 
 @Service(version = "${demo.service.version}")
 public class DemoApiImpl implements DemoApi {
+    @Override
     public String say(String name) {
         return name;
     }
