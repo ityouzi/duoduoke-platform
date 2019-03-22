@@ -4,19 +4,16 @@ import com.alibaba.fastjson.JSON;
 import com.fulihui.duoduoke.demo.api.api.GoodsCatInfoService;
 import com.fulihui.duoduoke.demo.api.dto.GoodsCatInfoDTO;
 import com.fulihui.duoduoke.demo.api.dto.GoodsCatInfoTreeNodeDTO;
-import com.fulihui.duoduoke.demo.api.enums.GoodsChooseEnum;
-import com.fulihui.duoduoke.demo.api.enums.GoodsStateEnum;
 import com.fulihui.duoduoke.demo.api.request.GoodsCatInfoRequest;
 import com.fulihui.duoduoke.demo.common.config.DuoDuoKeConfig;
 import com.fulihui.duoduoke.demo.common.util.BeanConvUtil;
 import com.fulihui.duoduoke.demo.producer.dal.dao.ExtGoodsCatInfoMapper;
 import com.fulihui.duoduoke.demo.producer.dal.dao.GoodsCatInfoMapper;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsCatInfo;
-import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfo;
+import com.fulihui.duoduoke.demo.producer.manager.GoodsManager;
 import com.fulihui.duoduoke.demo.producer.repository.GoodsCatInfoRepository;
 import com.fulihui.duoduoke.demo.producer.repository.GoodsInfoRepository;
 import com.fulihui.duoduoke.demo.producer.util.ClassFieldsUtil;
-import com.fulihui.duoduoke.demo.producer.util.DateTimestampUtil;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.DuoHttpClient;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.request.DuoCatRequest;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.request.DuoGoodsSearchRequest;
@@ -31,7 +28,6 @@ import org.near.servicesupport.result.TMultiResult;
 import org.near.servicesupport.result.TPageResult;
 import org.near.servicesupport.result.TSingleResult;
 import org.near.servicesupport.util.ServiceAssert;
-import org.near.toolkit.common.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -39,7 +35,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -143,8 +138,6 @@ public class GoodsCatInfoServiceImpl implements GoodsCatInfoService {
     DuoDuoKeConfig duoDuoKeConfig;
     @Autowired
     DuoHttpClient duoHttpClient;
-    @Autowired
-    GoodsInfoRepository goodsInfoRepository;
 
     @Override
     public void doCatSyc() {
@@ -222,22 +215,19 @@ public class GoodsCatInfoServiceImpl implements GoodsCatInfoService {
                 List<DuoGoodsSearchResult.GoodsSearchResponseBean.GoodsListBean> goodsList = searchResponse.getGoodsList();
                 if (goodsList != null) {
                     for (DuoGoodsSearchResult.GoodsSearchResponseBean.GoodsListBean item : goodsList) {
-
-                        if (StringUtil.isBlank(item.getGoodsImageUrl())) {
-                            continue;
-                        }
-
-                        GoodsInfo goodsInfo = goodsInfoRepository.selectByGoodsId(item.getGoodsId());
-                        if (goodsInfo == null) {
-                            GoodsInfo info = new GoodsInfo();
-                            build(item, info);
-                            goodsInfoRepository.insert(info);
-                        }
+                        insert(item);
                     }
 
                 }
             }
         }
+    }
+
+    @Autowired
+    GoodsManager goodsManager;
+
+    void insert(DuoGoodsSearchResult.GoodsSearchResponseBean.GoodsListBean item) {
+        goodsManager.saveGoods(item);
     }
 
     private void convertReq(DuoCatApiResult result, DuoGoodsSearchRequest request) {
@@ -260,43 +250,7 @@ public class GoodsCatInfoServiceImpl implements GoodsCatInfoService {
 
         request.setSort_type("0");
         request.setCat_id(result.getCatId());
-
     }
 
-    private void build(DuoGoodsSearchResult.GoodsSearchResponseBean.GoodsListBean item, GoodsInfo info) {
-        info.setGoodsDesc(item.getGoodsDesc());
-        info.setGoodsGalleryUrls(item.getGoodsGalleryUrls());
-        info.setGoodsId(item.getGoodsId());
-        info.setGoodsName(item.getGoodsName());
-        info.setGoodsDesc(item.getGoodsDesc());
-        info.setGoodsThumbnailUrl(item.getGoodsThumbnailUrl());
-        info.setGoodsImageUrl(item.getGoodsImageUrl());
-        info.setSoldQuantity(item.getSoldQuantity());
-        info.setMallName(item.getMallName());
-        info.setMinNormalPrice(item.getMinNormalPrice());
-        info.setMinGroupPrice(item.getMinGroupPrice());
-        info.setOptName(item.getGoodsName());
-        info.setOptId(item.getCatId());
-        info.setCatIds(item.getCategoryId().toString());
-        info.setHasCoupon(String.valueOf(item.isHasCoupon()));
-        info.setGoodsEvalCount(item.getGoodsEvalCount());
-        if (item.getGoodsEvalScore() != null) {
-            info.setGoodsEvalScore(item.getGoodsEvalScore().toString());
-        }
-        info.setPromotionRate(item.getPromotionRate());
-        info.setCouponEndTime(DateTimestampUtil.unixToDate(item.getCouponEndTime(), ""));
-        info.setCouponStartTime(DateTimestampUtil.unixToDate(item.getCouponStartTime(), ""));
-        info.setCouponRemainQuantity(item.getCouponRemainQuantity());
-        info.setCouponTotalQuantity(item.getCouponTotalQuantity());
-        info.setCouponDiscount(item.getCouponDiscount());
-        info.setCouponMinOrderAmount(item.getCouponMinOrderAmount());
 
-
-        info.setDetailUpdate(new Date());
-        info.setSort(8);
-        info.setIsChoose(GoodsChooseEnum.IS.getCode());
-        info.setChooseSort(0);
-
-        info.setState(GoodsStateEnum.ON.getCode());
-    }
 }

@@ -10,15 +10,13 @@ import com.fulihui.duoduoke.demo.api.request.*;
 import com.fulihui.duoduoke.demo.api.response.GoodsSearchInfoResponse;
 import com.fulihui.duoduoke.demo.api.response.GoodsSearchResponse;
 import com.fulihui.duoduoke.demo.common.config.DuoDuoKeConfig;
-import com.fulihui.duoduoke.demo.common.util.RedisUtils;
-import com.fulihui.duoduoke.demo.producer.dal.dao.GoodSearchRecordMapper;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.DuoGoodsInfo;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfo;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfoExample;
+import com.fulihui.duoduoke.demo.producer.manager.GoodsManager;
 import com.fulihui.duoduoke.demo.producer.repository.GoodsInfoRepository;
 import com.fulihui.duoduoke.demo.producer.util.ClassFieldsUtil;
 import com.fulihui.duoduoke.demo.producer.util.Consts;
-import com.fulihui.duoduoke.demo.web.weixin.duoapi.DuoHttpClient;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.request.DuoGoodsSearchRequest;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.result.DuoGoodsSearchResult;
 import com.google.common.collect.Lists;
@@ -78,34 +76,13 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
     @Autowired
     DuoDuoKeConfig duoDuoKeConfig;
     /**
-     * The Duoduo http client.
-     */
-    @Autowired
-    DuoHttpClient duoHttpClient;
-    /**
-     * The Good search record mapper.
-     */
-    @Autowired
-    GoodSearchRecordMapper goodSearchRecordMapper;
-    /**
      * The Duoduo goods info repository.
      */
     @Autowired
     GoodsInfoRepository goodsInfoRepository;
-    /**
-     * The Duoduo goods manager.
-     */
 
-    /**
-     * The Goods tabel mapper.
-     */
-
-    /**
-     * The Redis utils.
-     */
     @Autowired
-    RedisUtils redisUtils;
-
+    GoodsManager goodsManager;
 
     @Override
     public TPageResult<GoodsSearchInfoResponse> search(GoodsSearchInfoRequest infoRequest) {
@@ -194,9 +171,16 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
                 List<DuoGoodsSearchResult.GoodsSearchResponseBean.GoodsListBean> goodsList = goodsSearchResponse
                         .getGoodsList();
                 if (!isEmpty(goodsList)) {
-                    collect = goodsList.stream().map(i -> {
+                    collect = goodsList.stream().map(item -> {
+
                         GoodsSearchInfoResponse infoResponse = new GoodsSearchInfoResponse();
-                        BeanUtils.copyProperties(i, infoResponse);
+                        try {
+                            goodsManager.saveGoods(item);
+                        } catch (Exception ignored) {
+                        }
+
+                        BeanUtils.copyProperties(item, infoResponse);
+
                         return infoResponse;
                     }).collect(Collectors.toList());
                 }
