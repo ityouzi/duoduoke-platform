@@ -164,95 +164,139 @@ public class GoodsCatInfoServiceImpl implements GoodsCatInfoService {
             goodsCatsList.addAll(result.getGoodsCatsList());
         }
 
+
         for (DuoCatApiResult result : goodsCatsList) {
 
 
-            ArrayList<DuoGoodsSearchRequest.Range> rangeList = Lists.newArrayList();
+            int page = 1;
+            int pageSize = 100;
 
-            DuoGoodsSearchRequest.Range range = new DuoGoodsSearchRequest.Range();
-            DuoGoodsSearchRequest.Range range1 = new DuoGoodsSearchRequest.Range();
-            range.setRange_id(5);
-            range.setRange_from(100);
-            rangeList.add(range);
 
-            range1.setRange_id(2);
-            range1.setRange_from(1);
-            rangeList.add(range1);
-
-            String array = JSON.toJSONString(rangeList);
             DuoGoodsSearchRequest request = new DuoGoodsSearchRequest();
-            request.setRange_list(array);
-            request.setWith_coupon(Boolean.TRUE.toString());
-            request.setType("pdd.ddk.goods.search");
-            request.setClient_id(duoDuoKeConfig.getClientId());
+            convertReq(result, request);
+            request.setPage(page + "");
+            request.setPage_size(pageSize + "");
             request.setTimestamp(String.valueOf(System.currentTimeMillis()));
-            request.setSort_type("0");
-            request.setCat_id(result.getCatId());
+
             Map<String, Object> strValMap = ClassFieldsUtil.obj2StrValMap(request);
             List<String> strings = ClassFieldsUtil.obj2StrVal(request);
             String sign = genServiceSign(strings, strValMap, duoDuoKeConfig.getClientSecret());
             request.setSign(sign);
-            DuoGoodsSearchResult goodsSearchResult = duoHttpClient.invokeService(request);
-            LOGGER.debug("result:{}", goodsSearchResult);
-            DuoGoodsSearchResult.GoodsSearchResponseBean goodsSearchResponse = goodsSearchResult.getGoodsSearchResponse();
-            List<DuoGoodsSearchResult.GoodsSearchResponseBean.GoodsListBean> goodsList = goodsSearchResponse.getGoodsList();
-            if (goodsList != null) {
-                for (DuoGoodsSearchResult.GoodsSearchResponseBean.GoodsListBean item : goodsList) {
+            DuoGoodsSearchResult searchResult = duoHttpClient.invokeService(request);
+            LOGGER.debug("result:{}", searchResult);
+            if (searchResult == null || searchResult.getGoodsSearchResponse() == null) {
+                continue;
+            }
+            DuoGoodsSearchResult.GoodsSearchResponseBean searchResponse = searchResult.getGoodsSearchResponse();
+            Integer totalCount = searchResponse.getTotal_count();
+            int totalPage = totalCount % pageSize == 0 ? totalCount / pageSize
+                    : totalCount / pageSize + 1;
+            totalPage = totalPage > 0 ? totalPage : 1;
+            LOGGER.info("总条数:{},总页数:{}", totalCount, totalPage);
+            for (int i = 1; i <= totalPage; i++) {
 
-                    if (StringUtil.isBlank(item.getGoodsImageUrl())) {
-                        continue;
-                    }
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                DuoGoodsSearchRequest newRequest = new DuoGoodsSearchRequest();
 
-
-                    GoodsInfo goodsInfo = goodsInfoRepository.selectByGoodsId(item.getGoodsId());
-                    if (goodsInfo == null) {
-
-
-                        GoodsInfo info = new GoodsInfo();
-                        info.setGoodsDesc(item.getGoodsDesc());
-                        info.setGoodsGalleryUrls(item.getGoodsGalleryUrls());
-
-                        info.setGoodsId(item.getGoodsId());
-                        info.setGoodsName(item.getGoodsName());
-                        info.setGoodsDesc(item.getGoodsDesc());
-                        info.setGoodsThumbnailUrl(item.getGoodsThumbnailUrl());
-                        info.setGoodsImageUrl(item.getGoodsImageUrl());
-                        info.setSoldQuantity(item.getSoldQuantity());
-                        info.setMallName(item.getMallName());
-                        info.setMinNormalPrice(item.getMinNormalPrice());
-                        info.setMinGroupPrice(item.getMinGroupPrice());
-                        info.setOptName(item.getGoodsName());
-                        info.setOptId(item.getCatId());
-                        info.setCatIds(item.getCategoryId().toString());
-
-                        info.setHasCoupon(String.valueOf(item.isHasCoupon()));
+                convertReq(result, newRequest);
+                newRequest.setPage(i + "");
+                newRequest.setPage_size(pageSize + "");
+                newRequest.setTimestamp(String.valueOf(System.currentTimeMillis()));
+                Map<String, Object> newStrValMap = ClassFieldsUtil.obj2StrValMap(newRequest);
+                List<String> newStrings = ClassFieldsUtil.obj2StrVal(newRequest);
+                String newSign = genServiceSign(newStrings, newStrValMap, duoDuoKeConfig.getClientSecret());
+                newRequest.setSign(newSign);
+                searchResult = duoHttpClient.invokeService(newRequest);
 
 
-                        info.setGoodsEvalCount(item.getGoodsEvalCount());
-                        if (item.getGoodsEvalScore() != null) {
-                            info.setGoodsEvalScore(item.getGoodsEvalScore().toString());
-                        }
-                        info.setPromotionRate(item.getPromotionRate());
-                        info.setCouponEndTime(DateTimestampUtil.unixToDate(item.getCouponEndTime(), ""));
-                        info.setCouponStartTime(DateTimestampUtil.unixToDate(item.getCouponStartTime(), ""));
-                        info.setCouponRemainQuantity(item.getCouponRemainQuantity());
-                        info.setCouponTotalQuantity(item.getCouponTotalQuantity());
-                        info.setCouponDiscount(item.getCouponDiscount());
-                        info.setCouponMinOrderAmount(item.getCouponMinOrderAmount());
-
-
-                        info.setDetailUpdate(new Date());
-                        info.setSort(8);
-                        info.setIsChoose(GoodsChooseEnum.IS.getCode());
-                        info.setChooseSort(0);
-
-                        info.setState(GoodsStateEnum.ON.getCode());
-                        goodsInfoRepository.insert(info);
-                    }
+                LOGGER.debug("result:{}", searchResult);
+                if (searchResult == null || searchResult.getGoodsSearchResponse() == null) {
+                    continue;
                 }
 
+
+                List<DuoGoodsSearchResult.GoodsSearchResponseBean.GoodsListBean> goodsList = searchResponse.getGoodsList();
+                if (goodsList != null) {
+                    for (DuoGoodsSearchResult.GoodsSearchResponseBean.GoodsListBean item : goodsList) {
+
+                        if (StringUtil.isBlank(item.getGoodsImageUrl())) {
+                            continue;
+                        }
+
+                        GoodsInfo goodsInfo = goodsInfoRepository.selectByGoodsId(item.getGoodsId());
+                        if (goodsInfo == null) {
+                            GoodsInfo info = new GoodsInfo();
+                            build(item, info);
+                            goodsInfoRepository.insert(info);
+                        }
+                    }
+
+                }
             }
         }
+    }
 
+    private void convertReq(DuoCatApiResult result, DuoGoodsSearchRequest request) {
+        ArrayList<DuoGoodsSearchRequest.Range> rangeList = Lists.newArrayList();
+
+        DuoGoodsSearchRequest.Range range = new DuoGoodsSearchRequest.Range();
+        DuoGoodsSearchRequest.Range range1 = new DuoGoodsSearchRequest.Range();
+        range.setRange_id(5);
+        range.setRange_from(100);
+        rangeList.add(range);
+        range1.setRange_id(2);
+        range1.setRange_from(1);
+        rangeList.add(range1);
+        String array = JSON.toJSONString(rangeList);
+
+        request.setRange_list(array);
+        request.setWith_coupon(Boolean.TRUE.toString());
+        request.setType("pdd.ddk.goods.search");
+        request.setClient_id(duoDuoKeConfig.getClientId());
+
+        request.setSort_type("0");
+        request.setCat_id(result.getCatId());
+
+    }
+
+    private void build(DuoGoodsSearchResult.GoodsSearchResponseBean.GoodsListBean item, GoodsInfo info) {
+        info.setGoodsDesc(item.getGoodsDesc());
+        info.setGoodsGalleryUrls(item.getGoodsGalleryUrls());
+        info.setGoodsId(item.getGoodsId());
+        info.setGoodsName(item.getGoodsName());
+        info.setGoodsDesc(item.getGoodsDesc());
+        info.setGoodsThumbnailUrl(item.getGoodsThumbnailUrl());
+        info.setGoodsImageUrl(item.getGoodsImageUrl());
+        info.setSoldQuantity(item.getSoldQuantity());
+        info.setMallName(item.getMallName());
+        info.setMinNormalPrice(item.getMinNormalPrice());
+        info.setMinGroupPrice(item.getMinGroupPrice());
+        info.setOptName(item.getGoodsName());
+        info.setOptId(item.getCatId());
+        info.setCatIds(item.getCategoryId().toString());
+        info.setHasCoupon(String.valueOf(item.isHasCoupon()));
+        info.setGoodsEvalCount(item.getGoodsEvalCount());
+        if (item.getGoodsEvalScore() != null) {
+            info.setGoodsEvalScore(item.getGoodsEvalScore().toString());
+        }
+        info.setPromotionRate(item.getPromotionRate());
+        info.setCouponEndTime(DateTimestampUtil.unixToDate(item.getCouponEndTime(), ""));
+        info.setCouponStartTime(DateTimestampUtil.unixToDate(item.getCouponStartTime(), ""));
+        info.setCouponRemainQuantity(item.getCouponRemainQuantity());
+        info.setCouponTotalQuantity(item.getCouponTotalQuantity());
+        info.setCouponDiscount(item.getCouponDiscount());
+        info.setCouponMinOrderAmount(item.getCouponMinOrderAmount());
+
+
+        info.setDetailUpdate(new Date());
+        info.setSort(8);
+        info.setIsChoose(GoodsChooseEnum.IS.getCode());
+        info.setChooseSort(0);
+
+        info.setState(GoodsStateEnum.ON.getCode());
     }
 }
