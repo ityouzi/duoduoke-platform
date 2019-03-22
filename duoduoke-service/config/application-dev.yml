@@ -15,8 +15,6 @@ dubbo:
   #    serialization: json
   registry:
     address: zookeeper://127.0.0.1:${embedded.zookeeper.port}
-    password: fulihui.com
-    username: fulihui.com
   scan:
     base-packages: com.fulihui.duoduoke.demo.producer.service
 
