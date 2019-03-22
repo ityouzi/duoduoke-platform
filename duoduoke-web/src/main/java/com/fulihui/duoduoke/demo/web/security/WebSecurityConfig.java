@@ -131,7 +131,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/duoAuth/callback",
                 "/duoAuth/refreshToken",
                 "/goodsInfo/imgConvert",
-                "/banner/bannerList"
+                "/banner/bannerList",
+                "/goodsCatInfo/search"
 
 
         );
