@@ -160,7 +160,7 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
             HttpResponse response = httpClient.execute(post);
             HttpEntity entity = response.getEntity();
             String respStr = EntityUtils.toString(entity);
-            LOGGER.debug("success Response: {}", respStr);
+            LOGGER.info("successResponse: {}", respStr);
 
             DuoGoodsSearchResult result = JSONObject.parseObject(respStr,
                     DuoGoodsSearchResult.class);
