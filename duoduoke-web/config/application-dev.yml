@@ -98,8 +98,6 @@ oss:
 dubbo:
   registry:
     address: zookeeper://127.0.0.1:${embedded.zookeeper.port}
-    username: fulihui.com
-    password: fulihui.com
 
   consumer:
     version: 1.0.0
