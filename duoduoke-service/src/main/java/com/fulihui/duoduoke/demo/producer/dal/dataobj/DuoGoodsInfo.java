@@ -6,6 +6,9 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @author wahaha
+ */
 @Setter
 @Getter
 public class DuoGoodsInfo implements Serializable {

@@ -6,6 +6,7 @@ import com.fulihui.duoduoke.demo.api.request.GoodsInfoRecommendRequest;
 import com.fulihui.duoduoke.demo.api.request.GoodsSearchRequest;
 import com.fulihui.duoduoke.demo.api.response.GoodsSearchResponse;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.DuoGoodsInfo;
+import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfo;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.request.DuoGoodsRequest;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.result.DuoGoodsResult;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.result.DuoGoodsSearchResult;
@@ -38,13 +39,6 @@ public interface GoodsManager {
      */
     boolean saveGoods();
 
-    /**
-     * 更新拼多多商品详情
-     *
-     * @param info the info
-     * @return duo goods info
-     */
-    DuoGoodsInfo updateGoodDetail(DuoGoodsInfo info);
 
     /**
      * 查询多多商品详情
@@ -52,7 +46,7 @@ public interface GoodsManager {
      * @param goodsId the goods id
      * @return good detail
      */
-    DuoGoodsInfo getGoodDetail(Long goodsId);
+    GoodsInfo getGoodDetail(String goodsId);
 
 
     /**

@@ -300,7 +300,17 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
     @Override
     public TSingleResult<GoodsInfoDTO> queryGoodsDetail(GoodsInfoRequest request) {
         GoodsInfo goodsInfo = goodsInfoRepository.selectByGoodsId(request.getGoodsId());
-        return ResultBuilder.succTSingle(convert(goodsInfo));
+        if (goodsInfo == null) {
+            GoodsInfo goodDetail = goodsManager.getGoodDetail(request.getGoodsId());
+            if (goodDetail == null) {
+                return ResultBuilder.succTSingle(null);
+            }
+        }
+
+
+        return null;
+
+
     }
 
     @Override

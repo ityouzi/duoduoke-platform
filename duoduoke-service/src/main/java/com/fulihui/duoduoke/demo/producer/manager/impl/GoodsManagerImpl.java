@@ -13,7 +13,10 @@ import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsInfo;
 import com.fulihui.duoduoke.demo.producer.manager.GoodsManager;
 import com.fulihui.duoduoke.demo.producer.repository.GoodsInfoRepository;
 import com.fulihui.duoduoke.demo.producer.util.DateTimestampUtil;
+import com.fulihui.duoduoke.demo.web.weixin.duoapi.DuoHttpClient;
+import com.fulihui.duoduoke.demo.web.weixin.duoapi.request.DuoGoodsDetailRequest;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.request.DuoGoodsRequest;
+import com.fulihui.duoduoke.demo.web.weixin.duoapi.result.DuoGoodsDetailResult;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.result.DuoGoodsResult;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.result.DuoGoodsSearchResult;
 import org.near.servicesupport.result.TPageResult;
@@ -23,6 +26,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
+import static com.fulihui.duoduoke.demo.producer.util.ClassFieldsUtil.obj2StrVal;
+import static com.fulihui.duoduoke.demo.producer.util.ClassFieldsUtil.obj2StrValMap;
+import static com.fulihui.duoduoke.demo.producer.util.SignUtil.genServiceSign;
 
 @Component
 public class GoodsManagerImpl implements GoodsManager {
@@ -31,6 +39,9 @@ public class GoodsManagerImpl implements GoodsManager {
 
     @Autowired
     GoodsInfoRepository goodsInfoRepository;
+
+    @Autowired
+    DuoHttpClient duoHttpClient;
 
     /**
      * 保存更新拼的多多接口商品
@@ -98,16 +109,6 @@ public class GoodsManagerImpl implements GoodsManager {
         return false;
     }
 
-    /**
-     * 更新拼多多商品详情
-     *
-     * @param info
-     * @return
-     */
-    @Override
-    public DuoGoodsInfo updateGoodDetail(DuoGoodsInfo info) {
-        return null;
-    }
 
     /**
      * 查询多多商品详情
@@ -116,8 +117,23 @@ public class GoodsManagerImpl implements GoodsManager {
      * @return
      */
     @Override
-    public DuoGoodsInfo getGoodDetail(Long goodsId) {
+    public GoodsInfo getGoodDetail(String goodsId) {
+        DuoGoodsDetailRequest request = new DuoGoodsDetailRequest();
+        request.setType("pdd.ddk.goods.detail");
+        request.setClient_id(duoDuoKeConfig.getClientId());
+        request.setTimestamp(String.valueOf(System.currentTimeMillis()));
+        request.setGoods_id_list("[" + goodsId + "]");
+        Map<String, Object> map = obj2StrValMap(request);
+        String sign = genServiceSign(obj2StrVal(request), map, duoDuoKeConfig.getClientSecret());
+        request.setSign(sign);
+        DuoGoodsDetailResult detailResult = duoHttpClient.invokeService(request);
+        if (detailResult.isSuccess()) {
+
+
+        }
+
         return null;
+
     }
 
     @Override

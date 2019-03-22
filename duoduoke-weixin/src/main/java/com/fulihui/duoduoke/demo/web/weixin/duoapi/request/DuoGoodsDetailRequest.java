@@ -1,6 +1,5 @@
 package com.fulihui.duoduoke.demo.web.weixin.duoapi.request;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.result.DuoGoodsDetailResult;
 import com.fulihui.duoduoke.demo.web.weixin.weixin.http.HttpMethodEnum;
@@ -36,18 +35,10 @@ public class DuoGoodsDetailRequest extends DuoJsonRequest<DuoGoodsDetailResult> 
 
     @Override
     public DuoGoodsDetailResult parseResult(String respStr) {
-        DuoGoodsDetailResult result;
-        JSONObject jsonObject = JSONObject.parseObject(respStr);
-        JSONObject personObject = jsonObject.getJSONObject("goods_detail_response");
-        if (personObject == null) {
-            JSONObject errorObject = jsonObject.getJSONObject("error_response");
-            result = JSON.parseObject(errorObject.toString(), DuoGoodsDetailResult.class);
-            return result;
-        } else {
-            result = JSON.parseObject(personObject.toString(), DuoGoodsDetailResult.class);
-            checkResult(result);
-            return result;
-        }
+        DuoGoodsDetailResult result = JSONObject.parseObject(respStr,
+                DuoGoodsDetailResult.class);
+        checkResult(result);
+        return result;
     }
 
     @Override
@@ -60,11 +51,4 @@ public class DuoGoodsDetailRequest extends DuoJsonRequest<DuoGoodsDetailResult> 
         return null;
     }
 
-    public String getGoods_id_list() {
-        return goods_id_list;
-    }
-
-    public void setGoods_id_list(String goods_id_list) {
-        this.goods_id_list = goods_id_list;
-    }
 }
