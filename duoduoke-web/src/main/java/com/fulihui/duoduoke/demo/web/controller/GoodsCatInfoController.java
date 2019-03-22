@@ -260,19 +260,19 @@ public class GoodsCatInfoController {
 
     private GoodsSearchInfoVO getGoodsSearchInfoVO(GoodsSearchInfoResponse it) {
         GoodsSearchInfoVO vo = new GoodsSearchInfoVO();
-        vo.setGoodsId(String.valueOf(it.getGoods_id()));
-        vo.setGoodsName(it.getGoods_name());
-        vo.setGoodsDesc(it.getGoods_desc());
-        vo.setGoodsThumbnailUrl(it.getGoods_thumbnail_url());
-        vo.setGoodsImageUrl(it.getGoods_image_url());
-        vo.setGoodsGalleryUrls(it.getGoods_gallery_urls());
-        vo.setSoldQuantity(String.valueOf(it.getSold_quantity()));
-        vo.setMinNormalPrice(String.valueOf(it.getMin_normal_price()));
-        vo.setMallName(it.getMall_name());
-        vo.setCategoryId(String.valueOf(it.getCategory_id()));
-        vo.setCategoryName(it.getCategory_name());
-        vo.setHasCoupon(it.isHas_coupon());
-        vo.setCouponMinOrderAmount(String.valueOf(it.getCoupon_min_order_amount()));
+        vo.setGoodsId(String.valueOf(it.getGoodsId()));
+        vo.setGoodsName(it.getGoodsName());
+        vo.setGoodsDesc(it.getGoodsDesc());
+        vo.setGoodsThumbnailUrl(it.getGoodsThumbnailUrl());
+        vo.setGoodsImageUrl(it.getGoodsImageUrl());
+        vo.setGoodsGalleryUrls(it.getGoodsGalleryUrls());
+        vo.setSoldQuantity(String.valueOf(it.getSoldQuantity()));
+        vo.setMinNormalPrice(String.valueOf(it.getMinNormalPrice()));
+        vo.setMallName(it.getMallName());
+        vo.setCategoryId(String.valueOf(it.getCategoryId()));
+        vo.setCategoryName(it.getCategoryName());
+        vo.setHasCoupon(it.isHasCoupon());
+        vo.setCouponMinOrderAmount(String.valueOf(it.getCouponMinOrderAmount()));
 
         //查询返佣比例配置
         int commission = appConfigFactory.getCommission().intValue();
@@ -280,25 +280,25 @@ public class GoodsCatInfoController {
         int shareProportion = appConfigFactory.getShareProportion().intValue();
 
         //如果有优惠券面额
-        if (it.getCoupon_discount() != null && it.isHas_coupon()) {
-            build(it.getCoupon_discount(), it.getMin_group_price(), it.getPromotion_rate(), vo,
+        if (it.getCouponDiscount() != null && it.isHasCoupon()) {
+            build(it.getCouponDiscount(), it.getMinGroupPrice(), it.getPromotionRate(), vo,
                     commission, shareProportion);
         } else {
             //没有优惠
-            build(0, it.getMin_group_price(), it.getPromotion_rate(), vo, commission,
+            build(0, it.getMinGroupPrice(), it.getPromotionRate(), vo, commission,
                     shareProportion);
         }
-        vo.setCouponTotalQuantity(String.valueOf(it.getCoupon_total_quantity()));
-        vo.setCouponRemainQuantity(String.valueOf(it.getCoupon_remain_quantity()));
-        vo.setCouponStartTime(String.valueOf(it.getCoupon_start_time()));
-        vo.setCouponEndTime(String.valueOf(it.getCoupon_end_time()));
-        vo.setPromotionPate(String.valueOf(it.getPromotion_rate()));
-        vo.setGoodsEvalScore(String.valueOf(it.getGoods_eval_score()));
-        vo.setGoodsEvalCount(String.valueOf(it.getGoods_eval_count()));
-        vo.setCatId(String.valueOf(it.getCat_id()));
-        vo.setAvgDesc(String.valueOf(it.getAvg_desc()));
-        vo.setAvgLgst(String.valueOf(it.getAvg_lgst()));
-        vo.setAvgServ(String.valueOf(it.getAvg_serv()));
+        vo.setCouponTotalQuantity(String.valueOf(it.getCouponTotalQuantity()));
+        vo.setCouponRemainQuantity(String.valueOf(it.getCouponRemainQuantity()));
+        vo.setCouponStartTime(String.valueOf(it.getCouponStartTime()));
+        vo.setCouponEndTime(String.valueOf(it.getCouponEndTime()));
+        vo.setPromotionPate(String.valueOf(it.getPromotionRate()));
+        vo.setGoodsEvalScore(String.valueOf(it.getGoodsEvalScore()));
+        vo.setGoodsEvalCount(String.valueOf(it.getGoodsEvalCount()));
+        vo.setCatId(String.valueOf(it.getCatId()));
+        vo.setAvgDesc(String.valueOf(it.getAvgDesc()));
+        vo.setAvgLgst(String.valueOf(it.getAvgLgst()));
+        vo.setAvgServ(String.valueOf(it.getAvgServ()));
         return vo;
     }
 

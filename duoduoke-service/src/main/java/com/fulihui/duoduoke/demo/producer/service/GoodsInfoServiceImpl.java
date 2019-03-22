@@ -254,40 +254,40 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
         }
 
         if (search.getValues() != null && search.getValues().size() > 0) {
-            search.getValues().stream().filter((item) -> item.getGoods_id() != null)
+            search.getValues().stream().filter((item) -> item.getGoodsId() != null)
                     .forEach((detailInfo) -> {
                         GoodsInfoDTO info = new GoodsInfoDTO();
-                        info.setGoodsId(detailInfo.getGoods_id());
-                        info.setGoodsName(detailInfo.getGoods_name());
-                        info.setGoodsDesc(detailInfo.getGoods_desc());
-                        info.setGoodsThumbnailUrl(detailInfo.getGoods_thumbnail_url());
-                        info.setGoodsImageUrl(detailInfo.getGoods_image_url());
-                        info.setSoldQuantity(detailInfo.getSold_quantity());
-                        info.setMallName(detailInfo.getMall_name());
-                        info.setMinNormalPrice(detailInfo.getMin_normal_price());
-                        info.setMinGroupPrice(detailInfo.getMin_group_price());
-                        info.setAvgServ(detailInfo.getAvg_serv());
-                        info.setAvgLgst(detailInfo.getAvg_lgst());
-                        info.setAvgDesc(detailInfo.getAvg_desc());
-                        info.setGoodsEvalCount(detailInfo.getGoods_eval_count());
-                        info.setPromotionRate(detailInfo.getPromotion_rate());
-                        info.setGoodsGalleryUrls(detailInfo.getGoods_gallery_urls());
-                        info.setGoodsDesc(detailInfo.getGoods_desc());
-                        info.setLevelOne(detailInfo.getCat_id());
-                        info.setCouponDiscount(detailInfo.getCoupon_discount());
-                        info.setHasCoupon(String.valueOf(detailInfo.isHas_coupon()));
-                        if (detailInfo.isHas_coupon()) {
+                        info.setGoodsId(detailInfo.getGoodsId());
+                        info.setGoodsName(detailInfo.getGoodsName());
+                        info.setGoodsDesc(detailInfo.getGoodsDesc());
+                        info.setGoodsThumbnailUrl(detailInfo.getGoodsThumbnailUrl());
+                        info.setGoodsImageUrl(detailInfo.getGoodsImageUrl());
+                        info.setSoldQuantity(detailInfo.getSoldQuantity());
+                        info.setMallName(detailInfo.getMallName());
+                        info.setMinNormalPrice(detailInfo.getMinNormalPrice());
+                        info.setMinGroupPrice(detailInfo.getMinGroupPrice());
+                        info.setAvgServ(detailInfo.getAvgServ());
+                        info.setAvgLgst(detailInfo.getAvgLgst());
+                        info.setAvgDesc(detailInfo.getAvgDesc());
+                        info.setGoodsEvalCount(detailInfo.getGoodsEvalCount());
+                        info.setPromotionRate(detailInfo.getPromotionRate());
+                        info.setGoodsGalleryUrls(detailInfo.getGoodsGalleryUrls());
+                        info.setGoodsDesc(detailInfo.getGoodsDesc());
+                        info.setLevelOne(detailInfo.getCatId());
+                        info.setCouponDiscount(detailInfo.getCouponDiscount());
+                        info.setHasCoupon(String.valueOf(detailInfo.isHasCoupon()));
+                        if (detailInfo.isHasCoupon()) {
                             //优惠券
-                            String coupon_end_time = detailInfo.getCoupon_end_time();
-                            String coupon_start_time = detailInfo.getCoupon_start_time();
-                            Long endTime = Long.parseLong(coupon_end_time) * 1000;
-                            Long startTime = Long.parseLong(coupon_start_time) * 1000;
+                            String couponEndTime = detailInfo.getCouponEndTime();
+                            String couponStartTime = detailInfo.getCouponStartTime();
+                            long endTime = Long.parseLong(couponEndTime) * 1000;
+                            long startTime = Long.parseLong(couponStartTime) * 1000;
                             info.setCouponEndTime(new Date(endTime));
                             info.setCouponStartTime(new Date(startTime));
-                            info.setCouponRemainQuantity(detailInfo.getCoupon_remain_quantity());
-                            info.setCouponTotalQuantity(detailInfo.getCoupon_total_quantity());
-                            info.setCouponDiscount(detailInfo.getCoupon_discount());
-                            info.setCouponMinOrderAmount(detailInfo.getCoupon_min_order_amount());
+                            info.setCouponRemainQuantity(detailInfo.getCouponRemainQuantity());
+                            info.setCouponTotalQuantity(detailInfo.getCouponTotalQuantity());
+                            info.setCouponDiscount(detailInfo.getCouponDiscount());
+                            info.setCouponMinOrderAmount(detailInfo.getCouponMinOrderAmount());
                             info.setState(GoodsStateEnum.INIT.getCode());
                         } else {
                             info.setState(GoodsStateEnum.ON.getCode());
