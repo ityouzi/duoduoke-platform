@@ -341,6 +341,9 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
     }
 
     private GoodsInfoDTO convert(GoodsInfo i) {
+        if (i == null) {
+            return null;
+        }
         GoodsInfoDTO response = new GoodsInfoDTO();
         BeanUtils.copyProperties(i, response);
         response.setHasCoupon(i.getHasCoupon());

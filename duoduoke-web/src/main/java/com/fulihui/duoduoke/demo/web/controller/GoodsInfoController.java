@@ -150,7 +150,7 @@ public class GoodsInfoController {
 
         List<GoodsInfo> voList = goodsInfoManager.toVOList(list);
 
-        PageView build = PageViewBuilder.build(voList, result.getPage(), result.getRows(),
+        PageView<GoodsInfo> build = PageViewBuilder.build(voList, result.getPage(), result.getRows(),
                 result.getTotalRows());
 
         return JsonResultBuilder.succ(build);
@@ -231,9 +231,9 @@ public class GoodsInfoController {
             while ((rc = inputStream.read(buff, 0, 1024)) > 0) {
                 swapStream.write(buff, 0, rc);
             }
-            byte[] in_b = swapStream.toByteArray();
+            byte[] inB = swapStream.toByteArray();
 
-            writer.write(in_b);
+            writer.write(inB);
             writer.flush();
         } catch (Exception e) {
             LOGGER.error("101", "转换错误");
