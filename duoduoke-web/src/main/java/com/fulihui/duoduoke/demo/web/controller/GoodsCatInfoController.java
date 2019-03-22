@@ -48,7 +48,10 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -89,10 +92,59 @@ public class GoodsCatInfoController {
         return parentInfo();
     }
 
+
+    @ApiOperation("多多小程序搜索")
+    @PostMapping("search")
+    public JsonResult<PageView<GoodsSearchInfoVO>> search(@RequestBody GoodSearchParam param,
+                                                          HttpServletRequest servletRequest) {
+
+        GoodsSearchInfoRequest infoRequest = new GoodsSearchInfoRequest();
+        String keyword = param.getKeyword();
+        if (StringUtil.isNotEmpty(keyword)) {
+            infoRequest.setKeyword(keyword);
+        }
+        infoRequest.setRows(param.getRows());
+        infoRequest.setPage(param.getPage());
+        if (StringUtil.isEmpty(param.getSortType())) {
+            infoRequest.setSort_type("0");
+        } else {
+            infoRequest.setSort_type(param.getSortType());
+        }
+        if (StringUtil.isNotEmpty(param.getRangeFrom())) {
+            List<GoodsSearchInfoRangeRequest> rangeRequestList = new ArrayList<>();
+            GoodsSearchInfoRangeRequest rangeRequest = new GoodsSearchInfoRangeRequest();
+            Money overOrderMoney = new Money();
+            overOrderMoney.setAmount(new BigDecimal(param.getRangeFrom()));
+            rangeRequest.setRange_from((int) overOrderMoney.getCent());
+            rangeRequest.setRange_to(20000);
+            rangeRequest.setRange_id(1);
+            rangeRequestList.add(rangeRequest);
+            infoRequest.setRange_list(rangeRequestList);
+        }
+        infoRequest.setWith_coupon(Boolean.FALSE.toString());
+        TPageResult<GoodsSearchInfoResponse> result = goodsInfoService.search(infoRequest);
+        checkResult(result);
+        try {
+            boolean empty = !CollectionUtils.isEmpty(result.getValues());
+            String status = empty ? "Y" : "N";
+            GoodSearchRecordRequest recordRequest = convert(param, servletRequest, status);
+            goodsInfoService.record(recordRequest);
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        List<GoodsSearchInfoVO> collect = result.getValues().stream()
+                .map(this::getGoodsSearchInfoVO).collect(Collectors.toList());
+        PageView<GoodsSearchInfoVO> build = PageViewBuilder.build(collect, result.getPage(),
+                result.getRows(), result.getTotalRows());
+        return succ(build);
+
+    }
+
+
     /**
      * zpf 增加缓存 2018-8-27
      */
-     @PostMapping("goodsCatInfo")
+    @PostMapping("goodsCatInfo")
     @ApiOperation("多多小程序类目接口")
     public JsonResult<PageView> goodsCatInfo(@RequestBody GoodCatParam param) {
         LOGGER.info("进入controller查询数据 多多小程序类目接口");
@@ -139,7 +191,7 @@ public class GoodsCatInfoController {
     /**
      * zpf 增加缓存 2018-8-27
      */
-     @PostMapping("goodsCatTreeInfo")
+    @PostMapping("goodsCatTreeInfo")
     @ApiOperation("多多小程序查询分类树接口")
     public JsonResult goodsCatTreeInfo(Map map) {
         LOGGER.info("进入controller查询数据 多多小程序查询分类树接口");
@@ -194,52 +246,6 @@ public class GoodsCatInfoController {
         return myTree;
     }
 
-    @ApiOperation("多多小程序搜索")
-    @PostMapping("search")
-    public JsonResult<PageView<GoodsSearchInfoVO>> search(@RequestBody GoodSearchParam param,
-                                                          HttpServletRequest servletRequest) {
-
-        GoodsSearchInfoRequest infoRequest = new GoodsSearchInfoRequest();
-        String keyword = param.getKeyword();
-        if (StringUtil.isNotEmpty(keyword)) {
-            infoRequest.setKeyword(keyword);
-        }
-        infoRequest.setRows(param.getRows());
-        infoRequest.setPage(param.getPage());
-        if (StringUtil.isEmpty(param.getSortType())) {
-            infoRequest.setSort_type("0");
-        } else {
-            infoRequest.setSort_type(param.getSortType());
-        }
-        if (StringUtil.isNotEmpty(param.getRangeFrom())) {
-            List<GoodsSearchInfoRangeRequest> rangeRequestList = new ArrayList<>();
-            GoodsSearchInfoRangeRequest rangeRequest = new GoodsSearchInfoRangeRequest();
-            Money overOrderMoney = new Money();
-            overOrderMoney.setAmount(new BigDecimal(param.getRangeFrom()));
-            rangeRequest.setRange_from((int) overOrderMoney.getCent());
-            rangeRequest.setRange_to(20000);
-            rangeRequest.setRange_id(1);
-            rangeRequestList.add(rangeRequest);
-            infoRequest.setRange_list(rangeRequestList);
-        }
-        infoRequest.setWith_coupon(Boolean.FALSE.toString());
-        TPageResult<GoodsSearchInfoResponse> result = goodsInfoService.search(infoRequest);
-        checkResult(result);
-        try {
-            boolean empty = !CollectionUtils.isEmpty(result.getValues());
-            String status = empty ? "Y" : "N";
-            GoodSearchRecordRequest recordRequest = convert(param, servletRequest, status);
-            goodsInfoService.record(recordRequest);
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-        List<GoodsSearchInfoVO> collect = result.getValues().stream()
-                .map(this::getGoodsSearchInfoVO).collect(Collectors.toList());
-        PageView<GoodsSearchInfoVO> build = PageViewBuilder.build(collect, result.getPage(),
-                result.getRows(), result.getTotalRows());
-        return succ(build);
-
-    }
 
     private GoodSearchRecordRequest convert(@RequestBody GoodSearchParam param,
                                             HttpServletRequest servletRequest, String status) {
