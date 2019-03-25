@@ -15,7 +15,6 @@ import com.fulihui.duoduoke.demo.api.request.OrderInfoUpdateRequest;
 import com.fulihui.duoduoke.demo.api.request.OrderQueryInfoRequest;
 import com.fulihui.duoduoke.demo.producer.biz.processor.OrderStatusDispatcher;
 import com.fulihui.duoduoke.demo.producer.biz.processor.UserOrderStatusProcessor;
-import com.fulihui.duoduoke.demo.producer.config.H5ServiceConfig;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.OrderInfo;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.OrderInfoExample;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.UserExemptionGoods;
@@ -28,7 +27,6 @@ import com.fulihui.duoduoke.demo.producer.repository.UserExemptionGoodsRepositor
 import com.fulihui.duoduoke.demo.producer.util.Consts;
 import com.fulihui.duoduoke.demo.producer.zubs.Const;
 import com.google.common.collect.Lists;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.apache.dubbo.config.annotation.Service;
 import org.near.servicesupport.error.Errors;
@@ -52,7 +50,6 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static com.fulihui.duoduoke.demo.api.enums.ActivityTypeEnum.H5Exemption;
 import static com.fulihui.duoduoke.demo.api.enums.OrderPromotionSourceEnum.H5;
 import static java.lang.Integer.valueOf;
 import static org.near.servicesupport.util.ServiceAssert.notBlank;
@@ -98,10 +95,6 @@ public class OrderInfoServiceImpl implements OrderInfoService {
     RedPackageDBLConfigService redPackageDBLConfigService;
 
     ScheduledExecutorService executorService;
-
-
-    @Autowired
-    H5ServiceConfig h5ServiceConfig;
 
 
     @Autowired
@@ -587,105 +580,6 @@ public class OrderInfoServiceImpl implements OrderInfoService {
         return ResultBuilder.succ();
     }
 
-    /**
-     * h5 用户体系流程
-     *
-     * @param request
-     * @param info
-     * @return
-     */
-    private BaseResult getH5BaseResult(OrderInfoTakeAmountRequest request, OrderInfo info) {
-        String userId = request.getCustomParameters();
-        //根据外部订单号查询本地订单信息
-        List<OrderInfo> list = orderInfoRepository.queryByOrderSn(info.getOrderSn(), userId);
-        if (isEmpty(list)) {
-            info.setOrderCommissionSnapshot(0);
-            //如果不是h5  配置的 免单 pid
-            if (!StringUtils.equals(info.getPId(), h5ServiceConfig.getFreePid())) {
-                h5ChannelsTakeOrder(info);
-                return ResultBuilder.succ();
-            } else {
-                //活动
-                UserExemptionGoods record = new UserExemptionGoods();
-                record.setUserId(userId);
-                record.setGoodsId(Long.valueOf(info.getGoodsId()));
-                List<UserExemptionGoods> goods = userExemptionGoodsRepository
-                        .selectByExample(record);
-                if (CollectionUtils.isEmpty(goods)) {
-                    h5ChannelsTakeOrder(info);
-                    return ResultBuilder.succ();
-                } else {
-                    TSingleResult<ActivityConfigPrizeDTO> result = activityConfigService
-                            .getUsingActivity(H5Exemption);
-                    if (result == null || result.getValue() == null) {
-                        h5ChannelsTakeOrder(info);
-                        return ResultBuilder.succ();
-                    } else {
-                        ActivityConfigPrizeDTO value = result.getValue();
-                        //订单创建时间
-                        Date orderCreateTime = info.getOrderCreateTime();
-                        if (!(orderCreateTime.getTime() >= value.getStartTime().getTime()
-                                && orderCreateTime.getTime() <= value.getEndTime().getTime())) {
-                            h5ChannelsTakeOrder(info);
-                            return ResultBuilder.succ();
-                        } else {
-                            UserExemptionGoods exemptionGoods = goods.get(0);
-                            if (!info.getOrderAmount().equals(exemptionGoods.getPayAmount())) {
-                                h5ChannelsTakeOrder(info);
-                                return ResultBuilder.succ();
-                            }
-                        }
-                    }
-                }
-            }
-            orderInfoRepository.insert(info);
-            //转换对应订单状态
-            UserOrderStatusEnum userOrderStatus = queryByCode(info.getUserOrderStatus(),
-                    UserOrderStatusEnum.class);
-            UserOrderStatusProcessor processor = orderStatusDispatcher.get(userOrderStatus);
-            processor.execute(info);
-            //update
-        } else {
-            OrderInfo oldOrder = list.get(0);
-            LOGGER.debug("订单,远程接口状态:{},本地状态:{}", info.getOrderStatus(), oldOrder.getOrderStatus());
-            //如果订单是-1 并且状态描述是 未支付,已取消
-            if (StringUtil.equals(DuoDuoOrderStatusEnum.N_PAY.getCode(), info.getOrderStatus())
-                    && StringUtil.equals("未支付,已取消", info.getOrderStatusDesc())) {
-                update(info);
-            }
-            //如果远程接口拉取的订单数据状态不一样
-            if (!StringUtil.equals(oldOrder.getOrderStatus(), info.getOrderStatus())) {
-                DuoDuoOrderStatusEnum orderEnum = queryByCode(info.getOrderStatus(),
-                        DuoDuoOrderStatusEnum.class);
-                if (orderEnum != null) {
-                    //如果拉取多多客订单状态是已结算，不修改订单用户状态,只修改订单状态
-                    if (DuoDuoOrderStatusEnum.A_SETTLED == orderEnum) {
-                        OrderInfo newInfo = new OrderInfo();
-                        newInfo.setId(oldOrder.getId());
-                        newInfo.setOrderStatus(orderEnum.getCode());
-                        newInfo.setOrderSn(oldOrder.getOrderSn());
-                        newInfo.setOrderStatusDesc(orderEnum.getDesc());
-                        newInfo.setCustomParameters(oldOrder.getCustomParameters());
-                        orderInfoRepository.update(newInfo);
-                        return ResultBuilder.succ();
-                    }
-
-                    UserOrderStatusEnum userEnum = queryByCode(info.getUserOrderStatus(),
-                            UserOrderStatusEnum.class);
-                    LOGGER.debug("远程接口拉取的订单数据状态不一样执行update操作开始");
-                    OrderInfo newInfo = convertNewInfo(info, oldOrder, orderEnum, userEnum);
-                    orderInfoRepository.update(newInfo);
-                    UserOrderStatusProcessor processor = orderStatusDispatcher.get(userEnum);
-                    processor.execute(newInfo);
-                    LOGGER.debug("远程接口拉取的订单数据状态不一样执行update操作结束");
-                }
-            } else {
-                LOGGER.debug("远程接口拉取的订单数据状态和本地数据状态一样,不需要同步更新");
-            }
-
-        }
-        return ResultBuilder.succ();
-    }
 
     /**
      * h5 渠道管理订单

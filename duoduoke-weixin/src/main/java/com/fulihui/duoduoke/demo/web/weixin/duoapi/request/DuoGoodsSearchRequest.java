@@ -1,7 +1,6 @@
 package com.fulihui.duoduoke.demo.web.weixin.duoapi.request;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.result.DuoGoodsSearchResult;
 import com.fulihui.duoduoke.demo.web.weixin.weixin.http.HttpMethodEnum;
 import lombok.Getter;
@@ -21,19 +20,15 @@ public class DuoGoodsSearchRequest extends DuoJsonRequest<DuoGoodsSearchResult> 
      * 非必填
      * 与opt_id字段选填一个或全部填写
      */
-    @JsonProperty("keyword")
     private String keyword;
     /**
      * 非必填
      */
-    @JsonProperty("opt_id")
-
     private String opt_id;
     /**
      * 非必填
      * 默认值1，商品分页数
      */
-    @JsonProperty("page")
 
     private String page;
     /**
@@ -41,7 +36,6 @@ public class DuoGoodsSearchRequest extends DuoJsonRequest<DuoGoodsSearchResult> 
      * <p>
      * 默认100，每页商品数量
      */
-    @JsonProperty("page_size")
     private String page_size;
     /**
      * 必填
@@ -67,7 +61,6 @@ public class DuoGoodsSearchRequest extends DuoJsonRequest<DuoGoodsSearchResult> 
      * 19-店铺服务评分升序；
      * 20-店铺服务评分降序
      */
-    @JsonProperty("sort_type")
     private String sort_type;
 
     /**

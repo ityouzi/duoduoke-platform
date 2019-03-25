@@ -9,7 +9,9 @@ import lombok.Setter;
 
 /**
  * 类目查询
- * Created by lizhi on 2018/7/6 0006.
+ *
+ * @author lizhi
+ * @date 2018/7/6 0006
  */
 @Setter
 @Getter

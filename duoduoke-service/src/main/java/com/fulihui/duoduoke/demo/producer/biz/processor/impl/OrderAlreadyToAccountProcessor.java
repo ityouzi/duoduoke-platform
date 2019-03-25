@@ -1,6 +1,5 @@
 package com.fulihui.duoduoke.demo.producer.biz.processor.impl;
 
-import com.fulihui.duoduoke.demo.api.api.AppConfigService;
 import com.fulihui.duoduoke.demo.api.api.UserAccountService;
 import com.fulihui.duoduoke.demo.api.api.UserRewardRecordService;
 import com.fulihui.duoduoke.demo.api.dto.OrderFansDetailDTO;
@@ -9,7 +8,6 @@ import com.fulihui.duoduoke.demo.api.enums.*;
 import com.fulihui.duoduoke.demo.api.request.UserAccountOperatorRequest;
 import com.fulihui.duoduoke.demo.api.request.UserRewardRecordRequest;
 import com.fulihui.duoduoke.demo.producer.biz.processor.AbstractOrderStatusProcessor;
-import com.fulihui.duoduoke.demo.producer.config.H5ServiceConfig;
 import com.fulihui.duoduoke.demo.producer.dal.dao.UserAccountDetailMapper;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.OrderInfo;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.UserAccountDetail;
@@ -91,9 +89,6 @@ public class OrderAlreadyToAccountProcessor extends AbstractOrderStatusProcessor
     @Autowired
     UserFormRepository userFormRepository;
 
-
-    @Autowired
-    H5ServiceConfig h5ServiceConfig;
 
     /**
      * The Promotion channels repository.
@@ -239,11 +234,7 @@ public class OrderAlreadyToAccountProcessor extends AbstractOrderStatusProcessor
     public Long execute(OrderInfo orderInfo) {
         //拼多多订单返利金额 自购金额
         Long rebateAmount = get(orderInfo);
-        //订单返利 ,如果是免单返现逻辑 不返利
-        if (StringUtil.equals(orderInfo.getPId(), h5ServiceConfig.getFreePid())) {
-            LOGGER.info("订单返利,如果是免单返现逻辑,不返利,订单号:{}", orderInfo.getOrderSn());
-            return rebateAmount;
-        }
+
 
         if (StringUtil.equals(orderInfo.getOrderPromotionSource(),
                 OrderPromotionSourceEnum.H5.getCode())) {

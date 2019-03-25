@@ -3,7 +3,6 @@ package com.fulihui.duoduoke.demo.producer.biz.processor.impl;
 import com.fulihui.duoduoke.demo.api.dto.OrderFansDetailDTO;
 import com.fulihui.duoduoke.demo.api.enums.UserOrderStatusEnum;
 import com.fulihui.duoduoke.demo.producer.biz.processor.AbstractOrderStatusProcessor;
-import com.fulihui.duoduoke.demo.producer.config.H5ServiceConfig;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.OrderInfo;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.UserExemptionGoods;
 import com.fulihui.duoduoke.demo.producer.repository.UserExemptionGoodsRepository;
@@ -27,8 +26,7 @@ public class OrderToBeSettlementProcessor extends AbstractOrderStatusProcessor {
 
     @Autowired
     UserExemptionGoodsRepository userExemptionGoodsRepository;
-    @Autowired
-    H5ServiceConfig h5ServiceConfig;
+
 
     @Override
     protected void confuseTarget(OrderInfo target) {
@@ -52,28 +50,8 @@ public class OrderToBeSettlementProcessor extends AbstractOrderStatusProcessor {
 
     @Override
     public Long execute(OrderInfo orderInfo) {
-        Long aLong = get(orderInfo);
 
-        if (StringUtils.equals(orderInfo.getPId(), h5ServiceConfig.getFreePid())) {
-
-            String userId = orderInfo.getCustomParameters();
-            UserExemptionGoods record = new UserExemptionGoods();
-            record.setUserId(userId);
-            record.setGoodsId(Long.valueOf(orderInfo.getGoodsId()));
-            record.setOrderSn(orderInfo.getOrderSn());
-            List<UserExemptionGoods> list = userExemptionGoodsRepository.selectByExample(record);
-            if (!CollectionUtils.isEmpty(list)) {
-                UserExemptionGoods goods = list.get(0);
-                if (!StringUtils.equals(orderInfo.getOrderStatus(), goods.getBindOrderStatus())) {
-                    UserExemptionGoods item = new UserExemptionGoods();
-                    item.setId(goods.getId());
-                    //把订单状态修改
-                    item.setBindOrderStatus(orderInfo.getOrderStatus());
-                    userExemptionGoodsRepository.updateById(item);
-                }
-            }
-        }
-        return aLong;
+        return get(orderInfo);
     }
 
     @Override

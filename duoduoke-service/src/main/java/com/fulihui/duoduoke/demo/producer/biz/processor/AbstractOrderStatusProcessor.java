@@ -12,7 +12,6 @@ import com.fulihui.duoduoke.demo.api.enums.DuoDuoOrderStatusEnum;
 import com.fulihui.duoduoke.demo.api.enums.OrderPromotionSourceEnum;
 import com.fulihui.duoduoke.demo.producer.biz.processor.sign.DuoDuoOrderStatusProcessor;
 import com.fulihui.duoduoke.demo.producer.biz.processor.sign.DuoDuoOrderStatusProcessorBizRegister;
-import com.fulihui.duoduoke.demo.producer.config.H5ServiceConfig;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.OrderInfo;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.UserExemptionGoods;
 import com.fulihui.duoduoke.demo.producer.manager.OrderFansDetailManager;
@@ -53,8 +52,6 @@ public abstract class AbstractOrderStatusProcessor implements UserOrderStatusPro
     @Autowired
     ActivityConfigService activityConfigService;
 
-    @Autowired
-    H5ServiceConfig h5ServiceConfig;
 
     /**
      * Get long.
@@ -87,10 +84,7 @@ public abstract class AbstractOrderStatusProcessor implements UserOrderStatusPro
             return null;
         }
 
-        //如果拉取 订单的 pid 不是  免单pid
-        if (!StringUtils.equals(pId, h5ServiceConfig.getFreePid())) {
-            return null;
-        }
+
         //活动
         String userId = orderInfo.getCustomParameters();
         UserExemptionGoods record = new UserExemptionGoods();
