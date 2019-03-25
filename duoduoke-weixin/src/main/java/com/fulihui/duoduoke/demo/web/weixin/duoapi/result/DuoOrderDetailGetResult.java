@@ -5,6 +5,7 @@ import lombok.Data;
 /**
  * @author wahaha
  */
+@Data
 public class DuoOrderDetailGetResult extends DuoJsonResult {
 
     private static final long serialVersionUID = -5146002878359596895L;
@@ -16,13 +17,6 @@ public class DuoOrderDetailGetResult extends DuoJsonResult {
 
 
 
-    public OrderDetailResponseBean getOrder_detail_response() {
-        return order_detail_response;
-    }
-
-    public void setOrder_detail_response(OrderDetailResponseBean order_detail_response) {
-        this.order_detail_response = order_detail_response;
-    }
 
     @Data
     public static class OrderDetailResponseBean {
