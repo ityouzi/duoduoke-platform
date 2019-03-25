@@ -1,7 +1,7 @@
 package com.fulihui.duoduoke.demo.web.weixin.duoapi.request;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.parser.Feature;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.result.DuoCatResult;
 import com.fulihui.duoduoke.demo.web.weixin.weixin.http.HttpMethodEnum;
 import lombok.Getter;
@@ -38,9 +38,7 @@ public class DuoCatRequest extends DuoJsonRequest<DuoCatResult> {
 
     @Override
     public DuoCatResult parseResult(String respStr) {
-        JSONObject jsonObject = JSONObject.parseObject(respStr);
-        JSONObject personObject = jsonObject.getJSONObject("goods_cats_get_response");
-        DuoCatResult result = JSON.parseObject(personObject.toString(), DuoCatResult.class);
+        DuoCatResult result = JSONObject.parseObject(respStr, DuoCatResult.class, new Feature[0]);
         checkResult(result);
         return result;
     }

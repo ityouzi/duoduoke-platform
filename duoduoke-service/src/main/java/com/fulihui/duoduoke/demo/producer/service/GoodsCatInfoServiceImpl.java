@@ -12,12 +12,10 @@ import com.fulihui.duoduoke.demo.producer.dal.dao.GoodsCatInfoMapper;
 import com.fulihui.duoduoke.demo.producer.dal.dataobj.GoodsCatInfo;
 import com.fulihui.duoduoke.demo.producer.manager.GoodsManager;
 import com.fulihui.duoduoke.demo.producer.repository.GoodsCatInfoRepository;
-import com.fulihui.duoduoke.demo.producer.repository.GoodsInfoRepository;
 import com.fulihui.duoduoke.demo.producer.util.ClassFieldsUtil;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.DuoHttpClient;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.request.DuoCatRequest;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.request.DuoGoodsSearchRequest;
-import com.fulihui.duoduoke.demo.web.weixin.duoapi.result.DuoCatApiResult;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.result.DuoCatResult;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.result.DuoGoodsSearchResult;
 import com.google.common.collect.Lists;
@@ -143,7 +141,7 @@ public class GoodsCatInfoServiceImpl implements GoodsCatInfoService {
     public void doCatSyc() {
         List<GoodsCatInfo> catInfoList = goodsCatInfoRepository.selectByLevel(2);
 
-        List<DuoCatApiResult> goodsCatsList = Lists.newArrayList();
+        List<DuoCatResult.GoodsCatsGetResponseBean.GoodsCatsListBean> goodsCatsList = Lists.newArrayList();
         for (GoodsCatInfo info : catInfoList) {
             DuoCatRequest request = new DuoCatRequest();
             request.setType("pdd.goods.cats.get");
@@ -154,11 +152,10 @@ public class GoodsCatInfoServiceImpl implements GoodsCatInfoService {
             String sign = genServiceSign(ClassFieldsUtil.obj2StrVal(request), map, duoDuoKeConfig.getClientSecret());
             request.setSign(sign);
             DuoCatResult result = duoHttpClient.invokeService(request);
-            goodsCatsList.addAll(result.getGoodsCatsList());
+            goodsCatsList.addAll(result.getGoodsCatsGetResponse().getGoodsCatsList());
         }
 
-
-        for (DuoCatApiResult result : goodsCatsList) {
+        for (DuoCatResult.GoodsCatsGetResponseBean.GoodsCatsListBean result : goodsCatsList) {
 
 
             int page = 1;
@@ -230,7 +227,7 @@ public class GoodsCatInfoServiceImpl implements GoodsCatInfoService {
         goodsManager.saveGoods(item);
     }
 
-    private void convertReq(DuoCatApiResult result, DuoGoodsSearchRequest request) {
+    private void convertReq(DuoCatResult.GoodsCatsGetResponseBean.GoodsCatsListBean result, DuoGoodsSearchRequest request) {
         ArrayList<DuoGoodsSearchRequest.Range> rangeList = Lists.newArrayList();
 
         DuoGoodsSearchRequest.Range range = new DuoGoodsSearchRequest.Range();

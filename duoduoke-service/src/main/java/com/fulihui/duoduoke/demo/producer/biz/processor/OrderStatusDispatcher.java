@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 订单流程变更业务注册
@@ -24,7 +25,7 @@ public class OrderStatusDispatcher extends ApplicationObjectSupport {
      */
     @PostConstruct
     public void init() {
-        Map<String, UserOrderStatusProcessor> handles = getApplicationContext()
+        Map<String, UserOrderStatusProcessor> handles = Objects.requireNonNull(getApplicationContext())
                 .getBeansOfType(UserOrderStatusProcessor.class);
         for (UserOrderStatusProcessor handle : handles.values()) {
             map.put(handle.getType(), handle);
