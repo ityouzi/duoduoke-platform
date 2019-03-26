@@ -18,19 +18,12 @@ public class CglibBean {
      * Bean实体Object
      */
 
-    public Object object = null;
+    public Object object;
     /**
      * T属性map
      */
 
-    public BeanMap beanMap = null;
-
-    /**
-     * Instantiates a new Cglib bean.
-     */
-    public CglibBean() {
-        super();
-    }
+    public BeanMap beanMap;
 
     /**
      * Instantiates a new Cglib bean.
@@ -82,8 +75,8 @@ public class CglibBean {
         //根据一组属性名和属性值的类型，动态创建Bean对象
         BeanGenerator generator = new BeanGenerator();
         Set keySet = propertyMap.keySet();
-        for (Iterator i = keySet.iterator(); i.hasNext(); ) {
-            String key = (String) i.next();
+        for (Object o : keySet) {
+            String key = (String) o;
             generator.addProperty(key, propertyMap.get(key));
         }
         //创建Bean

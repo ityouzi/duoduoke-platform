@@ -1,10 +1,7 @@
 package com.fulihui.duoduoke.demo.producer.lock;
 
-import com.alibaba.fastjson.JSON;
 import com.google.common.base.Charsets;
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
-import lombok.Data;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.api.ACLProvider;
@@ -101,66 +98,3 @@ public class ZookeeperDistributedLockAutoConfiguration {
     }
 }
 
-@Data
-class A {
-
-    //级数
-
-    private Integer level;
-    //月度应纳税所得额
-    private String monthly;
-    //税率（％）
-
-    private Integer rate;
-    //速算扣除数
-
-    private Integer deduction;
-
-    public static void main(String[] args) {
-
-        A a1 = new A();
-        a1.setMonthly("0-3000");
-        a1.setLevel(1);
-        a1.setDeduction(0);
-        a1.setRate(3);
-
-        A a2 = new A();
-        a2.setMonthly("3000-12000");
-        a2.setLevel(2);
-        a2.setDeduction(10);
-        a2.setRate(210);
-
-        A a3 = new A();
-        a3.setMonthly("12000-25000");
-        a3.setLevel(3);
-        a3.setDeduction(20);
-        a3.setRate(1410);
-
-        A a4 = new A();
-        a4.setMonthly("25000-35000");
-        a4.setLevel(4);
-        a4.setDeduction(25);
-        a4.setRate(2660);
-
-        A a5 = new A();
-        a5.setMonthly("35000-55000");
-        a5.setLevel(5);
-        a5.setDeduction(30);
-        a5.setRate(4410);
-
-        A a6 = new A();
-        a6.setMonthly("55000-80000");
-        a6.setLevel(6);
-        a6.setDeduction(35);
-        a6.setRate(7160);
-
-        A a7 = new A();
-        a7.setMonthly("80000-80000");
-        a7.setLevel(7);
-        a7.setDeduction(45);
-        a7.setRate(15160);
-        List list = Lists.newArrayList(a1, a2, a3, a4, a5, a6, a7);
-        Object o = JSON.toJSON(list);
-        System.out.println(o);
-    }
-}

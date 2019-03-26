@@ -15,7 +15,7 @@ public enum WithdrawStatusEnum implements BaseEnum {
                                                      */
                                                     waitAudit("101", "待审核"),
                                                     /**
-                                                     * //审核通过 -- 待打款
+                                                     * //审核通过 -- 待GIT打款
                                                      */
                                                     auditPass("102", "待打款"),
                                                     /**
