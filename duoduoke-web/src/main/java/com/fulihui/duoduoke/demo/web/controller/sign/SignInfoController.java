@@ -343,7 +343,7 @@ public class SignInfoController {
                     vo.setShareVO(shareVO);
                 }
                 TSingleResult<ActivityConfigPrizeDTO> singleResult = activityConfigService
-                        .getUsingActivity(ActivityTypeEnum.Flop);
+                        .getUsingActivity(ActivityTypeEnum.FLOP);
                 ServiceResultUtil.checkResult(singleResult);
                 ActivityConfigPrizeDTO prizeDTO = singleResult.getValue();
                 if (prizeDTO != null) {
@@ -534,7 +534,7 @@ public class SignInfoController {
 
         //翻牌活动
         TSingleResult<ActivityConfigPrizeDTO> result = activityConfigService
-                .getUsingActivity(ActivityTypeEnum.Flop);
+                .getUsingActivity(ActivityTypeEnum.FLOP);
         ServiceResultUtil.checkResult(result);
         return result.getValue() != null;
     }

@@ -25,7 +25,6 @@ import com.fulihui.duoduoke.demo.producer.repository.SignUserConfigRepository;
 import com.fulihui.duoduoke.demo.producer.repository.SignUserRecordRepository;
 import com.fulihui.duoduoke.demo.producer.util.ActivitySignPrizeModel;
 import com.fulihui.duoduoke.demo.producer.dal.convert.SignUserRecordConvert;
-import com.fulihui.duoduoke.demo.producer.dal.dataobj.*;
 import com.fulihui.duoduoke.demo.producer.util.WeightRandom;
 import com.google.common.collect.Lists;
 import javafx.util.Pair;
@@ -57,7 +56,7 @@ import static org.near.toolkit.common.DateUtils.*;
 import static org.springframework.util.CollectionUtils.isEmpty;
 
 /**
- * The type Sign user record service.
+ * The type SIGN user record service.
  *
  * @author lizhi
  * @date 2018 -10-11
@@ -67,22 +66,22 @@ public class SignUserRecordServiceImpl implements SignUserRecordService {
     private final static Logger LOGGER = LoggerFactory.getLogger(SignUserRecordServiceImpl.class);
 
     /**
-     * The Sign in config repository.
+     * The SIGN in config repository.
      */
     @Autowired
     SignInConfigRepository signInConfigRepository;
     /**
-     * The Sign user record repository.
+     * The SIGN user record repository.
      */
     @Autowired
     SignUserRecordRepository signUserRecordRepository;
     /**
-     * The Sign user count count manager.
+     * The SIGN user count count manager.
      */
     @Autowired
     SignUserCountCountManager signUserCountCountManager;
     /**
-     * The Sign user config repository.
+     * The SIGN user config repository.
      */
     @Autowired
     SignUserConfigRepository signUserConfigRepository;
@@ -94,7 +93,7 @@ public class SignUserRecordServiceImpl implements SignUserRecordService {
     ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     /**
-     * The Sign user config service.
+     * The SIGN user config service.
      */
     @Autowired
     SignUserConfigService signUserConfigService;
@@ -336,7 +335,7 @@ public class SignUserRecordServiceImpl implements SignUserRecordService {
         //查询奖品做关联
         String string = null;
         TSingleResult<ActivityConfigPrizeDTO> activity = activityConfigService
-                .getUsingActivity(ActivityTypeEnum.Sign);
+                .getUsingActivity(ActivityTypeEnum.SIGN);
         checkResult(activity);
         if (activity.getValue() != null && !isEmpty(activity.getValue().getActivityPrize())) {
             List<ActivitySignPrizeDTO> activityPrize = activity.getValue().getActivityPrize();
@@ -363,7 +362,7 @@ public class SignUserRecordServiceImpl implements SignUserRecordService {
         ServiceAssert.notNull(request.getId(), Errors.Commons.REQUEST_PARAMETER_ERROR);
 
         TSingleResult<ActivityConfigPrizeDTO> result = activityConfigService
-                .getUsingActivity(ActivityTypeEnum.Flop);
+                .getUsingActivity(ActivityTypeEnum.FLOP);
         checkResult(result);
         if (result.getValue() == null
                 || CollectionUtils.isEmpty(result.getValue().getActivityPrize())) {

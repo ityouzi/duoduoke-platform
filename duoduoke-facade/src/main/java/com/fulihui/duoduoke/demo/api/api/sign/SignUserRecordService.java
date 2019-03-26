@@ -9,7 +9,7 @@ import org.near.servicesupport.result.TPageResult;
 import org.near.servicesupport.result.TSingleResult;
 
 /**
- * The interface Sign user record service.
+ * The interface SIGN user record service.
  *
  * @author lizhi
  * @date 2018 -10-11

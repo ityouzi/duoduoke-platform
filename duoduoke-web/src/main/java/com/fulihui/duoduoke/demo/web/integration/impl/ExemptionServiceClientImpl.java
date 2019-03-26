@@ -98,7 +98,7 @@ public class ExemptionServiceClientImpl implements ExemptionServiceClient {
     public ActivityConfigDTO queryActivity(Integer id) {
         ActivityConfigRequest request = new ActivityConfigRequest();
         request.setId(id);
-        request.setType(Integer.parseInt(ActivityTypeEnum.Exemption.getCode()));
+        request.setType(Integer.parseInt(ActivityTypeEnum.EXEMPTION.getCode()));
         request.setState(ActivityStateEnum.ON.getCode());
         request.setStartTime(new Date());
         TPageResult<ActivityConfigDTO> result = activityConfigService.list(request);
@@ -132,7 +132,7 @@ public class ExemptionServiceClientImpl implements ExemptionServiceClient {
         activityVO.setShareTitle(shareModel.getConfigVal());
 
         ActivityConfigDTO activityModel = activityConfigService
-            .getByEnumType(ActivityTypeEnum.Exemption).getValue();
+            .getByEnumType(ActivityTypeEnum.EXEMPTION).getValue();
 
         if (activityModel != null) {
             activityVO.setActivityState(activityModel.getState());
@@ -183,7 +183,7 @@ public class ExemptionServiceClientImpl implements ExemptionServiceClient {
             activityIds.add(request.getActivityId());
         } else {
             //往期活动Id
-            activityIds = activityConfigService.getStopActivityIds(ActivityTypeEnum.Exemption)
+            activityIds = activityConfigService.getStopActivityIds(ActivityTypeEnum.EXEMPTION)
                 .getValue();
         }
 

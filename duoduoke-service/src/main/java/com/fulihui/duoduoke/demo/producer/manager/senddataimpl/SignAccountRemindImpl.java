@@ -46,7 +46,7 @@ public class SignAccountRemindImpl implements BaseSendDataDefinition {
             Date formatDate = DateUtils.parseNewFormat(s + " 00:00:00");
             SignAwardExample example = new SignAwardExample();
             SignAwardExample.Criteria criteria = example.createCriteria();
-            criteria.andActivityTypeEqualTo(ActivityTypeEnum.Sign.getCode());
+            criteria.andActivityTypeEqualTo(ActivityTypeEnum.SIGN.getCode());
             criteria.andPrizeTypeEqualTo(ActivitySignPrizeTypeEnum.BONUS.getCode());
             criteria.andGmtCreateGreaterThanOrEqualTo(formatDate);
             List<SignAwardDTO> list = signAwardRepository.selectByExample(example);

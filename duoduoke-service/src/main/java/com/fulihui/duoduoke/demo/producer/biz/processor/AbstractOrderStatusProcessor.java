@@ -95,7 +95,7 @@ public abstract class AbstractOrderStatusProcessor implements UserOrderStatusPro
             return null;
         }
         TSingleResult<ActivityConfigPrizeDTO> result = activityConfigService
-                .getUsingActivity(ActivityTypeEnum.Exemption);
+                .getUsingActivity(ActivityTypeEnum.EXEMPTION);
         if (result == null || result.getValue() == null) {
             return null;
         }

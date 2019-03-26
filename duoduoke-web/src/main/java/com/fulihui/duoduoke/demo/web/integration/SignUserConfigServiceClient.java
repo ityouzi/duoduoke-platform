@@ -5,7 +5,7 @@ import com.fulihui.duoduoke.demo.api.dto.sign.SignUserConfigDTO;
 import org.near.servicesupport.result.TSingleResult;
 
 /**
- * The interface Sign user config service.
+ * The interface SIGN user config service.
  *
  * @author lizhi
  * @date 2018 -10-11

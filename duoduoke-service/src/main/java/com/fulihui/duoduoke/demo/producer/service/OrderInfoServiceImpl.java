@@ -457,7 +457,7 @@ public class OrderInfoServiceImpl implements OrderInfoService {
                             bl = isBl(info);
                         } else {
                             TSingleResult<ActivityConfigPrizeDTO> result = activityConfigService
-                                    .getUsingActivity(ActivityTypeEnum.Exemption);
+                                    .getUsingActivity(ActivityTypeEnum.EXEMPTION);
                             if (result == null || result.getValue() == null) {
                                 bl = isBl(info);
                             } else {

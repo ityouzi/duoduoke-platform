@@ -11,7 +11,7 @@ import java.util.List;
 
 
 /**
- * The interface Sign user record service.
+ * The interface SIGN user record service.
  *
  * @author lizhi
  * @date 2018 -10-11

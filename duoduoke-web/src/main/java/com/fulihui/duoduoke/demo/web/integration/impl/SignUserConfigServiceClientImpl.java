@@ -9,7 +9,7 @@ import org.near.servicesupport.util.ServiceResultUtil;
 import org.springframework.stereotype.Component;
 
 /**
- * The interface Sign user config service.
+ * The interface SIGN user config service.
  *
  * @author lizhi
  * @date 2018 -10-11

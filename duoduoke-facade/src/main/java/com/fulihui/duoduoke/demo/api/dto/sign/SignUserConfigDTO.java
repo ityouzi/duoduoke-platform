@@ -6,7 +6,7 @@ import org.near.toolkit.model.ToString;
 import java.util.Date;
 
 /**
- * The type Sign user config dto.
+ * The type SIGN user config dto.
  *
  * @author Administrator
  */
