@@ -144,10 +144,10 @@ public class OrderSysDataServiceImpl implements OrderSysDataService {
                                 .getOrderList();
                         Optional<OrderColorIncrementResult.OrderListGetResponseBean.OrderListBean> max = orderList
                                 .stream().max(Comparator.comparing(
-                                        OrderColorIncrementResult.OrderListGetResponseBean.OrderListBean::getOrder_modify_at));
+                                        OrderColorIncrementResult.OrderListGetResponseBean.OrderListBean::getOrderModifyAt));
                         if (max.isPresent()) {
                             orderModifyAt = OrderInfoTakeAmountConvert
-                                    .unixToDate(valueOf(max.get().getOrder_modify_at()), newFormat);
+                                    .unixToDate(valueOf(max.get().getOrderModifyAt()), newFormat);
                         }
                     }
                 }
@@ -165,11 +165,11 @@ public class OrderSysDataServiceImpl implements OrderSysDataService {
                 BeanUtils.copyProperties(bean, listBean);
 
                 try {
-                    String customParameters = listBean.getCustom_parameters();
+                    String customParameters = listBean.getCustomParameters();
                     if ((StringUtil.isNotBlank(customParameters) && "-1".equals(customParameters))
                             || (customParameters.equals(StringUtil.EMPTY_STRING))
                             || (StringUtil.isBlank(customParameters))) {
-                        String pid = listBean.getP_id();
+                        String pid = listBean.getPId();
                         TSingleResult<PromotionChannelsDTO> singleResult = promotionChannelsService
                                 .queryByPid(pid);
                         boolean b = singleResult != null && singleResult.getValue() != null;
@@ -195,7 +195,7 @@ public class OrderSysDataServiceImpl implements OrderSysDataService {
                     } else {
                         AESCoder aesCoder = AESCoder.getInstance();
                         //解密
-                        String parameters = aesCoder.decryptString(listBean.getCustom_parameters(),
+                        String parameters = aesCoder.decryptString(listBean.getCustomParameters(),
                                 aesKeyConfig.getAesKey());
                         if (StringUtil.isBlank(parameters)) {
                             continue;
@@ -207,7 +207,7 @@ public class OrderSysDataServiceImpl implements OrderSysDataService {
                             continue;
                         }
                         String userId = object.getUserId();
-                        listBean.setCustom_parameters(userId);
+                        listBean.setCustomParameters(userId);
                         //订单数据转换request
                         OrderInfoTakeAmountRequest request = OrderInfoTakeAmountConvert
                                 .convertOrderInfoRequest(listBean);

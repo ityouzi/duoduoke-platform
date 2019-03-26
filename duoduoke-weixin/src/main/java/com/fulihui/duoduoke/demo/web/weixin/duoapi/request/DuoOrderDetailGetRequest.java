@@ -28,7 +28,7 @@ public class DuoOrderDetailGetRequest   extends DuoJsonRequest<DuoOrderDetailGet
 
     @Override
     protected void childParam() {
-        addParam("order_sn", order_sn);
+        addParam("orderSn", order_sn);
 
 
     }

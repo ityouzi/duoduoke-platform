@@ -1,27 +1,26 @@
 package com.fulihui.duoduoke.demo.producer.job.convert;
 
-import static java.lang.String.valueOf;
-import static org.near.toolkit.common.DateUtils.newFormat;
-import static org.near.toolkit.common.DateUtils.parseNewFormat;
-import static org.near.toolkit.common.EnumUtil.queryByCode;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 import com.fulihui.duoduoke.demo.api.enums.DuoDuoOrderStatusEnum;
 import com.fulihui.duoduoke.demo.api.enums.UserOrderStatusEnum;
 import com.fulihui.duoduoke.demo.api.request.OrderInfoTakeAmountRequest;
 import com.fulihui.duoduoke.demo.web.weixin.duoapi.result.OrderSnIncrementResult;
 import org.apache.http.util.TextUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import static java.lang.String.valueOf;
+import static org.near.toolkit.common.DateUtils.newFormat;
+import static org.near.toolkit.common.DateUtils.parseNewFormat;
+import static org.near.toolkit.common.EnumUtil.queryByCode;
 
 
 /**
  * @author wahaha
  */
-public class  OrderInfoTakeAmountConvert {
+public class OrderInfoTakeAmountConvert {
     /**
      * uinx  时间戳转换成时间
      *
@@ -30,7 +29,7 @@ public class  OrderInfoTakeAmountConvert {
      * @return
      * @throws ParseException
      */
-    public static  Date unixToDate(String timestampString, String formats) throws ParseException {
+    public static Date unixToDate(String timestampString, String formats) throws ParseException {
         if (TextUtils.isEmpty(formats)) {
             formats = "yyyy-MM-dd HH:mm:ss";
         }
@@ -43,52 +42,54 @@ public class  OrderInfoTakeAmountConvert {
 
     public static OrderInfoTakeAmountRequest convertOrderInfoRequest(OrderSnIncrementResult.OrderListGetResponseBean.OrderListBean bean) throws ParseException {
         OrderInfoTakeAmountRequest info = new OrderInfoTakeAmountRequest();
-        info.setOrderSn(bean.getOrder_sn());
-        info.setOrderAmount(bean.getOrder_amount());
-        if (bean.getOrder_create_time() != null) {
-            Date orderCreateTime = unixToDate(valueOf(bean.getOrder_create_time()), newFormat);
+        info.setOrderSn(bean.getOrderSn());
+        info.setOrderAmount(Integer.valueOf(bean.getOrderAmount()));
+        if (bean.getOrderCreateTime() != null) {
+            Date orderCreateTime = unixToDate(bean.getOrderCreateTime(), newFormat);
             info.setOrderCreateTime(orderCreateTime);
         }
 
-        if (bean.getOrder_receive_time() != null) {
-            Date orderReceiveTime = unixToDate(valueOf(bean.getOrder_receive_time()), newFormat);
+        if (bean.getOrderReceiveTime() != null) {
+            Date orderReceiveTime = unixToDate(bean.getOrderReceiveTime(), newFormat);
             info.setOrderReceiveTime(orderReceiveTime);
         }
 
-        if (bean.getOrder_verify_time() != null) {
-            Date orderVerifyTime = unixToDate(valueOf(bean.getOrder_verify_time()), newFormat);
+        if (bean.getOrderVerifyTime() != null) {
+            Date orderVerifyTime = unixToDate(bean.getOrderVerifyTime(), newFormat);
             info.setOrderVerifyTime(orderVerifyTime);
         }
-        if (bean.getOrder_modify_at() != null) {
-            Date orderModifyAt = unixToDate(valueOf(bean.getOrder_modify_at()), newFormat);
+        if (bean.getOrderModifyAt() != null) {
+            Date orderModifyAt = unixToDate(bean.getOrderModifyAt(), newFormat);
             info.setOrderModifyAt(orderModifyAt);
         }
-        if (bean.getOrder_group_success_time() != null) {
-            Date orderGroupSuccessTime = unixToDate(valueOf(bean.getOrder_group_success_time()),
+        if (bean.getOrderGroupSuccessTime() != null) {
+            Date orderGroupSuccessTime = unixToDate(bean.getOrderGroupSuccessTime(),
                     newFormat);
             info.setOrderGroupSuccessTime(orderGroupSuccessTime);
         }
-        if (bean.getOrder_pay_time() != null) {
-            Date orderPayTime = unixToDate(valueOf(bean.getOrder_pay_time()), newFormat);
+        if (bean.getOrderPayTime() != null) {
+            Date orderPayTime = unixToDate(bean.getOrderPayTime(), newFormat);
             info.setOrderPayTime(orderPayTime);
         }
-        info.setAuthDuoId(valueOf(bean.getAuth_duo_id()));
-        info.setBatchNo(bean.getBatch_no());
-        info.setCustomParameters(bean.getCustom_parameters());
-        info.setGoodsId(bean.getGoods_id());
-        info.setGoodsName(bean.getGoods_name());
+        info.setAuthDuoId(bean.getAuthDuoId());
+        info.setBatchNo(bean.getBatchNo());
+        info.setCustomParameters(bean.getCustomParameters());
+        info.setGoodsId(bean.getGoodsId());
+        info.setGoodsName(bean.getGoodsName());
         info.setStatus(bean.getStatus());
-        info.setGoodsPrice(bean.getGoods_price());
-        info.setGoodsQuantity(bean.getGoods_quantity());
-        info.setGoodsThumbnailUrl(bean.getGoods_thumbnail_url());
+
+
+        info.setGoodsPrice(Integer.valueOf(bean.getGoodsPrice()));
+        info.setGoodsQuantity(Integer.valueOf(bean.getGoodsQuantity()));
+        info.setGoodsThumbnailUrl(bean.getGoodsThumbnailUrl());
         info.setType(valueOf(bean.getType()));
-        info.setPId(bean.getP_id());
-        info.setGroupId(valueOf(bean.getGroup_id()));
-        String orderStatus = valueOf(bean.getOrder_status());
+        info.setPId(bean.getPId());
+        info.setGroupId(valueOf(bean.getGroupId()));
+        String orderStatus = valueOf(bean.getOrderStatus());
         info.setOrderStatus(orderStatus);
-        info.setOrderStatusDesc(bean.getOrder_status_desc());
-        info.setPromotionAmount(bean.getPromotion_amount());
-        info.setPromotionRate(bean.getPromotion_rate());
+        info.setOrderStatusDesc(bean.getOrderStatusDesc());
+        info.setPromotionAmount(Integer.valueOf(bean.getPromotionAmount()));
+        info.setPromotionRate(Integer.valueOf(bean.getPromotionRate()));
         DuoDuoOrderStatusEnum staEnum = queryByCode(orderStatus, DuoDuoOrderStatusEnum.class);
         UserOrderStatusEnum uStatus = queryByCode(staEnum.getUserOrderStatus(),
                 UserOrderStatusEnum.class);

@@ -14,7 +14,7 @@ public class OrderInfo extends PromotionChannelsOrder {
      */
     private Integer id;
     /**
-     * order_info.order_sn
+     * order_info.orderSn
      * 推广订单编号
      *
      * @mbg.generated 2019-01-17 11:21:37

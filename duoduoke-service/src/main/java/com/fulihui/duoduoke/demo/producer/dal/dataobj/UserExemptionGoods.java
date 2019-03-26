@@ -60,7 +60,7 @@ public class UserExemptionGoods implements Serializable {
     private String state;
     private List<String> states;
     /**
-     * user_exemption_goods.order_sn
+     * user_exemption_goods.orderSn
      * 推广订单编号
      *
      * @mbg.generated 2018-11-19 15:18:26

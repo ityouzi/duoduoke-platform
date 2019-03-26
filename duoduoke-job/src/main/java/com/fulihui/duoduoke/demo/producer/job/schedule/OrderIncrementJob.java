@@ -150,9 +150,9 @@ public class OrderIncrementJob implements SimpleJob {
 
     private int getTotalPage(int pageSize, int totalPage, OrderSnIncrementResult result,
                              boolean isMax) {
-        OrderSnIncrementResult.OrderListGetResponseBean getResponse = result.getOrder_list_get_response();
+        OrderSnIncrementResult.OrderListGetResponseBean getResponse = result.getOrderListGetResponse();
         if (getResponse != null) {
-            Integer totalCount = getResponse.getTotal_count();
+            Integer totalCount = getResponse.getTotalCount();
             totalPage = totalCount % pageSize == 0 ? totalCount / pageSize
                     : totalCount / pageSize + 1;
             totalPage = totalPage > 0 ? totalPage : 1;
@@ -163,11 +163,11 @@ public class OrderIncrementJob implements SimpleJob {
                     JOB_MONITOR_LOGGER.debug("订单mock,查询一个月数据,不查找最大时间");
                 } else {
                     if (isMax) {
-                        Optional<OrderSnIncrementResult.OrderListGetResponseBean.OrderListBean> max = getResponse.getOrder_list().stream()
-                                .max(Comparator.comparing(OrderSnIncrementResult.OrderListGetResponseBean.OrderListBean::getOrder_modify_at));
+                        Optional<OrderSnIncrementResult.OrderListGetResponseBean.OrderListBean> max = getResponse.getOrderList().stream()
+                                .max(Comparator.comparing(OrderSnIncrementResult.OrderListGetResponseBean.OrderListBean::getOrderModifyAt));
                         if (max.isPresent()) {
                             orderModifyAt = OrderInfoTakeAmountConvert
-                                    .unixToDate(valueOf(max.get().getOrder_modify_at()), newFormat);
+                                    .unixToDate(valueOf(max.get().getOrderModifyAt()), newFormat);
                         }
                     }
                 }
@@ -175,21 +175,21 @@ public class OrderIncrementJob implements SimpleJob {
                 JOB_MONITOR_LOGGER.error(e.getMessage(), e);
                 orderModifyAt = addDays(new Date(), -30);
             }
-            List<OrderSnIncrementResult.OrderListGetResponseBean.OrderListBean> orderList = getResponse.getOrder_list();
+            List<OrderSnIncrementResult.OrderListGetResponseBean.OrderListBean> orderList = getResponse.getOrderList();
             for (OrderSnIncrementResult.OrderListGetResponseBean.OrderListBean bean : orderList) {
                 if (bean == null) {
                     continue;
                 }
 
-                if (StringUtil.isNotBlank(bean.getCustom_parameters())
-                        && "-1".equals(bean.getCustom_parameters())) {
+                if (StringUtil.isNotBlank(bean.getCustomParameters())
+                        && "-1".equals(bean.getCustomParameters())) {
                     LOGGER.info("抓取订单的接口,如果接口返回自定义参数没有值,忽略该条信息,bean:{}", bean);
                     continue;
                 }
                 try {
 
-                    if (bean.getCustom_parameters().equals(StringUtil.EMPTY_STRING)) {
-                        String pid = bean.getP_id();
+                    if (bean.getCustomParameters().equals(StringUtil.EMPTY_STRING)) {
+                        String pid = bean.getPId();
                         TSingleResult<PromotionChannelsDTO> singleResult = promotionChannelsService
                                 .queryByPid(pid);
                         boolean b = singleResult != null && singleResult.getValue() != null;
@@ -206,7 +206,7 @@ public class OrderIncrementJob implements SimpleJob {
                     } else {
                         AESCoder aesCoder = AESCoder.getInstance();
                         //解密
-                        String parameters = aesCoder.decryptString(bean.getCustom_parameters(),
+                        String parameters = aesCoder.decryptString(bean.getCustomParameters(),
                                 aesKeyConfig.getAesKey());
                         if (StringUtil.isBlank(parameters)) {
                             continue;
@@ -218,7 +218,7 @@ public class OrderIncrementJob implements SimpleJob {
                             continue;
                         }
                         String userId = object.getUserId();
-                        bean.setCustom_parameters(userId);
+                        bean.setCustomParameters(userId);
                         //订单数据转换request
                         OrderInfoTakeAmountRequest request = OrderInfoTakeAmountConvert
                                 .convertOrderInfoRequest(bean);

@@ -20,7 +20,7 @@ public class OrderInfoDTO extends ToString {
     private Integer           id;
 
     /**
-     * order_info.order_sn
+     * order_info.orderSn
      * 推广订单编号
      */
     private String            orderSn;

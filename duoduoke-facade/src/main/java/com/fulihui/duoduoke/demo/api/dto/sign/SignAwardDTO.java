@@ -93,7 +93,7 @@ public class SignAwardDTO extends ToString {
     private Integer usefulDay;
 
     /**
-     * sign_award.order_sn
+     * sign_award.orderSn
      * 订单号
      *
      * @mbg.generated 2018-10-18 17:58:20

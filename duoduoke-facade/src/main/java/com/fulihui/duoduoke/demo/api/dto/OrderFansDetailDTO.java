@@ -22,7 +22,7 @@ public class OrderFansDetailDTO extends ToString {
   private Integer id;
 
   /**
-   * order_fans_detail.order_sn
+   * order_fans_detail.orderSn
    *
    * @mbg.generated 2018-08-01 14:38:16
    */

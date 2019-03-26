@@ -17,7 +17,7 @@ public class OrderFansDetail implements Serializable {
      */
     private Integer id;
     /**
-     * order_fans_detail.order_sn
+     * order_fans_detail.orderSn
      * 订单号
      *
      * @mbg.generated 2018-08-22 13:53:38

@@ -22,7 +22,7 @@ public class PromotionChannelsOrder implements Serializable {
      */
     private String channelsCode;
     /**
-     * promotion_channels_order.order_sn
+     * promotion_channels_order.orderSn
      * 推广订单编号
      *
      * @mbg.generated 2019-01-17 12:52:46

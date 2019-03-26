@@ -26,7 +26,7 @@ public class UserRewardRecordRequest extends ToString {
     /**
     *
     *
-    * user_reward_record.order_sn
+    * user_reward_record.orderSn
      * 订单编号
      *
      * @mbg.generated 2018-09-03 16:10:19

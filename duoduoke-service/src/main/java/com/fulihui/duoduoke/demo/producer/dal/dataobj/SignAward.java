@@ -78,7 +78,7 @@ public class SignAward implements Serializable {
      */
     private Integer usefulDay;
     /**
-     * sign_award.order_sn
+     * sign_award.orderSn
      * 订单号
      *
      * @mbg.generated 2018-11-13 15:03:30

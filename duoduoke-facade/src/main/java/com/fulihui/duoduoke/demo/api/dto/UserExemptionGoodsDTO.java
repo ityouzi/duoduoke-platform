@@ -68,7 +68,7 @@ public class UserExemptionGoodsDTO extends ToString {
     private List<String> states;
 
     /**
-     * user_exemption_goods.order_sn
+     * user_exemption_goods.orderSn
      * 推广订单编号
      *
      * @mbg.generated 2018-11-14 13:50:38

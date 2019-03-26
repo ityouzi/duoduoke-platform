@@ -22,7 +22,7 @@ public class UserRewardRecord implements Serializable {
      */
     private String userId;
     /**
-     * user_reward_record.order_sn
+     * user_reward_record.orderSn
      * 订单编号
      *
      * @mbg.generated 2018-09-04 17:01:14
