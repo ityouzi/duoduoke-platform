@@ -126,9 +126,9 @@ public class OrderSysDataServiceImpl implements OrderSysDataService {
     private int getTotalPage(int pageSize, int totalPage, OrderColorIncrementResult result,
                              boolean isMax) {
         OrderColorIncrementResult.OrderListGetResponseBean getResponse = result
-                .getOrder_list_get_response();
+                .getOrderListGetResponse();
         if (getResponse != null) {
-            Integer totalCount = getResponse.getTotal_count();
+            Integer totalCount = getResponse.getTotalCount();
             totalPage = totalCount % pageSize == 0 ? totalCount / pageSize
                     : totalCount / pageSize + 1;
             totalPage = totalPage > 0 ? totalPage : 1;
@@ -141,7 +141,7 @@ public class OrderSysDataServiceImpl implements OrderSysDataService {
                     if (isMax) {
 
                         List<OrderColorIncrementResult.OrderListGetResponseBean.OrderListBean> orderList = getResponse
-                                .getOrder_list();
+                                .getOrderList();
                         Optional<OrderColorIncrementResult.OrderListGetResponseBean.OrderListBean> max = orderList
                                 .stream().max(Comparator.comparing(
                                         OrderColorIncrementResult.OrderListGetResponseBean.OrderListBean::getOrder_modify_at));
@@ -156,7 +156,7 @@ public class OrderSysDataServiceImpl implements OrderSysDataService {
                 orderModifyAt = addDays(new Date(), -1);
             }
             List<OrderColorIncrementResult.OrderListGetResponseBean.OrderListBean> orderList = getResponse
-                    .getOrder_list();
+                    .getOrderList();
             for (OrderColorIncrementResult.OrderListGetResponseBean.OrderListBean bean : orderList) {
                 if (bean == null) {
                     continue;
