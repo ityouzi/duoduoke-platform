@@ -105,6 +105,7 @@ dubbo:
     timeout: 50000
     validation: true
 
+
 server:
   servlet:
     context-path: /duoduoke
