@@ -33,7 +33,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.4</version>
+            <version>1.2.46</version>
         </dependency>
         <!-- Logging -->
         <dependency>
@@ -61,7 +61,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
 
 
     <build>
