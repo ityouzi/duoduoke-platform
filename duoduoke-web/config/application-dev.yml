@@ -39,11 +39,11 @@ embedded:
 
 
 duoduoke:
-  clientId: c897842201e74d47a0668b8efd0dd38e
-  clientSecret: 2672db6f66cfa0d90688210f3caacad6a38de29f
-  miniAppid: wx4f8e42bb3084ddb0
-  miniAppSecret: cedfdd5d7966f98078151727cc31f8ac
-  mchid: 1358533402
+  clientId:
+  clientSecret:
+  miniAppid:
+  miniAppSecret:
+  mchid:
   certFile: /home/admin/cert/apiclient_cert.p12
   authUrl: https://api.weixin.qq.com/sns/jscode2session
   templateUrl: https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send
@@ -73,7 +73,7 @@ web:
     transfers: true #是否 mock 微信企业付款 (true/false)
     status: false #是否mock 微信支付成功或者失败  (true 为成功/false 失败)
 aes:
-  aesKey: oLhMH2xotVCzK7d8urGzeA==
+  aesKey:
 
 
 
@@ -81,19 +81,19 @@ aes:
 
 
 external:
-  externalGoodsUrl: http://www.tejiake.com/api/auth/change_link
-  externalApi: http://www.tejiake.com/api/auth/unify_api
-  externalToken: 5506946714eb48db92d2d4225ef30f15d52cf43b
-  refreshToken: 7cd2feeff7674717849b7a19f550ef7c545fbf6a
-  externalRefreshApi: http://www.tejiake.com/api/auth/refresh_token
+  externalGoodsUrl:
+  externalApi:
+  externalToken:
+  refreshToken:
+  externalRefreshApi:
 
 oss:
-  accessKeyId: LTAIfKdC0KkJP9y3
-  accessKeySecret: lOXNNqdTRrP6pOUteRDvjzdGtV4z6Q
-  endpoint: http://oss-cn-hangzhou.aliyuncs.com
+  accessKeyId:
+  accessKeySecret:
+  endpoint:
   bucketName: duoduoke
   floder: duoduoke/
-  key: https://duoduoke.oss-cn-hangzhou.aliyuncs.com/
+  key:
 
 dubbo:
   registry:
